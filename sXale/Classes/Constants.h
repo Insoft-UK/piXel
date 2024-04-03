@@ -31,12 +31,12 @@ THE SOFTWARE.
 static const BOOL kDebug = NO;
 
 // MARK: - Screen Bounds
-static __inline CGRect ScreenFrame() {
+static __inline CGRect ScreenFrame(void) {
     return [NSScreen mainScreen].frame;
 }
 
 // MARK: - Screen Size and Positon
-static __inline CGSize ScreenSize() {
+static __inline CGSize ScreenSize(void) {
     return [NSScreen mainScreen].frame.size;
 }
 

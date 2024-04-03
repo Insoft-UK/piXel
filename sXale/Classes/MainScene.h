@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 Insoft. All rights reserved.
+Copyright © 2020 Insoft. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,29 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#import <SpriteKit/SpriteKit.h>
 
-import Cocoa
+@interface MainScene : SKScene
 
-class WindowController: NSWindowController {
-    @IBAction private func zoomIn(_ sender: NSToolbarItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale < 8.0 {
-                image.setScale(image.yScale + 1.0)
-                image.xScale = image.yScale * image.aspectRatio
-            }
-        }
-    }
-    
-    @IBAction private func zoomOut(_ sender: NSToolbarItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale > 1.0 {
-                image.setScale(image.yScale - 1.0)
-                image.xScale = image.yScale * image.aspectRatio
-            }
-        }
-    }
-    
-    
-    
-    
-}
+
+@end

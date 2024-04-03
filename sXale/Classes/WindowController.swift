@@ -1,5 +1,5 @@
 /*
-Copyright © 2023 Insoft. All rights reserved.
+Copyright © 2021 Insoft. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import Foundation
-#if os(macOS)
-import Cocoa
-#endif
 
-extension CGPoint {
-#if os(iOS)
-    static var center: CGPoint {
-        return CGPoint(x: UIScreen.main.bounds.size.width / 2, y: UIScreen.main.bounds.size.height / 2)
+import Cocoa
+
+class WindowController: NSWindowController {
+    @IBAction private func zoomIn(_ sender: NSToolbarItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            if image.yScale < 8.0 {
+                image.setScale(image.yScale + 1.0)
+                image.xScale = image.yScale
+            }
+        }
     }
-#else
-    static var centre: CGPoint {
-        return CGPoint(x: (NSScreen.main?.frame.size.width ?? 0.0) / 2, y: (NSScreen.main?.frame.size.height ?? 0.0) / 2)
+    
+    @IBAction private func zoomOut(_ sender: NSToolbarItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            if image.yScale > 1.0 {
+                image.setScale(image.yScale - 1.0)
+                image.xScale = image.yScale
+            }
+        }
     }
-#endif
+    
+    
+    
+    
 }

@@ -20,39 +20,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#import "Singleton.h"
-#import "piXel-Swift.h"
+import Cocoa
+import SpriteKit
+import GameplayKit
 
-@implementation Singleton
 
-// MARK: - Init
+class ViewController: NSViewController {
 
-+(instancetype)sharedInstance {
-    static Singleton *sharedInstance = nil;
-    static dispatch_once_t onceToken;
+    @IBOutlet var skView: SKView!
+    @IBOutlet var widthText: NSTextField!
+    @IBOutlet var heightText: NSTextField!
+    @IBOutlet var zoomText: NSTextField!
+    @IBOutlet var ratioText: NSTextField!
+    @IBOutlet var infoText: NSTextField!
     
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
-    
-    return sharedInstance;
-}
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        let  mainMenu =  NSApplication.shared.mainMenu
 
-
--(instancetype)init {
-    if ((self = [super init])) {
-        [self setup];
+            if let editMenu = mainMenu?.item(at: 1)?.submenu{
+                for item in editMenu.items{
+                    item.isEnabled = true
+                }
+            }
+        
+        
+        
+        let scene:SKScene = MainScene.init()
+        scene.scaleMode = .aspectFill
+        skView.presentScene(scene)
+        
+        skView.preferredFramesPerSecond = 60
+        
+        
     }
-    
-    return self;
 }
-
-// MARK: - Setup
-#pragma mark - Setup
--(void)setup {
-    _image = [[Image alloc] initWithSize:CGSizeMake(1024, 768)];
-    
-}
-
-@end
 

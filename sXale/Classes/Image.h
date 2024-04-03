@@ -20,40 +20,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import Foundation
-#if os(macOS)
-import Cocoa
-#endif
+#import <CoreGraphics/CoreGraphics.h>
 
-extension CGFloat {
-#if !os(macOS)
-    static let scale = UIScreen.main.scale
-    static let scaleFactor = UIDevice.current.userInterfaceIdiom == .pad ? 1.5 * UIScreen.main.scale : UIScreen.main.scale
-    static let nativeScale = UIScreen.main.nativeScale
-    
-    static var width: CGFloat {
-        return UIScreen.main.bounds.size.width
-    }
-    static var nativeWidth: CGFloat {
-        return UIScreen.main.nativeBounds.size.width
-    }
-    static var height: CGFloat {
-        return UIScreen.main.bounds.size.height
-    }
-    static var nativeHight: CGFloat {
-        return UIScreen.main.nativeBounds.size.height
-    }
-#else
-    static let scale = NSScreen.main?.backingScaleFactor
-    static let scaleFactor = 1.5 * (NSScreen.main?.backingScaleFactor ?? 1.0)
-#endif
-    
-    static let margin: CGFloat = 18.0
-    
-    static func degrees(_ angle: CGFloat) -> CGFloat {
-        return angle * .pi/180
-    }
-    
-    static let earthGravity: CGFloat = 9.8;
-}
+#ifndef Image_h
+#define Image_h
 
+
+@interface Image: SKNode
+
+// MARK: - Class Properties
+
+@property (readonly) NSUInteger zoom;
+
+
+// MARK: - Class Init
+
+-(id)initWithSize:(CGSize)size;
+
+// MARK: - Class Instance Methods
+
+
+
+-(void)updateWithDelta:(NSTimeInterval)delta;
+-(void)saveImageAtURL:(NSURL *)url;
+-(void)loadImageWithContentsOfURL:(NSURL *)url;
+
+- (void)EPX;
+
+// MARK: - Class Methods
+
+
+// MARK: - Class Setters
+- (void)setScale:(CGFloat)scale;
+@end
+
+
+#endif /* Image_h */

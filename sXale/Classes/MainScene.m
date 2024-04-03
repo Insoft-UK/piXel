@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 #import "MainScene.h"
 
-#import "piXel-Swift.h"
+#import "sXale-Swift.h"
 #import "Image.h"
 #import <Cocoa/Cocoa.h>
 
@@ -63,38 +63,6 @@ THE SOFTWARE.
     [self addChild:Singleton.sharedInstance.image];
 }
 
-
-
-
-// MARK: - Keyboard Events
-
-- (void)keyDown:(NSEvent *)theEvent {
-    
-    switch (theEvent.keyCode) {
-        case 0x7b /* CURSOR LEFT */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x - 1, .y = self.image.offset.y}];
-            break;
-            
-        case 0x7c /* CURSOR RIGHT */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x + 1, .y = self.image.offset.y}];
-            break;
-            
-        case 0x7d /* CURSOR DOWN */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y + 1}];
-            break;
-            
-        case 0x7e /* CURSOR UP */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y - 1}];
-            break;
-            
-            
-        default:
-#ifdef DEBUG
-            NSLog(@"keyDown:'%@' keyCode: 0x%02X", theEvent.characters, theEvent.keyCode);
-#endif
-            break;
-    }
-}
 
 
 
