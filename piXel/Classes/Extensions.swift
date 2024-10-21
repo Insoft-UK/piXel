@@ -41,11 +41,6 @@ import UniformTypeIdentifiers
         return CGImage.create(fromPixelData: pixelData, ofSize: size)
     }
     
-    
-    @objc class func createNSImage(fromCGImage cgImage: CGImage) -> NSImage? {
-        return NSImage.create(fromCGImage: cgImage)
-    }
-    
     @objc class func resizeCGImage(_ image: CGImage, toSize size: CGSize) -> CGImage? {
         return image.resize(size)
     }
@@ -54,19 +49,6 @@ import UniformTypeIdentifiers
         return UIImage.tiled(fromImage: image, ofSize: size)
     }
 #endif
-
-    @objc class func screen() -> CGSize {
-        return .screen
-    }
-    
-//    @objc class func center() -> CGPoint {
-//        return CGPoint.center
-//
-//    }
-    
-    @objc class func bundleVersion() -> String {
-        return String.bundleVersion
-    }
     
     @objc class func convertCIImageToCGImage(inputImage: CIImage) -> CGImage? {
         let context = CIContext(options: nil)

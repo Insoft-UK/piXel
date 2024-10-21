@@ -33,7 +33,6 @@ THE SOFTWARE.
 #import <SpriteKit/SpriteKit.h>
 
 /// Utilities
-#import "Constants.h"
 #import "Image.h"
 
 /// Singletons
