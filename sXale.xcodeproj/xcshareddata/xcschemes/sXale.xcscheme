@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1365C78926057FA700B23CC3"
-               BuildableName = "piXel.app"
-               BlueprintName = "piXel"
-               ReferencedContainer = "container:piXel.xcodeproj">
+               BuildableName = "sXale.app"
+               BlueprintName = "sXale"
+               ReferencedContainer = "container:sXale.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1365C78926057FA700B23CC3"
-            BuildableName = "piXel.app"
-            BlueprintName = "piXel"
-            ReferencedContainer = "container:piXel.xcodeproj">
+            BuildableName = "sXale.app"
+            BlueprintName = "sXale"
+            ReferencedContainer = "container:sXale.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1365C78926057FA700B23CC3"
-            BuildableName = "piXel.app"
-            BlueprintName = "piXel"
-            ReferencedContainer = "container:piXel.xcodeproj">
+            BuildableName = "sXale.app"
+            BlueprintName = "sXale"
+            ReferencedContainer = "container:sXale.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
