@@ -36,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		13365F00284142A900524BF6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		13592D482CC5D1520052D0E9 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../usr/local/Cellar/libpng/1.6.44/lib/libpng16.a; sourceTree = "<group>"; };
+		13592D4A2CC5D28F0052D0E9 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = ../../../../usr/local/zlib/lib/libz.a; sourceTree = "<group>"; };
 		13652F2D29B6D2470042E555 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		13652F2F29B778E50042E555 /* CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
 		13652F3129B7794B0042E555 /* CGContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGContext.swift; sourceTree = "<group>"; };
@@ -86,6 +88,8 @@
 		1304850827A763820065230D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				13592D4A2CC5D28F0052D0E9 /* libz.a */,
+				13592D482CC5D1520052D0E9 /* libpng16.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -490,11 +494,13 @@
 				DEVELOPMENT_TEAM = 8XN79M4JCJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/PrefixHeader.pch";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(PROJECT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
@@ -522,11 +528,13 @@
 				DEVELOPMENT_TEAM = 8XN79M4JCJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/PrefixHeader.pch";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(PROJECT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;

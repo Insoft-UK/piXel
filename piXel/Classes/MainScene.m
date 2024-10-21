@@ -72,19 +72,19 @@ THE SOFTWARE.
     
     switch (theEvent.keyCode) {
         case 0x7b /* CURSOR LEFT */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x - 1, .y = self.image.offset.y}];
+//            [self.image setOffset:(TPoint){.x = self.image.offset.x - 1, .y = self.image.offset.y}];
             break;
             
         case 0x7c /* CURSOR RIGHT */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x + 1, .y = self.image.offset.y}];
+//            [self.image setOffset:(TPoint){.x = self.image.offset.x + 1, .y = self.image.offset.y}];
             break;
             
         case 0x7d /* CURSOR DOWN */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y + 1}];
+//            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y + 1}];
             break;
             
         case 0x7e /* CURSOR UP */:
-            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y - 1}];
+//            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y - 1}];
             break;
             
             

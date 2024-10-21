@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -69,238 +69,6 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Image" id="gvV-qV-3Py">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Image" id="INo-ed-UNb">
-                                    <items>
-                                        <menuItem title="Size" id="RAP-me-YFu">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Size" id="rpJ-bs-xfc">
-                                                <items>
-                                                    <menuItem title="Width" id="GGK-02-0Zl">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <menu key="submenu" title="Width" id="2Xp-Ud-zWg">
-                                                            <items>
-                                                                <menuItem title="8" tag="8" id="8Q5-bn-9AX">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageWidth:" target="Voe-Tx-rLC" id="G0k-wN-M8w"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="16" tag="16" id="JW1-KS-U5A">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageWidth:" target="Voe-Tx-rLC" id="g2f-fb-emw"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="32" tag="32" id="1x1-hG-KHD">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageWidth:" target="Voe-Tx-rLC" id="T8d-t5-cgx"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="64" tag="64" id="5nm-EP-CQb">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageWidth:" target="Voe-Tx-rLC" id="DX4-QN-mtN"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem isSeparatorItem="YES" id="yj5-3z-BIZ"/>
-                                                                <menuItem title="128" tag="128" id="wKt-Yi-Brq">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageWidth:" target="Voe-Tx-rLC" id="xu1-AU-xL0"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="256" tag="256" id="8WD-cn-WCb">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageWidth:" target="Voe-Tx-rLC" id="sCU-mN-mVJ"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                            </items>
-                                                        </menu>
-                                                    </menuItem>
-                                                    <menuItem title="Height" id="A1W-1T-zx9">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <menu key="submenu" title="Height" id="gfx-k5-2gt">
-                                                            <items>
-                                                                <menuItem title="8" tag="8" id="dRr-C3-3So">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageHeight:" target="Voe-Tx-rLC" id="8Z2-Qo-4WI"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="16" tag="16" id="nVd-wN-S2H">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageHeight:" target="Voe-Tx-rLC" id="OMd-u1-2PI"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="32" tag="32" id="G8r-cm-11T">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageHeight:" target="Voe-Tx-rLC" id="lnJ-Xs-1fR"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="64" tag="64" id="CDP-dG-zmO">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageHeight:" target="Voe-Tx-rLC" id="mgr-As-T6K"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem isSeparatorItem="YES" id="EBc-3B-QJC"/>
-                                                                <menuItem title="128" tag="128" id="3hS-dF-rXK">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageHeight:" target="Voe-Tx-rLC" id="M9I-Io-wMT"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                                <menuItem title="256" tag="256" id="C2H-tJ-xFK">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                    <connections>
-                                                                        <action selector="imageHeight:" target="Voe-Tx-rLC" id="QM2-Fc-Lam"/>
-                                                                    </connections>
-                                                                </menuItem>
-                                                            </items>
-                                                        </menu>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="cYU-1b-Xnj"/>
-                                                    <menuItem title="Increase Width" keyEquivalent="" id="wCx-y7-5SX">
-                                                        <connections>
-                                                            <action selector="increaseWidth:" target="Voe-Tx-rLC" id="OAi-km-3uO"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Decrease Width" keyEquivalent="" id="rmp-Zv-F8W">
-                                                        <connections>
-                                                            <action selector="decreaseWidth:" target="Voe-Tx-rLC" id="52G-wH-znN"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="5xP-el-jUd"/>
-                                                    <menuItem title="Increase Height" keyEquivalent="" id="IID-VE-Y6X">
-                                                        <connections>
-                                                            <action selector="increaseHeight:" target="Voe-Tx-rLC" id="0Tw-V2-dy8"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Decrease Height" keyEquivalent="" id="8Yy-bz-xOu">
-                                                        <connections>
-                                                            <action selector="decreaseHeight:" target="Voe-Tx-rLC" id="G7m-b2-k9e"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="iNt-Lv-Ose"/>
-                                        <menuItem title="Color Space" id="Eke-aj-p4H">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Color Space" id="CaK-XX-kUy">
-                                                <items>
-                                                    <menuItem title="16 Million Colors" tag="8" keyEquivalent="1" id="Yvh-gr-Wkq">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="X0w-o7-ecY"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="262,144 Colors" tag="6" keyEquivalent="2" id="vId-uh-ztm">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="Adt-mW-Kwe"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="32,768 Colors" tag="5" keyEquivalent="3" id="iIU-wQ-Esq">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="J7h-Tf-EZJ"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="4,096 Colors" tag="4" keyEquivalent="4" id="dcw-0M-CqG">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="pXT-5d-VIp"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="512 Colors" tag="3" keyEquivalent="5" id="fbm-HD-OOW">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="EGn-Oo-j6U"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="64 Colors" tag="2" keyEquivalent="6" id="StK-Fg-HQE">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="CiI-uP-pqG"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="8 Colors" tag="1" keyEquivalent="8" id="ntf-5H-fVQ">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="colorSpace:" target="Voe-Tx-rLC" id="ICa-sK-UCa"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="WIT-1d-ZGC"/>
-                                        <menuItem title="Pixel Size" id="zy7-e8-25y">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Pixel Size" id="w5V-1c-CEa">
-                                                <items>
-                                                    <menuItem title="2x2" state="on" tag="2" id="I83-z1-lb0">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="pixelSize:" target="Voe-Tx-rLC" id="Tta-0G-inJ"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="4x4" tag="4" id="RSI-PH-GcQ">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="pixelSize:" target="Voe-Tx-rLC" id="UFR-JO-C8h"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="8x8" tag="8" id="ijz-r1-4Ge">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="pixelSize:" target="Voe-Tx-rLC" id="CsM-SD-9dc"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="16x16" tag="16" id="iDW-mq-bqW">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="pixelSize:" target="Voe-Tx-rLC" id="gG6-nf-Qtl"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="U12-BI-NUc"/>
-                                                    <menuItem title="Increase Width" keyEquivalent="" id="sTw-WP-MFc">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="increasePixelSizeWidth:" target="Voe-Tx-rLC" id="i2e-5s-cMu"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Decrease Width" keyEquivalent="" id="uap-fg-vVX">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="decreasePixelSizeWidth:" target="Voe-Tx-rLC" id="5xe-vs-ztI"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="ueB-d3-Y0S"/>
-                                                    <menuItem title="Increase Height" keyEquivalent="" id="7uo-KR-OLT">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="increasePixelSizeHeight:" target="Voe-Tx-rLC" id="9Na-9e-Fdc"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Decrease Height" keyEquivalent="" id="sey-CB-rQp">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="decreasePixelSizeHeight:" target="Voe-Tx-rLC" id="tck-Eu-9dy"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
                             <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" autoenablesItems="NO" id="Td7-aD-5lo">
@@ -315,47 +83,6 @@
                             </menuItem>
                             <menuItem title="View" id="ijg-zJ-oYI">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="View" id="2Nq-nl-EYC">
-                                    <items>
-                                        <menuItem title="Zoom In" keyEquivalent="z" id="rWT-nw-auP">
-                                            <connections>
-                                                <action selector="zoomIn:" target="Voe-Tx-rLC" id="Mup-qw-u7W"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Zoom Out" keyEquivalent="z" id="Pod-uX-wyk">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="zoomOut:" target="Voe-Tx-rLC" id="QGB-Pg-uaE"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="js6-tA-AuW"/>
-                                        <menuItem title="Pixel Aspect Ratio" id="gWc-ud-X5Q">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Pixel Aspect Ratio" id="tQZ-pt-dpY">
-                                                <items>
-                                                    <menuItem title="1:1" state="on" id="9B9-Wb-aHO">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="aspectRatio:" target="Voe-Tx-rLC" id="8ge-TU-pMd"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="2:1" id="rdO-QT-7HI">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="aspectRatio:" target="Voe-Tx-rLC" id="N3m-is-rjV"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="1:2" id="Jvy-kK-sUJ">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="aspectRatio:" target="Voe-Tx-rLC" id="ozL-Bc-otY"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                    </items>
-                                </menu>
                             </menuItem>
                             <menuItem title="Help" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -457,7 +184,7 @@
                             <visualEffectView blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="GHM-FR-Fu3">
                                 <rect key="frame" x="0.0" y="718" width="1024" height="50"/>
                                 <subviews>
-                                    <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z04-xa-iGJ">
+                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z04-xa-iGJ">
                                         <rect key="frame" x="18" y="17" width="35" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Width" id="PTe-hN-YPS">
@@ -466,7 +193,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UwJ-dK-VXR">
+                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UwJ-dK-VXR">
                                         <rect key="frame" x="55" y="17" width="32" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="0" id="Pnu-vS-OVb">
@@ -475,7 +202,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gh8-gT-bD0">
+                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gh8-gT-bD0">
                                         <rect key="frame" x="87" y="17" width="39" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Height" id="sae-O3-rPG">
@@ -484,25 +211,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WUk-WX-PXn">
-                                        <rect key="frame" x="955" y="17" width="26" height="14"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="0:0" id="qnB-ZB-3gz">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="frV-NF-XY5">
-                                        <rect key="frame" x="981" y="14" width="24" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="1x" id="edF-id-ebA">
-                                            <font key="font" metaFont="system" size="18"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ny-Pp-oPu">
+                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ny-Pp-oPu">
                                         <rect key="frame" x="128" y="17" width="32" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="0" id="d38-C2-oNe">
@@ -511,6 +220,49 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="frV-NF-XY5">
+                                        <rect key="frame" x="981" y="14" width="24" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="1x" id="edF-id-ebA">
+                                            <font key="font" metaFont="system" size="18"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OiC-wx-Id6">
+                                        <rect key="frame" x="441" y="17" width="41" height="14"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Coarse" id="yoa-bn-hYN">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f8D-kc-6sC">
+                                        <rect key="frame" x="485" y="10" width="19" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" continuous="YES" alignment="left" minValue="2" maxValue="20" doubleValue="2" id="SIg-aa-TbC"/>
+                                        <connections>
+                                            <action selector="coarseAdjustment:" target="XfG-lQ-9wD" id="4ip-9Y-564"/>
+                                        </connections>
+                                    </stepper>
+                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0YS-Mt-9he">
+                                        <rect key="frame" x="523" y="17" width="26" height="14"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Fine" id="g3N-qd-gB2">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yFd-qB-OhX">
+                                        <rect key="frame" x="552" y="10" width="19" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="Eh0-qa-EFX"/>
+                                        <connections>
+                                            <action selector="fineAdjustment:" target="XfG-lQ-9wD" id="dXx-cc-U8C"/>
+                                        </connections>
+                                    </stepper>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1024" id="eoB-ss-bqo"/>
@@ -520,7 +272,7 @@
                             <visualEffectView blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="tGz-Qw-2Gx">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="20"/>
                                 <subviews>
-                                    <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Szt-7k-fN0">
+                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Szt-7k-fN0">
                                         <rect key="frame" x="256" y="3" width="512" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0 bytes selected at offset 0 out of 0 bytes" id="ohm-Ua-b3w">
@@ -534,22 +286,6 @@
                                     <constraint firstAttribute="height" constant="20" id="Lir-6W-ynk"/>
                                 </constraints>
                             </visualEffectView>
-                            <box fixedFrame="YES" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Vbl-sh-uBK">
-                                <rect key="frame" x="17" y="564" width="136" height="136"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <view key="contentView" id="MUY-ps-hkk">
-                                    <rect key="frame" x="8" y="9" width="120" height="120"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jDb-tL-B7U">
-                                            <rect key="frame" x="-4" y="-4" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="odm-r7-NvD"/>
-                                        </imageView>
-                                    </subviews>
-                                </view>
-                                <size key="contentViewMargins" width="4" height="4"/>
-                            </box>
                         </subviews>
                         <constraints>
                             <constraint firstItem="GHM-FR-Fu3" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="4hn-CM-p3C"/>
@@ -561,10 +297,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="coarseBlockSize" destination="f8D-kc-6sC" id="QiU-cG-ZUu"/>
+                        <outlet property="fineBlockSize" destination="yFd-qB-OhX" id="KQF-iM-QBd"/>
                         <outlet property="heightText" destination="4ny-Pp-oPu" id="3hj-Ob-CuL"/>
-                        <outlet property="imageView" destination="jDb-tL-B7U" id="C9E-dX-35E"/>
                         <outlet property="infoText" destination="Szt-7k-fN0" id="ZMS-DS-cma"/>
-                        <outlet property="ratioText" destination="WUk-WX-PXn" id="QrE-yb-eGr"/>
                         <outlet property="skView" destination="m2S-Jp-Qdl" id="qux-te-cT3"/>
                         <outlet property="widthText" destination="UwJ-dK-VXR" id="jjh-pa-vKV"/>
                         <outlet property="zoomText" destination="frV-NF-XY5" id="N8v-rt-cPd"/>

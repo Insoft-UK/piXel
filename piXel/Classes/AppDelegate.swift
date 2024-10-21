@@ -32,9 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        
-        //image = Singleton.sharedInstance()?.image
-        updateAllMenus()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -48,7 +45,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             //Singleton.sharedInstance()?.image.modify(withContentsOf: url)
             NSApp.windows.first?.title = url.lastPathComponent
         }
-        updateAllMenus()
     }
     
     
@@ -59,7 +55,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let image = Singleton.sharedInstance()?.image {
             if image.yScale < 8.0 {
                 image.setScale(image.yScale + 1.0)
-                image.xScale = image.yScale * image.aspectRatio
             }
         }
     }
@@ -68,110 +63,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let image = Singleton.sharedInstance()?.image {
             if image.yScale > 1.0 {
                 image.setScale(image.yScale - 1.0)
-                image.xScale = image.yScale * image.aspectRatio
             }
         }
     }
     
-    @IBAction private func aspectRatio(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if sender.title == "1:1" {
-                image.setAspectRatio(1.0)
-            }
-            if sender.title == "2:1" {
-                image.setAspectRatio(2.0)
-            }
-            if sender.title == "1:2" {
-                image.setAspectRatio(0.5)
-            }
-        }
-        updateAllMenus();
-    }
-    
-    @IBAction private func increaseWidth(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSize(TSize(width: image.size.width + 1, height: image.size.height))
-            updateAllMenus()
-        }
-    }
-    
-    @IBAction private func decreaseWidth(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSize(TSize(width: image.size.width - 1, height: image.size.height))
-            updateAllMenus()
-        }
-    }
     
     
-    @IBAction private func increaseHeight(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSize(TSize(width: image.size.width, height: image.size.height + 1))
-            updateAllMenus()
-        }
-    }
-    
-    
-    @IBAction private func decreaseHeight(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSize(TSize(width: image.size.width, height: image.size.height - 1))
-            updateAllMenus()
-        }
-    }
-    
-    
-    @IBAction private func imageWidth(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSize(TSize(width: UInt(sender.tag), height: image.size.height))
-            updateAllMenus()
-        }
-    }
-    
-    @IBAction private func imageHeight(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSize(TSize(width: image.size.width, height: UInt(sender.tag)))
-            updateAllMenus()
-        }
-    }
-    
-    @IBAction private func pixelSize(_ sender: NSMenuItem) {
-        Singleton.sharedInstance()?.image.setPixelSize(.init(width: CGFloat(sender.tag), height: CGFloat(sender.tag)))
-        updateAllMenus()
-    }
-    
-    @IBAction private func increasePixelSizeWidth(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setPixelSize(.init(width: image.pixelSize.width + 0.125, height: image.pixelSize.height))
-        }
-        updateAllMenus()
-    }
-    
-    
-    @IBAction private func decreasePixelSizeWidth(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setPixelSize(.init(width: image.pixelSize.width - 0.125, height: image.pixelSize.height))
-        }
-        updateAllMenus()
-    }
-    
-    @IBAction private func increasePixelSizeHeight(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setPixelSize(.init(width: image.pixelSize.width, height: image.pixelSize.height + 0.125))
-        }
-        updateAllMenus()
-    }
-    
-    
-    @IBAction private func decreasePixelSizeHeight(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setPixelSize(.init(width: image.pixelSize.width, height: image.pixelSize.height - 0.125))
-        }
-        updateAllMenus()
-    }
-    
-    @IBAction private func colorSpace(_ sender: NSMenuItem) {
-        Singleton.sharedInstance()?.image.setBitsPerChannel(UInt(sender.tag))
-        updateAllMenus()
-    }
     
     @IBAction private func openDocument(_ sender: NSMenuItem) {
         let openPanel = NSOpenPanel()
@@ -189,8 +86,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 
             }
         }
-        
-        updateAllMenus()
     }
     
 
@@ -209,47 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    // MARK: - Private Methods
-    
-    private func updateAllMenus() {
-        if let image = Singleton.sharedInstance()?.image {
-            // Size
-            if let menu = mainMenu.item(at: 2)?.submenu?.item(withTitle: "Size")?.submenu {
-                if let width = menu.item(withTitle: "Width")?.submenu {
-                    for item in width.items {
-                        item.state = item.tag == Int(image.size.width) ? .on : .off
-                    }
-                }
-                
-                if let height = menu.item(withTitle: "Height")?.submenu {
-                    for item in height.items {
-                        item.state = item.tag == Int(image.size.height) ? .on : .off
-                    }
-                }
-            }
-            
-            if let menu = mainMenu.item(at: 2)?.submenu?.item(withTitle: "Pixel Size")?.submenu {
-                for item in menu.items {
-                    item.state = item.tag == Int(image.pixelSize.width) ? .on : .off
-                }
-            }
-            
-            // Pixel Aspect Ratio
-            if let menu = mainMenu.item(at: 4)?.submenu?.item(withTitle: "Pixel Aspect Ratio")?.submenu {
-                if let item = menu.item(withTitle: "1:1") {
-                    item.state = image.aspectRatio == 1.0 ? .on : .off
-                }
-                if let item = menu.item(withTitle: "2:1") {
-                    item.state = image.aspectRatio == 2.0 ? .on : .off
-                }
-                if let item = menu.item(withTitle: "1:2") {
-                    item.state = image.aspectRatio == 0.5 ? .on : .off
-                }
-            }
-            
-        }
-    }
-    
+   
     
     
 }

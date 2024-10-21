@@ -52,26 +52,6 @@ import SpriteKit
     }
     
     
-    @objc class func redrawPreview(_ bytes: UnsafePointer<UInt8>) {
-        guard let image = Singleton.sharedInstance().image else {
-            return
-        }
-        
-        guard let cgImage: CGImage = .create(fromPixelData: bytes, ofSize: CGSize(width: CGFloat(image.size.width), height: CGFloat(image.size.height))) else {
-            return
-        }
-        
-        let scale = CGFloat(floor(128.0 / Float(max(image.size.width, image.size.height))))
-        
-            
-        if let resized = cgImage.resize(CGSize(width: CGFloat(image.size.width) * scale, height: CGFloat(image.size.height) * scale)) {
-            if let nsImage: NSImage = .create(fromCGImage: resized) {
-                if let viewController = NSApplication.rootViewController as? ViewController {
-                    viewController.imageView.image = nsImage
-                    viewController.imageView.imageScaling = .scaleProportionallyDown;
-                }
-            }
-        }
-    }
+    
     
 }

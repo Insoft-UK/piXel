@@ -31,9 +31,11 @@ class ViewController: NSViewController {
     @IBOutlet var widthText: NSTextField!
     @IBOutlet var heightText: NSTextField!
     @IBOutlet var zoomText: NSTextField!
-    @IBOutlet var ratioText: NSTextField!
     @IBOutlet var infoText: NSTextField!
-    @IBOutlet var imageView: NSImageView!
+    
+    @IBOutlet var coarseBlockSize: NSStepper!
+    @IBOutlet var fineBlockSize: NSStepper!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,15 +49,27 @@ class ViewController: NSViewController {
                 }
             }
         
-        
-        
         let scene:SKScene = MainScene.init()
         scene.scaleMode = .aspectFill
         skView.presentScene(scene)
         
         skView.preferredFramesPerSecond = 60
-        
-        
     }
+    
+    @IBAction private func coarseAdjustment(_ sender: NSStepper) {
+        if let image = Singleton.sharedInstance()?.image {
+            let blockSize = coarseBlockSize.floatValue + floor(fineBlockSize.floatValue) / 100
+            image.setBlockSize(blockSize)
+        }
+    }
+    
+    @IBAction private func fineAdjustment(_ sender: NSStepper) {
+        if let image = Singleton.sharedInstance()?.image {
+            let blockSize = coarseBlockSize.floatValue + floor(fineBlockSize.floatValue) / 100
+            image.setBlockSize(blockSize)
+        }
+    }
+    
+    
 }
 

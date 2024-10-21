@@ -28,7 +28,6 @@ class WindowController: NSWindowController {
         if let image = Singleton.sharedInstance()?.image {
             if image.yScale < 8.0 {
                 image.setScale(image.yScale + 1.0)
-                image.xScale = image.yScale * image.aspectRatio
             }
         }
     }
@@ -37,7 +36,6 @@ class WindowController: NSWindowController {
         if let image = Singleton.sharedInstance()?.image {
             if image.yScale > 1.0 {
                 image.setScale(image.yScale - 1.0)
-                image.xScale = image.yScale * image.aspectRatio
             }
         }
     }
