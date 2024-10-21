@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 Insoft. All rights reserved.
+Copyright © 2023 Insoft. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,38 +20,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#import "Singleton.h"
-#import "sXale-Swift.h"
+import Foundation
+#if os(macOS)
+import Cocoa
+#endif
 
-@implementation Singleton
-
-// MARK: - Init
-
-+(instancetype)sharedInstance {
-    static Singleton *sharedInstance = nil;
-    static dispatch_once_t onceToken;
+extension CGFloat {
+#if !os(macOS)
+    static let scale = UIScreen.main.scale
+    static let scaleFactor = UIDevice.current.userInterfaceIdiom == .pad ? 1.5 * UIScreen.main.scale : UIScreen.main.scale
+    static let nativeScale = UIScreen.main.nativeScale
     
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
+    static var width: CGFloat {
+        return UIScreen.main.bounds.size.width
+    }
+    static var nativeWidth: CGFloat {
+        return UIScreen.main.nativeBounds.size.width
+    }
+    static var height: CGFloat {
+        return UIScreen.main.bounds.size.height
+    }
+    static var nativeHight: CGFloat {
+        return UIScreen.main.nativeBounds.size.height
+    }
+#else
+    static let scale = NSScreen.main?.backingScaleFactor
+    static let scaleFactor = 1.5 * (NSScreen.main?.backingScaleFactor ?? 1.0)
+#endif
     
-    return sharedInstance;
-}
-
-
--(instancetype)init {
-    if ((self = [super init])) {
-        [self setup];
+    static let margin: CGFloat = 18.0
+    
+    static func degrees(_ angle: CGFloat) -> CGFloat {
+        return angle * .pi/180
     }
     
-    return self;
+    static let earthGravity: CGFloat = 9.8;
 }
-
-// MARK: - Setup
-#pragma mark - Setup
--(void)setup {
-    _image = [[Image alloc] initWithSize:CGSizeMake(1024, 768)];
-}
-
-@end
 

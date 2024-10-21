@@ -33,12 +33,12 @@
 static const BOOL kDebug = NO;
 
 // MARK: - Screen Bounds
-static __inline CGRect ScreenFrame(void) {
+static __inline CGRect ScreenFrame() {
     return [NSScreen mainScreen].frame;
 }
 
 // MARK: - Screen Size and Positon
-static __inline CGSize ScreenSize(void) {
+static __inline CGSize ScreenSize() {
     return [NSScreen mainScreen].frame.size;
 }
 
