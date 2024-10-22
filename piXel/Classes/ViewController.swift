@@ -58,7 +58,8 @@ class ViewController: NSViewController {
     
     @IBAction private func coarseAdjustment(_ sender: NSStepper) {
         if let image = Singleton.sharedInstance()?.image {
-            let blockSize = coarseBlockSize.floatValue + floor(fineBlockSize.floatValue) / 100
+            fineBlockSize.floatValue = 0;
+            let blockSize = coarseBlockSize.floatValue
             image.setBlockSize(blockSize)
         }
     }

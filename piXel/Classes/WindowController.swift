@@ -26,7 +26,7 @@ import Cocoa
 class WindowController: NSWindowController {
     @IBAction private func zoomIn(_ sender: NSToolbarItem) {
         if let image = Singleton.sharedInstance()?.image {
-            if image.yScale < 8.0 {
+            if image.yScale < 50.0 {
                 image.setScale(image.yScale + 1.0)
             }
         }

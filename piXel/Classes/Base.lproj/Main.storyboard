@@ -69,6 +69,75 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Image" id="CgE-Wm-6rh">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Image" id="slQ-BQ-hOn">
+                                    <items>
+                                        <menuItem title="Sample Size" id="Hwb-qX-mDJ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Sample Size" id="qRK-CS-PbO">
+                                                <items>
+                                                    <menuItem title="Point Sample" tag="1" id="aM6-Rh-kNJ">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="sampleSize:" target="Voe-Tx-rLC" id="Gae-Ia-va1"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="3 by 3 Average" tag="3" enabled="NO" id="D3G-bM-Yia">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="sampleSize:" target="Voe-Tx-rLC" id="efL-Q0-jhw"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="5 by 5 Average" tag="5" enabled="NO" id="0Mb-ra-fMd">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="sampleSize:" target="Voe-Tx-rLC" id="QJu-qG-Txr"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="11 by 11 Average" tag="11" enabled="NO" id="szj-x3-4my">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="sampleSize:" target="Voe-Tx-rLC" id="cuJ-c7-nzE"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
+                                        <menuItem title="Block Size" id="Kfw-6f-Fnv" userLabel="Block Size">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Block Size" id="VTp-im-4IP">
+                                                <items>
+                                                    <menuItem title="2 by 2 Pixels" tag="2" id="pse-AV-JgC" userLabel="2 by 2 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="eGH-zx-bfh"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="3 by 3 Pixels" tag="3" id="w4Q-gc-0Oo" userLabel="3 by 3 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="NiZ-Az-MYd"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="4 by 4 Pixels" tag="4" id="aCL-VC-xMR" userLabel="4 by 4 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="QhK-0q-MjF"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="8 by 8 Pixels" tag="8" id="N4F-Ad-M0L" userLabel="8 by 8 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="NyD-Yh-bb8"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" autoenablesItems="NO" id="Td7-aD-5lo">
@@ -221,7 +290,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="frV-NF-XY5">
-                                        <rect key="frame" x="981" y="14" width="24" height="21"/>
+                                        <rect key="frame" x="931" y="14" width="74" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="1x" id="edF-id-ebA">
                                             <font key="font" metaFont="system" size="18"/>

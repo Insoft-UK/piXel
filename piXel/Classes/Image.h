@@ -31,12 +31,14 @@
 
 @property (readonly)CGSize originalSize;
 @property (readonly)float blockSize;
+@property (readonly)NSInteger sampleSize;
 
 -(id)initWithSize:(CGSize)size;
 -(void)updateWithDelta:(NSTimeInterval)delta;
 -(void)saveImageAtURL:(NSURL *)url;
 -(void)loadImageWithContentsOfURL:(NSURL *)url;
 - (void)setBlockSize:(float)newBloockSize;
+- (void)setSampleSize:(NSInteger)size;
 
 @end
 

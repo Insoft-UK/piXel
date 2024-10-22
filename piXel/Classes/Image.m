@@ -74,6 +74,7 @@ typedef QuadColor* QuadColorRef;
             _originalSize.width = 256;
             _originalSize.height = 256;
             _blockSize = 2.0;
+            _sampleSize = 1;
             data = nil;
         }
         
@@ -110,6 +111,7 @@ typedef QuadColor* QuadColorRef;
             node.name = @"Image";
             [self addChild:node];
         }
+        
         
     }
     
@@ -179,15 +181,16 @@ typedef QuadColor* QuadColorRef;
     
     ViewController *viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
     
+    CGFloat w = self.originalSize.width / self.blockSize;
+    CGFloat h = self.originalSize.height / self.blockSize;
+    
     viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)self.originalSize.width];
     viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)self.originalSize.height];
-    viewController.zoomText.stringValue = [NSString stringWithFormat:@"%fx", floor(512 / (self.originalSize.width / self.blockSize))];
-    
-    
+    viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)self.xScale * 100];
+    viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Resolution: %dx%d - Block Size: %.2f", (int)w, (int)h, self.blockSize];
     
     
     [self restorePixelatedImage];
-    
     [self renderTexture];
     
     
@@ -198,13 +201,25 @@ typedef QuadColor* QuadColorRef;
     [self.mutableTexture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
         memset(pixelData, 0, lengthInBytes);
         
+        int width = self.mutableTexture.size.width;
+        int height = self.mutableTexture.size.height;
         
-        [self renderImageDataToPixelData:(void *)pixelData ofSize:self.mutableTexture.size];
-//        [self samplePixelData:pixelData ofSize:self.mutableTexture.size];
-//        [Colors redrawPreview:self.originalImageData.bytes ofSize:self.originalSize];
+        UInt32* src = (UInt32 *)self.scratchData.bytes;
+        UInt32* dest = (UInt32 *)pixelData;
         
+        int w = self.originalSize.width / self.blockSize;
+        int h = self.originalSize.height / self.blockSize;
         
+        int x;
+        int y;
         
+        dest += (height - h) / 2 * width + (width - w) / 2;
+        
+        for (y = 0; y < h; ++y) {
+            for (x = 0; x < w; ++x) {
+                dest[x + width * y] = src[x + y * w];
+            }
+        }
     }];
 }
 
@@ -226,7 +241,7 @@ typedef QuadColor* QuadColorRef;
     pixels[x + y * w] = color;
 }
 
-- (UInt32) blockColorAt:(NSUInteger)x ofY:(NSUInteger)y {
+- (UInt32)averageColorForSampleSize:(NSUInteger)size atPoint:(CGPoint)point {
     struct {
         union {
             uint32_t ARGB;
@@ -240,15 +255,16 @@ typedef QuadColor* QuadColorRef;
     } color;
     
     
-    long r,g,b,a;
+    NSUInteger r,g,b,a;
     
     r = g = b = a = 0;
     
-    int span = (int)self.blockSize - 2;
+    point.x -= size / 2;
+    point.y -= size / 2;
    
-    for (int i = 0; i < span; ++i) {
-        for (int j = 0; j < span; ++j) {
-            color.ARGB = [self getPixelAt:x + j ofY:y + i];
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            color.ARGB = [self getPixelAt:point.x + j ofY:point.y + i];
             r += color.channel.R;
             g += color.channel.G;
             b += color.channel.B;
@@ -256,11 +272,11 @@ typedef QuadColor* QuadColorRef;
         }
     }
     
-    long pixelCount = span * span;
-    color.channel.R = (uint32_t)(r /= pixelCount);
-    color.channel.G = (uint32_t)(g /= pixelCount);
-    color.channel.B = (uint32_t)(b /= pixelCount);
-    color.channel.A = (uint32_t)(a /= pixelCount);
+    NSUInteger avarage = size * size;
+    color.channel.R = (UInt32)(r /= avarage);
+    color.channel.G = (UInt32)(g /= avarage);
+    color.channel.B = (UInt32)(b /= avarage);
+    color.channel.A = (UInt32)(a /= avarage);
     
    
     return color.ARGB;
@@ -268,59 +284,46 @@ typedef QuadColor* QuadColorRef;
 
 - (void)restorePixelatedImage {
     UInt32 color;
+    float x;
+    float y;
     
-    
-    for (float y = 0; y < self.originalSize.height; y += self.blockSize) {
-        for (float x = 0; x < self.originalSize.width; x += self.blockSize) {
-            if (self.blockSize > 3.0) {
-                color = [self blockColorAt:x + self.blockSize / 2 - 1 ofY:y + self.blockSize / 2 - 1];
-            }
-            else {
-                color = [self getPixelAt:x + self.blockSize / 2 ofY:y + self.blockSize / 2];
-            }
+    for (y = 0; y < self.originalSize.height; y += self.blockSize) {
+        for (x = 0; x < self.originalSize.width; x += self.blockSize) {
+            color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
             [self setPixelAt:floor(x / self.blockSize) ofY:floor(y / self.blockSize) withColor:color];
         }
     }
-}
-
-- (void)renderImageDataToPixelData:(void *)pixelData ofSize:(CGSize)size {
-    if (!self.originalImageData || !pixelData) return;
-    
-    UInt32 *source = (UInt32 *)self.scratchData.bytes;
-    
-    float width = floor(self.originalSize.width / self.blockSize);
-    float height = floor(self.originalSize.height / self.blockSize);
-    
-    
-    CGSize border = {
-        .width = (size.width - width) / 2,
-        .height = (size.height - height) / 2
-    };
-    
-    for(int y = border.height; y < size.height - border.height; y++) {
-        for (int x = border.width; x < size.width - border.width; x++) {
-            ((UInt32 *)pixelData)[y * (int)size.width + x] = *source++;
-        }
-    }
-    
-//    viewController.infoText.stringValue = [NSString stringWithFormat:@"Resolution: %dx%d", (int)self.size.width, (int)self.size.height];
-//    ViewController *viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
-    
 }
 
 
 - (void)setBlockSize:(float)newBloockSize {
     if (newBloockSize < 2.0) return;
     _blockSize = newBloockSize;
+    self.sampleSize = self.sampleSize;
+    _changes = true;
     
-    CGFloat w = self.originalSize.width / self.blockSize;
-    CGFloat h = self.originalSize.height / self.blockSize;
+    AppDelegate* appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
+    [appDelegate updateAllMenus];
     
     ViewController *viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
-    viewController.infoText.stringValue = [NSString stringWithFormat:@"Resolution: %dx%d", (int)w, (int)h];
+    viewController.coarseBlockSize.integerValue = self.blockSize;
+//    viewController.fineBlockSize.floatValue = 
+}
+
+- (void)setSampleSize:(NSInteger)size {
+    NSInteger blockSize = self.blockSize;
+    
+    if (size > blockSize) {
+        _sampleSize = 1;
+        return;
+    }
+    
+    _sampleSize = size;
+    
+    AppDelegate* appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
+    [appDelegate updateAllMenus];
     
     
-    _changes = true;
 }
 
 @end

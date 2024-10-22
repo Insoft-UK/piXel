@@ -31,22 +31,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var mainMenu: NSMenu!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        updateAllMenus()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
     }
     
     func application(sender: NSApplication, openFile theDroppedFilePath: String) {
-        // PROCESS YOUR FILES HERE
-        
         if let url = URL(string: theDroppedFilePath) {
             //Singleton.sharedInstance()?.image.modify(withContentsOf: url)
             NSApp.windows.first?.title = url.lastPathComponent
         }
     }
-    
     
     
     // MARK: - Private Action Methods
@@ -83,7 +79,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if let url = openPanel.url {
                 Singleton.sharedInstance()?.image.load(withContentsOf: url)
                 NSApp.windows.first?.title = url.lastPathComponent
-                
             }
         }
     }
@@ -104,7 +99,51 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-   
+    @IBAction private func sampleSize(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setSampleSize(sender.tag);
+        }
+        
+        updateAllMenus()
+    }
+    
+    @IBAction private func blockSize(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setBlockSize(Float(sender.tag));
+        }
+        
+        updateAllMenus()
+    }
+    
+    
+    
+    @objc func updateAllMenus() {
+        if let image = Singleton.sharedInstance()?.image {
+            if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Sample Size")?.submenu {
+                for item in submenu.items {
+                    item.isEnabled = (item.tag > Int(image.blockSize)) ? true : false;
+                    
+                    if (item.tag == image.sampleSize) {
+                        item.state = .on
+                    }
+                    else {
+                        item.state = .off
+                    }
+                }
+            }
+            
+            if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Block Size")?.submenu {
+                for item in submenu.items {
+                    if (item.tag == Int(image.blockSize)) {
+                        item.state = .on
+                    }
+                    else {
+                        item.state = .off
+                    }
+                }
+            }
+        }
+    }
     
     
 }
