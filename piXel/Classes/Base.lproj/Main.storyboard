@@ -214,7 +214,7 @@
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="bdy-M1-2f5"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="MOs-Ca-nNB"/>
-                                <toolbarItem implicitItemIdentifier="D731321E-D2F8-496E-A8A3-E5C28ADFE116" label="Zoom Out" paletteLabel="Zoom Out" tag="-1" bordered="YES" id="gIB-wm-llm">
+                                <toolbarItem implicitItemIdentifier="D731321E-D2F8-496E-A8A3-E5C28ADFE116" label="" paletteLabel="Zoom Out" tag="-1" bordered="YES" id="gIB-wm-llm">
                                     <imageReference key="image" image="minus.magnifyingglass" catalog="system" symbolScale="large"/>
                                     <size key="minSize" width="32" height="25"/>
                                     <size key="maxSize" width="32" height="25"/>
@@ -222,7 +222,7 @@
                                         <action selector="zoomOut:" target="B8D-0N-5wS" id="Xo6-33-wEZ"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="F77046C9-13CA-48A6-920E-2EC2795BF342" label="Zoom In" paletteLabel="Zoom In" tag="-1" bordered="YES" id="HKI-AT-gwy">
+                                <toolbarItem implicitItemIdentifier="F77046C9-13CA-48A6-920E-2EC2795BF342" label="" paletteLabel="Zoom In" tag="-1" bordered="YES" id="HKI-AT-gwy">
                                     <imageReference key="image" image="plus.magnifyingglass" catalog="system" symbolScale="large"/>
                                     <size key="minSize" width="32" height="25"/>
                                     <size key="maxSize" width="32" height="25"/>
@@ -230,8 +230,41 @@
                                         <action selector="zoomIn:" target="B8D-0N-5wS" id="kzp-Hc-0pz"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="7DEE85E0-AB86-49AB-A703-280448DB0F3B" label="" paletteLabel="Coarse Increase" tag="1" image="NSTouchBarGoUpTemplate" bordered="YES" id="cjw-pe-wlD">
+                                    <size key="minSize" width="27" height="25"/>
+                                    <size key="maxSize" width="27" height="25"/>
+                                    <connections>
+                                        <action selector="coarse:" target="B8D-0N-5wS" id="RXe-Pw-wmk"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="7D19A0D4-E71B-4754-B32D-0D16C82C05EF" label="" paletteLabel="Coarse Decrease" tag="-1" image="NSTouchBarGoDownTemplate" bordered="YES" id="9tD-Jg-ZYd">
+                                    <size key="minSize" width="27" height="25"/>
+                                    <size key="maxSize" width="27" height="25"/>
+                                    <connections>
+                                        <action selector="coarse:" target="B8D-0N-5wS" id="3bs-9O-dkd"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="EC7FC5A3-A93A-495D-BED4-35098218596F" label="" paletteLabel="Fine Decrease" tag="-1" image="NSTouchBarGoBackTemplate" bordered="YES" id="DDr-9o-4Yk">
+                                    <size key="minSize" width="24" height="25"/>
+                                    <size key="maxSize" width="24" height="25"/>
+                                    <connections>
+                                        <action selector="fine:" target="B8D-0N-5wS" id="xmw-Nf-hvd"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="C5BFC30C-7522-489B-AEB6-B238394F79BF" label="" paletteLabel="Fine Increase" tag="1" image="NSTouchBarGoForwardTemplate" bordered="YES" id="pSf-ME-51Q">
+                                    <size key="minSize" width="24" height="25"/>
+                                    <size key="maxSize" width="24" height="25"/>
+                                    <connections>
+                                        <action selector="fine:" target="B8D-0N-5wS" id="AzQ-aI-OKW"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
+                                <toolbarItem reference="cjw-pe-wlD"/>
+                                <toolbarItem reference="9tD-Jg-ZYd"/>
+                                <toolbarItem reference="DDr-9o-4Yk"/>
+                                <toolbarItem reference="pSf-ME-51Q"/>
+                                <toolbarItem reference="MOs-Ca-nNB"/>
                                 <toolbarItem reference="gIB-wm-llm"/>
                                 <toolbarItem reference="HKI-AT-gwy"/>
                             </defaultToolbarItems>
@@ -304,40 +337,6 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OiC-wx-Id6">
-                                        <rect key="frame" x="441" y="17" width="41" height="14"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Coarse" id="yoa-bn-hYN">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f8D-kc-6sC">
-                                        <rect key="frame" x="485" y="10" width="19" height="28"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <stepperCell key="cell" continuous="YES" alignment="left" minValue="2" maxValue="20" doubleValue="2" id="SIg-aa-TbC"/>
-                                        <connections>
-                                            <action selector="coarseAdjustment:" target="XfG-lQ-9wD" id="4ip-9Y-564"/>
-                                        </connections>
-                                    </stepper>
-                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0YS-Mt-9he">
-                                        <rect key="frame" x="523" y="17" width="26" height="14"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Fine" id="g3N-qd-gB2">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yFd-qB-OhX">
-                                        <rect key="frame" x="552" y="10" width="19" height="28"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="Eh0-qa-EFX"/>
-                                        <connections>
-                                            <action selector="fineAdjustment:" target="XfG-lQ-9wD" id="dXx-cc-U8C"/>
-                                        </connections>
-                                    </stepper>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1024" id="eoB-ss-bqo"/>
@@ -372,8 +371,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="coarseBlockSize" destination="f8D-kc-6sC" id="QiU-cG-ZUu"/>
-                        <outlet property="fineBlockSize" destination="yFd-qB-OhX" id="KQF-iM-QBd"/>
                         <outlet property="heightText" destination="4ny-Pp-oPu" id="3hj-Ob-CuL"/>
                         <outlet property="infoText" destination="Szt-7k-fN0" id="ZMS-DS-cma"/>
                         <outlet property="skView" destination="m2S-Jp-Qdl" id="qux-te-cT3"/>
@@ -387,6 +384,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="NSTouchBarGoBackTemplate" width="12" height="17"/>
+        <image name="NSTouchBarGoDownTemplate" width="18" height="11"/>
+        <image name="NSTouchBarGoForwardTemplate" width="12" height="17"/>
+        <image name="NSTouchBarGoUpTemplate" width="18" height="11"/>
         <image name="minus.magnifyingglass" catalog="system" width="20" height="20"/>
         <image name="plus.magnifyingglass" catalog="system" width="20" height="20"/>
     </resources>

@@ -66,6 +66,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     
+    
+    
     @IBAction private func openDocument(_ sender: NSMenuItem) {
         let openPanel = NSOpenPanel()
         

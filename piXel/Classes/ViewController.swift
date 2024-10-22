@@ -33,8 +33,6 @@ import GameplayKit
     @IBOutlet var zoomText: NSTextField!
     @IBOutlet var infoText: NSTextField!
     
-    @IBOutlet var coarseBlockSize: NSStepper!
-    @IBOutlet var fineBlockSize: NSStepper!
     
     
     override func viewDidLoad() {
@@ -56,20 +54,7 @@ import GameplayKit
         skView.preferredFramesPerSecond = 60
     }
     
-    @IBAction private func coarseAdjustment(_ sender: NSStepper) {
-        if let image = Singleton.sharedInstance()?.image {
-            fineBlockSize.floatValue = 0;
-            let blockSize = coarseBlockSize.floatValue
-            image.setBlockSize(blockSize)
-        }
-    }
     
-    @IBAction private func fineAdjustment(_ sender: NSStepper) {
-        if let image = Singleton.sharedInstance()?.image {
-            let blockSize = coarseBlockSize.floatValue + floor(fineBlockSize.floatValue) / 100
-            image.setBlockSize(blockSize)
-        }
-    }
     
     
 }

@@ -79,10 +79,12 @@ THE SOFTWARE.
     
     switch (theEvent.keyCode) {
         case LeftArrow:
+            if (image.autoFineBlockSizeAdjustment) break;
             [image setBlockSize: image.blockSize -= 0.01];
             break;
             
         case RightArrow:
+            if (image.autoFineBlockSizeAdjustment) break;
             [image setBlockSize: image.blockSize += 0.01];
             break;
             
@@ -121,18 +123,12 @@ THE SOFTWARE.
         self.viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.height];
         self.viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Resolution: %dx%d - Block Size: %.2f", (int)w, (int)h, image.blockSize];
         
-        float integerPart;
-        float fractionalPart;
-    
-        fractionalPart = modff(image.blockSize, &integerPart);
-        
-        self.viewController.coarseBlockSize.floatValue = integerPart;
-        self.viewController.fineBlockSize.floatValue = fractionalPart;
-        
+       
         [self.appDelegate updateAllMenus];
     }
     
     self.viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)image.xScale * 100];
+    
 }
 
 
