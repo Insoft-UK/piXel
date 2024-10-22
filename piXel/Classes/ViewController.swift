@@ -25,7 +25,7 @@ import SpriteKit
 import GameplayKit
 
 
-class ViewController: NSViewController {
+@objc class ViewController: NSViewController {
 
     @IBOutlet var skView: SKView!
     @IBOutlet var widthText: NSTextField!

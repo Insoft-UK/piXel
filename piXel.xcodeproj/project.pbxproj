@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,15 +17,12 @@
 		1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C7CC260584AB00B23CC3 /* MainScene.m */; };
 		1365C870260A875700B23CC3 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C86F260A875700B23CC3 /* Image.m */; };
 		1365C8BC260FF62400B23CC3 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1365C8BB260FF62400B23CC3 /* Credits.rtf */; };
-		13AAF6B529BFBB71007B7204 /* piXel.raw in Sources */ = {isa = PBXBuildFile; fileRef = 13AAF6B429BFBB71007B7204 /* piXel.raw */; };
-		13AAF6B629BFC134007B7204 /* piXel.raw in Resources */ = {isa = PBXBuildFile; fileRef = 13AAF6B429BFBB71007B7204 /* piXel.raw */; };
 		13DB09232842F88C00FDF931 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DB09222842F88B00FDF931 /* WindowController.swift */; };
+		13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */ = {isa = PBXBuildFile; fileRef = 13DE88F82CC83D4400F0BEDA /* piXel.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		13365F00284142A900524BF6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		13592D482CC5D1520052D0E9 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../usr/local/Cellar/libpng/1.6.44/lib/libpng16.a; sourceTree = "<group>"; };
-		13592D4A2CC5D28F0052D0E9 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = ../../../../usr/local/zlib/lib/libz.a; sourceTree = "<group>"; };
 		13652F2F29B778E50042E555 /* CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
 		1365C78A26057FA700B23CC3 /* piXel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = piXel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1365C78D26057FA700B23CC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,8 +42,8 @@
 		1365C8A4260E77C300B23CC3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		1365C8B0260FB18300B23CC3 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = SOURCE_ROOT; };
 		1365C8BB260FF62400B23CC3 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		13AAF6B429BFBB71007B7204 /* piXel.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = piXel.raw; sourceTree = "<group>"; };
 		13DB09222842F88B00FDF931 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		13DE88F82CC83D4400F0BEDA /* piXel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = piXel.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,21 +57,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1304850827A763820065230D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				13592D4A2CC5D28F0052D0E9 /* libz.a */,
-				13592D482CC5D1520052D0E9 /* libpng16.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		1365C78126057FA700B23CC3 = {
 			isa = PBXGroup;
 			children = (
 				1365C78C26057FA700B23CC3 /* piXel */,
 				1365C78B26057FA700B23CC3 /* Products */,
-				1304850827A763820065230D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,7 +159,7 @@
 		1365C7AB260580A400B23CC3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				13AAF6B429BFBB71007B7204 /* piXel.raw */,
+				13DE88F82CC83D4400F0BEDA /* piXel.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -201,10 +188,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1365C7A026057FAC00B23CC3 /* Build configuration list for PBXNativeTarget "piXel" */;
 			buildPhases = (
+				1365C7BB260581E300B23CC3 /* ShellScript */,
 				1365C78626057FA700B23CC3 /* Sources */,
 				1365C78726057FA700B23CC3 /* Frameworks */,
 				1365C78826057FA700B23CC3 /* Resources */,
-				1365C7BB260581E300B23CC3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -221,8 +208,9 @@
 		1365C78226057FA700B23CC3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					1365C78926057FA700B23CC3 = {
 						CreatedOnToolsVersion = 12.4;
@@ -253,9 +241,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13AAF6B629BFC134007B7204 /* piXel.raw in Resources */,
 				1365C79826057FAC00B23CC3 /* Assets.xcassets in Resources */,
 				1365C8BC260FF62400B23CC3 /* Credits.rtf in Resources */,
+				13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */,
 				1365C79B26057FAC00B23CC3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,6 +253,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		1365C7BB260581E300B23CC3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -291,7 +280,6 @@
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
 				1365C870260A875700B23CC3 /* Image.m in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
-				13AAF6B529BFBB71007B7204 /* piXel.raw in Sources */,
 				1365C79626057FA700B23CC3 /* ViewController.swift in Sources */,
 				1365C78E26057FA700B23CC3 /* AppDelegate.swift in Sources */,
 				1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */,
@@ -347,9 +335,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -408,9 +398,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -441,6 +433,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 0;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/PrefixHeader.pch";
@@ -475,6 +468,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 0;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/PrefixHeader.pch";

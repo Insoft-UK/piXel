@@ -135,6 +135,12 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
+                                        <menuItem title="Auto Fine Block Size Adjustment" state="on" tag="8" id="NsO-W2-Nf2" userLabel="8 by 8 Pixels">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="autoFineBlockSizeAdjustment:" target="Voe-Tx-rLC" id="Wsa-a6-RZF"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

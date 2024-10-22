@@ -30,8 +30,8 @@ THE SOFTWARE.
 
 //@property SKLabelNode *info;
 @property NSTimeInterval lastUpdateTime;
-@property Image *image;
-
+@property ViewController* viewController;
+@property AppDelegate* appDelegate;
 
 @end
 
@@ -40,11 +40,12 @@ THE SOFTWARE.
 // MARK: - View
 
 - (void)didMoveToView:(SKView *)view {
-    // Setup your scene here
     [self setup];
     
+    self.viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
+    self.appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
+    
     Singleton.sharedInstance.mainScene = self;
-    self.image = Singleton.sharedInstance.image;
 }
 
 - (void)willMoveFromView:(SKView *)view {
@@ -64,27 +65,33 @@ THE SOFTWARE.
 }
 
 
-
-
 // MARK: - Keyboard Events
 
 - (void)keyDown:(NSEvent *)theEvent {
+    Image* image = Singleton.sharedInstance.image;
+    
+    enum {
+        UpArrow = 126,
+        DownArrow = 125,
+        LeftArrow = 123,
+        RightArrow = 124
+    };
     
     switch (theEvent.keyCode) {
-        case 0x7b /* CURSOR LEFT */:
-//            [self.image setOffset:(TPoint){.x = self.image.offset.x - 1, .y = self.image.offset.y}];
+        case LeftArrow:
+            [image setBlockSize: image.blockSize -= 0.01];
             break;
             
-        case 0x7c /* CURSOR RIGHT */:
-//            [self.image setOffset:(TPoint){.x = self.image.offset.x + 1, .y = self.image.offset.y}];
+        case RightArrow:
+            [image setBlockSize: image.blockSize += 0.01];
             break;
             
-        case 0x7d /* CURSOR DOWN */:
-//            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y + 1}];
+        case DownArrow:
+            [image setBlockSize: image.blockSize -= 1];
             break;
             
-        case 0x7e /* CURSOR UP */:
-//            [self.image setOffset:(TPoint){.x = self.image.offset.x, .y = self.image.offset.y - 1}];
+        case UpArrow:
+            [image setBlockSize: image.blockSize += 1];
             break;
             
             
@@ -104,11 +111,31 @@ THE SOFTWARE.
     NSTimeInterval delta = currentTime - self.lastUpdateTime;
     self.lastUpdateTime = currentTime;
     
-    [Singleton.sharedInstance.image updateWithDelta:delta];
+    Image* image = Singleton.sharedInstance.image;
+    
+    if ([image updateWithDelta:delta]) {
+        CGFloat w = image.originalSize.width / image.blockSize;
+        CGFloat h = image.originalSize.height / image.blockSize;
+        
+        self.viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.width];
+        self.viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.height];
+        self.viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Resolution: %dx%d - Block Size: %.2f", (int)w, (int)h, image.blockSize];
+        
+        float integerPart;
+        float fractionalPart;
+    
+        fractionalPart = modff(image.blockSize, &integerPart);
+        
+        self.viewController.coarseBlockSize.floatValue = integerPart;
+        self.viewController.fineBlockSize.floatValue = fractionalPart;
+        
+        [self.appDelegate updateAllMenus];
+    }
+    
+    self.viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)image.xScale * 100];
 }
 
 
-// MARK: - Class Public Methods
 
 
 

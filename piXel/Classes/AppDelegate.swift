@@ -49,7 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction private func zoomIn(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
-            if image.yScale < 8.0 {
+            if image.yScale < 11.0 {
                 image.setScale(image.yScale + 1.0)
             }
         }
@@ -115,7 +115,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateAllMenus()
     }
     
-    
+    @IBAction private func autoFineBlockSizeAdjustment(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setAutoFineBlockSizeAdjustment(!image.autoFineBlockSizeAdjustment);
+        }
+        
+        updateAllMenus()
+    }
     
     @objc func updateAllMenus() {
         if let image = Singleton.sharedInstance()?.image {
@@ -141,6 +147,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         item.state = .off
                     }
                 }
+            }
+            
+            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Fine Block Size Adjustment") {
+                item.state = image.autoFineBlockSizeAdjustment ? .on : .off
             }
         }
     }

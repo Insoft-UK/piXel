@@ -66,22 +66,9 @@ typedef QuadColor* QuadColorRef;
         self.originalImageData.length = lengthInBytes;
         self.scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
         self.scratchData.length = lengthInBytes;
-        
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"raw"];
-        NSData *data;
-        if ((data = [NSData dataWithContentsOfFile:file]) != nil) {
-            memcpy((void *)self.originalImageData.bytes, data.bytes, 256 * 256 * 4);
-            _originalSize.width = 256;
-            _originalSize.height = 256;
-            _blockSize = 2.0;
-            _sampleSize = 1;
-            data = nil;
-        }
-        
-        
+        self.autoFineBlockSizeAdjustment = YES;
         
         SKSpriteNode *node;
-        
         SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
         if (texture != nil) {
             [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
@@ -112,7 +99,7 @@ typedef QuadColor* QuadColorRef;
             [self addChild:node];
         }
         
-        
+        [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
     }
     
     return self;
@@ -140,14 +127,9 @@ typedef QuadColor* QuadColorRef;
     }
     
     self.blockSize = 2.0;
-    
-    ViewController *viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
-    
-    viewController.coarseBlockSize.floatValue = 2.0;
-    viewController.fineBlockSize.floatValue = 0;
    
     float width = floor(self.originalSize.width / self.blockSize);
-    [self setScale:floor(512 / width)];
+    [self setScale:floor(640 / width)];
     self.changes = YES;
 }
 
@@ -177,24 +159,14 @@ typedef QuadColor* QuadColorRef;
     [Extenions writeCGImage:imageRef to:url];
 }
 
--(void)updateWithDelta:(NSTimeInterval)delta {
-    
-    ViewController *viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
-    
-    CGFloat w = self.originalSize.width / self.blockSize;
-    CGFloat h = self.originalSize.height / self.blockSize;
-    
-    viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)self.originalSize.width];
-    viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)self.originalSize.height];
-    viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)self.xScale * 100];
-    viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Resolution: %dx%d - Block Size: %.2f", (int)w, (int)h, self.blockSize];
-    
-    
-    [self restorePixelatedImage];
-    [self renderTexture];
-    
-    
-    self.changes = NO;
+-(BOOL)updateWithDelta:(NSTimeInterval)delta {
+    if (self.changes) {
+        [self restorePixelatedImage];
+        [self renderTexture];
+        self.changes = NO;
+        return YES;
+    }
+    return NO;
 }
 
 - (void)renderTexture {
@@ -254,7 +226,7 @@ typedef QuadColor* QuadColorRef;
         };
     } color;
     
-    
+    if (size < 1) size = 1;
     NSUInteger r,g,b,a;
     
     r = g = b = a = 0;
@@ -296,34 +268,46 @@ typedef QuadColor* QuadColorRef;
 }
 
 
-- (void)setBlockSize:(float)newBloockSize {
-    if (newBloockSize < 2.0) return;
-    _blockSize = newBloockSize;
+- (void)setBlockSize:(float)size {
+    if (size < 2.0) return;
+    if (self.autoFineBlockSizeAdjustment) {
+        size = self.originalSize.width / floor(self.originalSize.width / floor(size));
+        
+        float integerPart;
+        float fractionalPart;
+    
+        fractionalPart = modff(size, &integerPart);
+        
+        if (fractionalPart > 0.01) {
+            size -= 0.01;
+        }
+        _blockSize = size;
+        
+    }
+    else {
+        _blockSize = size;
+    }
     self.sampleSize = self.sampleSize;
-    _changes = true;
     
-    AppDelegate* appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
-    [appDelegate updateAllMenus];
+    [self setScale:floor(640 / floor(self.originalSize.width / self.blockSize))];
     
-    ViewController *viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
-    viewController.coarseBlockSize.integerValue = self.blockSize;
-//    viewController.fineBlockSize.floatValue = 
+    self.changes = YES;
 }
 
 - (void)setSampleSize:(NSInteger)size {
     NSInteger blockSize = self.blockSize;
     
-    if (size > blockSize) {
+    if (size > blockSize || size < 1) {
         _sampleSize = 1;
         return;
     }
-    
+
     _sampleSize = size;
-    
-    AppDelegate* appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
-    [appDelegate updateAllMenus];
-    
-    
+    self.changes = YES;
+}
+
+- (void)setAutoFineBlockSizeAdjustment:(BOOL)state {
+    _autoFineBlockSizeAdjustment = state;
 }
 
 @end

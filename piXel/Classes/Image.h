@@ -32,14 +32,15 @@
 @property (readonly)CGSize originalSize;
 @property (readonly)float blockSize;
 @property (readonly)NSInteger sampleSize;
+@property (readonly)BOOL autoFineBlockSizeAdjustment;
 
 -(id)initWithSize:(CGSize)size;
--(void)updateWithDelta:(NSTimeInterval)delta;
+-(BOOL)updateWithDelta:(NSTimeInterval)delta;
 -(void)saveImageAtURL:(NSURL *)url;
 -(void)loadImageWithContentsOfURL:(NSURL *)url;
-- (void)setBlockSize:(float)newBloockSize;
+- (void)setBlockSize:(float)size;
 - (void)setSampleSize:(NSInteger)size;
-
+- (void)setAutoFineBlockSizeAdjustment:(BOOL)state;
 @end
 
 #endif /* Image_h */
