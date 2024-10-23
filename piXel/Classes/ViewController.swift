@@ -32,7 +32,8 @@ import GameplayKit
     @IBOutlet var heightText: NSTextField!
     @IBOutlet var zoomText: NSTextField!
     @IBOutlet var infoText: NSTextField!
-    
+    @IBOutlet var levelsText: NSTextField!
+    @IBOutlet var posterizeLevel: NSStepper!
     
     
     override func viewDidLoad() {
@@ -55,7 +56,11 @@ import GameplayKit
     }
     
     
-    
+    @IBAction private func posterizeLevel(_ sender: NSStepper) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setPosterizeLevels(sender.integerValue);
+        }
+    }
     
 }
 

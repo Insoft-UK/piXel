@@ -66,7 +66,8 @@ typedef QuadColor* QuadColorRef;
         self.originalImageData.length = lengthInBytes;
         self.scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
         self.scratchData.length = lengthInBytes;
-        self.autoFineBlockSizeAdjustment = YES;
+        self.autoAdjustBlockSize = YES;
+        self.posterizeLevels = 256;
         
         SKSpriteNode *node;
         SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
@@ -100,6 +101,7 @@ typedef QuadColor* QuadColorRef;
         }
         
         [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
+        self.posterizeLevels = 256;
     }
     
     return self;
@@ -195,6 +197,54 @@ typedef QuadColor* QuadColorRef;
     }];
 }
 
+typedef struct {
+    float r; // Red component (0-1)
+    float g; // Green component (0-1)
+    float b; // Blue component (0-1)
+} RGB;
+
+- (RGB)convertARGBToRgb:(UInt32) argb {
+    RGB rgb;
+
+    // Extract the RGB components from the ARGB value
+    unsigned char r = (argb >> 16) & 0xFF; // Red (bits 16-23)
+    unsigned char g = (argb >> 8) & 0xFF;  // Green (bits 8-15)
+    unsigned char b = argb & 0xFF;         // Blue (bits 0-7)
+
+    // Normalize the values to the range 0-1
+    rgb.r = r / 255.0f;
+    rgb.g = g / 255.0f;
+    rgb.b = b / 255.0f;
+
+    return rgb;
+}
+
+- (UInt32)convertRGBToARGB:(RGB) rgb withAlphaOf:(UInt8) alpha {
+    // Convert the RGB values (0-1 range) back to 0-255 range
+    unsigned char r = (unsigned char)(rgb.r * 255.0f);
+    unsigned char g = (unsigned char)(rgb.g * 255.0f);
+    unsigned char b = (unsigned char)(rgb.b * 255.0f);
+
+    // Combine ARGB into a 32-bit integer
+    unsigned int argb = (alpha << 24) | (r << 16) | (g << 8) | b;
+    return argb;
+}
+
+// Function to reduce resolution of a single color channel (0-1 float)
+- (float) postorizeValue:(float)value {
+    float step = 1.0f / (self.posterizeLevels - 1);  // Calculate step size for quantization
+    return round(value / step) * step; // Quantize by reducing the range
+}
+
+// Function to reduce the resolution of RGB channels (0-1 range)
+- (RGB) posterizeRGB:(RGB) rgb {
+    RGB reducedRgb;
+    reducedRgb.r = [self postorizeValue:rgb.r];
+    reducedRgb.g = [self postorizeValue:rgb.g];
+    reducedRgb.b = [self postorizeValue:rgb.b];
+    return reducedRgb;
+}
+
 - (UInt32)getPixelAt:(NSUInteger)x ofY:(NSUInteger)y {
     UInt32* pixels = (UInt32*)self.originalImageData.bytes;
     NSUInteger w = (NSUInteger)self.originalSize.width;
@@ -262,6 +312,11 @@ typedef QuadColor* QuadColorRef;
     for (y = 0; y < self.originalSize.height; y += self.blockSize) {
         for (x = 0; x < self.originalSize.width; x += self.blockSize) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
+            if (self.posterize) {
+                RGB rgb = [self convertARGBToRgb:color];
+                rgb = [self posterizeRGB:rgb];
+                color = [self convertRGBToARGB:rgb withAlphaOf:255];
+            }
             [self setPixelAt:floor(x / self.blockSize) ofY:floor(y / self.blockSize) withColor:color];
         }
     }
@@ -270,7 +325,7 @@ typedef QuadColor* QuadColorRef;
 
 - (void)setBlockSize:(float)size {
     if (size < 2.0) return;
-    if (self.autoFineBlockSizeAdjustment) {
+    if (self.autoAdjustBlockSize) {
         size = self.originalSize.width / floor(self.originalSize.width / floor(size));
         
         float integerPart;
@@ -306,8 +361,18 @@ typedef QuadColor* QuadColorRef;
     self.changes = YES;
 }
 
-- (void)setAutoFineBlockSizeAdjustment:(BOOL)state {
-    _autoFineBlockSizeAdjustment = state;
+- (void)setAutoAdjustBlockSize:(BOOL)state {
+    _autoAdjustBlockSize = state;
+}
+
+- (void)setPosterizeLevels:(NSInteger)levels {
+    _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
+    self.changes = YES;
+}
+
+- (void)setPosterize:(BOOL)state {
+    _posterize = state;
+    self.changes = YES;
 }
 
 @end

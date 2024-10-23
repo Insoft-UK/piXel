@@ -32,7 +32,9 @@
 @property (readonly)CGSize originalSize;
 @property (readonly)float blockSize;
 @property (readonly)NSInteger sampleSize;
-@property (readonly)BOOL autoFineBlockSizeAdjustment;
+@property (readonly)NSInteger posterizeLevels;
+@property (readonly)BOOL autoAdjustBlockSize;
+@property (readonly)BOOL posterize;
 
 -(id)initWithSize:(CGSize)size;
 -(BOOL)updateWithDelta:(NSTimeInterval)delta;
@@ -40,7 +42,9 @@
 -(void)loadImageWithContentsOfURL:(NSURL *)url;
 - (void)setBlockSize:(float)size;
 - (void)setSampleSize:(NSInteger)size;
-- (void)setAutoFineBlockSizeAdjustment:(BOOL)state;
+- (void)setAutoAdjustBlockSize:(BOOL)state;
+- (void)setPosterize:(BOOL)state;
+- (void)setPosterizeLevels:(NSInteger)levels;
 @end
 
 #endif /* Image_h */

@@ -117,9 +117,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateAllMenus()
     }
     
-    @IBAction private func autoFineBlockSizeAdjustment(_ sender: NSMenuItem) {
+    @IBAction private func autoAdjustBlockSize(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
-            image.setAutoFineBlockSizeAdjustment(!image.autoFineBlockSizeAdjustment);
+            image.setAutoAdjustBlockSize(!image.autoAdjustBlockSize);
+        }
+        
+        updateAllMenus()
+    }
+    
+    @IBAction private func postorize(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setPosterize(!image.posterize);
         }
         
         updateAllMenus()
@@ -151,8 +159,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
             
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Fine Block Size Adjustment") {
-                item.state = image.autoFineBlockSizeAdjustment ? .on : .off
+            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Adjust Block Size") {
+                item.state = image.autoAdjustBlockSize ? .on : .off
+            }
+            
+            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Posterize") {
+                item.state = image.posterize ? .on : .off
             }
         }
     }

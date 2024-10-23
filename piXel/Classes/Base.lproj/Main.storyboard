@@ -77,26 +77,22 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Sample Size" id="qRK-CS-PbO">
                                                 <items>
-                                                    <menuItem title="Point Sample" tag="1" id="aM6-Rh-kNJ">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="Point Sample" tag="1" keyEquivalent="1" id="aM6-Rh-kNJ">
                                                         <connections>
                                                             <action selector="sampleSize:" target="Voe-Tx-rLC" id="Gae-Ia-va1"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="3 by 3 Average" tag="3" enabled="NO" id="D3G-bM-Yia">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="3 by 3 Average" tag="3" enabled="NO" keyEquivalent="3" id="D3G-bM-Yia">
                                                         <connections>
                                                             <action selector="sampleSize:" target="Voe-Tx-rLC" id="efL-Q0-jhw"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="5 by 5 Average" tag="5" enabled="NO" id="0Mb-ra-fMd">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="5 by 5 Average" tag="5" enabled="NO" keyEquivalent="5" id="0Mb-ra-fMd">
                                                         <connections>
                                                             <action selector="sampleSize:" target="Voe-Tx-rLC" id="QJu-qG-Txr"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="11 by 11 Average" tag="11" enabled="NO" id="szj-x3-4my">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="7 by 7 Average" tag="7" enabled="NO" keyEquivalent="7" id="szj-x3-4my">
                                                         <connections>
                                                             <action selector="sampleSize:" target="Voe-Tx-rLC" id="cuJ-c7-nzE"/>
                                                         </connections>
@@ -126,7 +122,7 @@
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="QhK-0q-MjF"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="8 by 8 Pixels" tag="8" id="N4F-Ad-M0L" userLabel="8 by 8 Pixels">
+                                                    <menuItem title="8 by 8 Pixels" tag="8" id="N4F-Ad-M0L">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="NyD-Yh-bb8"/>
@@ -135,10 +131,16 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Auto Fine Block Size Adjustment" state="on" tag="8" id="NsO-W2-Nf2" userLabel="8 by 8 Pixels">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Auto Adjust Block Size" state="on" keyEquivalent="a" id="NsO-W2-Nf2">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                             <connections>
-                                                <action selector="autoFineBlockSizeAdjustment:" target="Voe-Tx-rLC" id="Wsa-a6-RZF"/>
+                                                <action selector="autoAdjustBlockSize:" target="Voe-Tx-rLC" id="cf1-wT-E1Y"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Posterize" keyEquivalent="p" id="Ros-np-fha">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="postorize:" target="Voe-Tx-rLC" id="KTv-8u-5kl"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -293,7 +295,7 @@
                                 <rect key="frame" x="0.0" y="718" width="1024" height="50"/>
                                 <subviews>
                                     <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z04-xa-iGJ">
-                                        <rect key="frame" x="18" y="17" width="35" height="14"/>
+                                        <rect key="frame" x="18" y="18" width="35" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Width" id="PTe-hN-YPS">
                                             <font key="font" metaFont="smallSystem"/>
@@ -302,7 +304,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UwJ-dK-VXR">
-                                        <rect key="frame" x="55" y="17" width="32" height="14"/>
+                                        <rect key="frame" x="55" y="18" width="32" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="0" id="Pnu-vS-OVb">
                                             <font key="font" metaFont="smallSystem"/>
@@ -311,7 +313,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gh8-gT-bD0">
-                                        <rect key="frame" x="87" y="17" width="39" height="14"/>
+                                        <rect key="frame" x="87" y="18" width="39" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Height" id="sae-O3-rPG">
                                             <font key="font" metaFont="smallSystem"/>
@@ -320,7 +322,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ny-Pp-oPu">
-                                        <rect key="frame" x="128" y="17" width="32" height="14"/>
+                                        <rect key="frame" x="128" y="18" width="32" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="0" id="d38-C2-oNe">
                                             <font key="font" metaFont="smallSystem"/>
@@ -333,6 +335,32 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="1x" id="edF-id-ebA">
                                             <font key="font" metaFont="system" size="18"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VMh-kZ-0NP">
+                                        <rect key="frame" x="174" y="18" width="90" height="14"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Posterize Levels" id="2nt-Jd-xjs">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rI-P7-Ssq">
+                                        <rect key="frame" x="267" y="11" width="19" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" continuous="YES" alignment="left" minValue="2" maxValue="256" doubleValue="256" id="p3T-6c-piz"/>
+                                        <connections>
+                                            <action selector="posterizeLevel:" target="XfG-lQ-9wD" id="RM2-k2-c9k"/>
+                                        </connections>
+                                    </stepper>
+                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Oz-md-9YB">
+                                        <rect key="frame" x="289" y="18" width="25" height="14"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="255" id="Kfy-8k-qHI">
+                                            <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -373,6 +401,8 @@
                     <connections>
                         <outlet property="heightText" destination="4ny-Pp-oPu" id="3hj-Ob-CuL"/>
                         <outlet property="infoText" destination="Szt-7k-fN0" id="ZMS-DS-cma"/>
+                        <outlet property="levelsText" destination="0Oz-md-9YB" id="3V1-pA-y09"/>
+                        <outlet property="posterizeLevel" destination="2rI-P7-Ssq" id="qCH-gS-25V"/>
                         <outlet property="skView" destination="m2S-Jp-Qdl" id="qux-te-cT3"/>
                         <outlet property="widthText" destination="UwJ-dK-VXR" id="jjh-pa-vKV"/>
                         <outlet property="zoomText" destination="frV-NF-XY5" id="N8v-rt-cPd"/>

@@ -79,12 +79,12 @@ THE SOFTWARE.
     
     switch (theEvent.keyCode) {
         case LeftArrow:
-            if (image.autoFineBlockSizeAdjustment) break;
+            if (image.autoAdjustBlockSize) break;
             [image setBlockSize: image.blockSize -= 0.01];
             break;
             
         case RightArrow:
-            if (image.autoFineBlockSizeAdjustment) break;
+            if (image.autoAdjustBlockSize) break;
             [image setBlockSize: image.blockSize += 0.01];
             break;
             
@@ -122,6 +122,7 @@ THE SOFTWARE.
         self.viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.width];
         self.viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.height];
         self.viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Resolution: %dx%d - Block Size: %.2f", (int)w, (int)h, image.blockSize];
+        self.viewController.levelsText.stringValue = [NSString stringWithFormat:@"%d", (int)image.posterizeLevels];
         
        
         [self.appDelegate updateAllMenus];
