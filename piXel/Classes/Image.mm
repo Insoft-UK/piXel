@@ -25,6 +25,7 @@
 #import "Image.h"
 #import "piXel-Swift.h"
 
+#import "ImageAdjustments.hpp"
 #import <array>
 
 //#define BUCKET_SIZE 20  // Adjust this based on how similar colors should be grouped
@@ -36,72 +37,6 @@ typedef struct {
     float g;
     float b;
 } ColorRGB;
-
-// Function to extract color components from ARGB value
-static void getColorComponents(Color color, int* r, int* g, int* b) {
-    *r = (color >> 16) & 0xFF;  // Red component
-    *g = (color >> 8) & 0xFF;   // Green component
-    *b = color & 0xFF;          // Blue component
-}
-
-// Function to calculate Euclidean distance between two ARGB colors
-static float colorDistance(Color color1, Color color2) {
-    int r1, g1, b1;
-    int r2, g2, b2;
-    
-    getColorComponents(color1, &r1, &g1, &b1);
-    getColorComponents(color2, &r2, &g2, &b2);
-
-    // Euclidean distance ignoring the alpha channel
-    return sqrt((r1 - r2) * (r1 - r2) +
-                (g1 - g2) * (g1 - g2) +
-                (b1 - b2) * (b1 - b2));
-}
-
-// Function to merge colors that are close to each other
-static void mergeCloseColors(Color* pixels, int w, int h, float threshold) {
-        typedef struct {
-            Color baseColor;
-            int count;
-        } Bucket;
-    
-        Bucket* buckets = (Bucket *)calloc(256 * 256 * 256, sizeof(Bucket)); // Max size for all RGB combinations
-    
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
-            int i = x + y * w;
-            Color baseColor = pixels[i];
-            UInt32 key = baseColor & 0xFFFFFF;
-            if (buckets[key].count >= 1) continue;
-            
-            buckets[key].count++;
-            buckets[key].baseColor = baseColor;
-            
-            for (int j = 0; j < w * h; j++) {
-                if (colorDistance(baseColor, pixels[j]) < threshold && j != i) {
-                    pixels[j] = baseColor;
-                    buckets[key].count++;
-                }
-            }
-        }
-    }
-    
-    free(buckets);
-}
-
-// Function to reduce resolution of a single color channel (0-1 float)
-static float postorizeChannel(float value, int levels) {
-    float step = 1.0f / (float)(levels - 1);
-    return round(value / step) * step;
-}
-
-// Function to reduce the resolution of RGB channels (0-1 range)
-static ColorRGB posterizeRGB(ColorRGB colorRGB, int levels) {
-    colorRGB.r = postorizeChannel(colorRGB.r, levels);
-    colorRGB.g = postorizeChannel(colorRGB.g, levels);
-    colorRGB.b = postorizeChannel(colorRGB.b, levels);
-    return colorRGB;
-}
 
 @interface Image()
 
@@ -370,31 +305,12 @@ static ColorRGB posterizeRGB(ColorRGB colorRGB, int levels) {
     }
     
     if (self.isColorNormalizationEnabled) {
-        [self normalizeColors];
+        ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, self.threshold);
     }
     
     if (self.isPosterizeEnabled) {
-        [self posterize];
-    }
-}
-
-- (void)normalizeColors {
-    mergeCloseColors((Color *)self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, self.threshold);
-    [self renderTexture];
-}
-
-- (void)posterize {
-    Color* color = (Color *)self.scratchData.bytes;
-    int x;
-    int y;
-    
-    for (y = 0; y < (int)self.repixelatedSize.height; ++y) {
-        for (x = 0; x < self.repixelatedSize.width; ++x) {
-            ColorRGB colorRGB = [self convertFromPackedRGB:*color];
-            colorRGB = posterizeRGB(colorRGB, (int)self.posterizeLevels);
-            *color = [self convertToPackedRGB:colorRGB withAlphaOf:1.0];
-            color++;
-        }
+        long length = self.repixelatedSize.width * self.repixelatedSize.height;
+        ImageAdjustments::postorize(self.scratchData.bytes, length, self.posterizeLevels);
     }
 }
 

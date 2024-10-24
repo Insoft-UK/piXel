@@ -17,6 +17,7 @@
 		1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C7CC260584AB00B23CC3 /* MainScene.m */; };
 		1365C870260A875700B23CC3 /* Image.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1365C86F260A875700B23CC3 /* Image.mm */; };
 		1365C8BC260FF62400B23CC3 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1365C8BB260FF62400B23CC3 /* Credits.rtf */; };
+		138B91552CCABF8A00A0D3AE /* ImageAdjustments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */; };
 		13DB09232842F88C00FDF931 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DB09222842F88B00FDF931 /* WindowController.swift */; };
 		13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */ = {isa = PBXBuildFile; fileRef = 13DE88F82CC83D4400F0BEDA /* piXel.png */; };
 /* End PBXBuildFile section */
@@ -42,6 +43,8 @@
 		1365C8A4260E77C300B23CC3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		1365C8B0260FB18300B23CC3 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = SOURCE_ROOT; };
 		1365C8BB260FF62400B23CC3 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		138B91532CCABF8A00A0D3AE /* ImageAdjustments.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageAdjustments.hpp; sourceTree = "<group>"; };
+		138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ImageAdjustments.cpp; sourceTree = "<group>"; };
 		13DB09222842F88B00FDF931 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		13DE88F82CC83D4400F0BEDA /* piXel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = piXel.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +138,8 @@
 			children = (
 				1365C86F260A875700B23CC3 /* Image.mm */,
 				1365C872260A876E00B23CC3 /* Image.h */,
+				138B91532CCABF8A00A0D3AE /* ImageAdjustments.hpp */,
+				138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13DB09232842F88C00FDF931 /* WindowController.swift in Sources */,
+				138B91552CCABF8A00A0D3AE /* ImageAdjustments.cpp in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
 				1365C870260A875700B23CC3 /* Image.mm in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
