@@ -29,22 +29,30 @@
 
 @interface Image: SKNode
 
-@property (readonly)CGSize originalSize;
-@property (readonly)float blockSize;
-@property (readonly)NSInteger sampleSize;
-@property (readonly)NSInteger posterizeLevels;
-@property (readonly)BOOL autoAdjustBlockSize;
-@property (readonly)BOOL posterize;
+@property (nonatomic, readonly) CGSize originalSize;
+@property (nonatomic, readonly) CGSize repixelatedSize;
+@property (nonatomic, readonly) float blockSize;
+@property (nonatomic, readonly) NSInteger sampleSize;
+@property (nonatomic, readonly) NSInteger posterizeLevels;
 
--(id)initWithSize:(CGSize)size;
--(BOOL)updateWithDelta:(NSTimeInterval)delta;
--(void)saveImageAtURL:(NSURL *)url;
--(void)loadImageWithContentsOfURL:(NSURL *)url;
+
+@property (nonatomic, readonly) float threshold;
+
+@property (nonatomic, readonly) BOOL isPosterizeEnabled;
+@property (nonatomic, readonly) BOOL isColorNormalizationEnabled;
+@property (nonatomic, readonly) BOOL isAutoBlockSizeAdjustEnabled;
+
+- (id)initWithSize:(CGSize)size;
+
+- (BOOL)updateWithDelta:(NSTimeInterval)delta;
+- (void)saveImageAtURL:(NSURL *)url;
+- (void)loadImageWithContentsOfURL:(NSURL *)url;
+
 - (void)setBlockSize:(float)size;
 - (void)setSampleSize:(NSInteger)size;
-- (void)setAutoAdjustBlockSize:(BOOL)state;
-- (void)setPosterize:(BOOL)state;
 - (void)setPosterizeLevels:(NSInteger)levels;
+- (void)setThreshold:(NSInteger)value;
+- (void)setAutoBlockSizeAdjustEnabled:(BOOL)state;
 @end
 
 #endif /* Image_h */

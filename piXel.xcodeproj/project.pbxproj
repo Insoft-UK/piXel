@@ -15,7 +15,7 @@
 		1365C79B26057FAC00B23CC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1365C79926057FAC00B23CC3 /* Main.storyboard */; };
 		1365C7B72605818800B23CC3 /* Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C7B62605818800B23CC3 /* Singleton.m */; };
 		1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C7CC260584AB00B23CC3 /* MainScene.m */; };
-		1365C870260A875700B23CC3 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C86F260A875700B23CC3 /* Image.m */; };
+		1365C870260A875700B23CC3 /* Image.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1365C86F260A875700B23CC3 /* Image.mm */; };
 		1365C8BC260FF62400B23CC3 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1365C8BB260FF62400B23CC3 /* Credits.rtf */; };
 		13DB09232842F88C00FDF931 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DB09222842F88B00FDF931 /* WindowController.swift */; };
 		13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */ = {isa = PBXBuildFile; fileRef = 13DE88F82CC83D4400F0BEDA /* piXel.png */; };
@@ -37,7 +37,7 @@
 		1365C7B62605818800B23CC3 /* Singleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Singleton.m; sourceTree = "<group>"; };
 		1365C7CB260584AA00B23CC3 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		1365C7CC260584AB00B23CC3 /* MainScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScene.m; sourceTree = "<group>"; };
-		1365C86F260A875700B23CC3 /* Image.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		1365C86F260A875700B23CC3 /* Image.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Image.mm; sourceTree = "<group>"; };
 		1365C872260A876E00B23CC3 /* Image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		1365C8A4260E77C300B23CC3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		1365C8B0260FB18300B23CC3 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = SOURCE_ROOT; };
@@ -133,7 +133,7 @@
 		1365C7A82605803000B23CC3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				1365C86F260A875700B23CC3 /* Image.m */,
+				1365C86F260A875700B23CC3 /* Image.mm */,
 				1365C872260A876E00B23CC3 /* Image.h */,
 			);
 			name = Utilities;
@@ -278,7 +278,7 @@
 			files = (
 				13DB09232842F88C00FDF931 /* WindowController.swift in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
-				1365C870260A875700B23CC3 /* Image.m in Sources */,
+				1365C870260A875700B23CC3 /* Image.mm in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
 				1365C79626057FA700B23CC3 /* ViewController.swift in Sources */,
 				1365C78E26057FA700B23CC3 /* AppDelegate.swift in Sources */,
@@ -445,7 +445,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -480,7 +480,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

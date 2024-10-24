@@ -25,13 +25,83 @@
 #import "Image.h"
 #import "piXel-Swift.h"
 
+#import <array>
 
+//#define BUCKET_SIZE 20  // Adjust this based on how similar colors should be grouped
 
-typedef struct QuadColor {
-    UInt8 red, green, blue, alpha;
-} QuadColor;
+typedef UInt32 Color;
 
-typedef QuadColor* QuadColorRef;
+typedef struct {
+    float r;
+    float g;
+    float b;
+} ColorRGB;
+
+// Function to extract color components from ARGB value
+static void getColorComponents(Color color, int* r, int* g, int* b) {
+    *r = (color >> 16) & 0xFF;  // Red component
+    *g = (color >> 8) & 0xFF;   // Green component
+    *b = color & 0xFF;          // Blue component
+}
+
+// Function to calculate Euclidean distance between two ARGB colors
+static float colorDistance(Color color1, Color color2) {
+    int r1, g1, b1;
+    int r2, g2, b2;
+    
+    getColorComponents(color1, &r1, &g1, &b1);
+    getColorComponents(color2, &r2, &g2, &b2);
+
+    // Euclidean distance ignoring the alpha channel
+    return sqrt((r1 - r2) * (r1 - r2) +
+                (g1 - g2) * (g1 - g2) +
+                (b1 - b2) * (b1 - b2));
+}
+
+// Function to merge colors that are close to each other
+static void mergeCloseColors(Color* pixels, int w, int h, float threshold) {
+        typedef struct {
+            Color baseColor;
+            int count;
+        } Bucket;
+    
+        Bucket* buckets = (Bucket *)calloc(256 * 256 * 256, sizeof(Bucket)); // Max size for all RGB combinations
+    
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            int i = x + y * w;
+            Color baseColor = pixels[i];
+            UInt32 key = baseColor & 0xFFFFFF;
+            if (buckets[key].count >= 1) continue;
+            
+            buckets[key].count++;
+            buckets[key].baseColor = baseColor;
+            
+            for (int j = 0; j < w * h; j++) {
+                if (colorDistance(baseColor, pixels[j]) < threshold && j != i) {
+                    pixels[j] = baseColor;
+                    buckets[key].count++;
+                }
+            }
+        }
+    }
+    
+    free(buckets);
+}
+
+// Function to reduce resolution of a single color channel (0-1 float)
+static float postorizeChannel(float value, int levels) {
+    float step = 1.0f / (float)(levels - 1);
+    return round(value / step) * step;
+}
+
+// Function to reduce the resolution of RGB channels (0-1 range)
+static ColorRGB posterizeRGB(ColorRGB colorRGB, int levels) {
+    colorRGB.r = postorizeChannel(colorRGB.r, levels);
+    colorRGB.g = postorizeChannel(colorRGB.g, levels);
+    colorRGB.b = postorizeChannel(colorRGB.b, levels);
+    return colorRGB;
+}
 
 @interface Image()
 
@@ -49,7 +119,6 @@ typedef QuadColor* QuadColorRef;
 
 @property BOOL changes;
 
-
 @end
 
 @implementation Image
@@ -66,14 +135,16 @@ typedef QuadColor* QuadColorRef;
         self.originalImageData.length = lengthInBytes;
         self.scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
         self.scratchData.length = lengthInBytes;
-        self.autoAdjustBlockSize = YES;
-        self.posterizeLevels = 256;
+        
+        _isAutoBlockSizeAdjustEnabled = YES;
+        _posterizeLevels = 256;
+        _threshold = 0;
         
         SKSpriteNode *node;
         SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
         if (texture != nil) {
             [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
-                UInt32 *pixel = pixelData;
+                Color *pixel = (Color *)pixelData;
                 
                 NSUInteger s = size.width;
                 NSUInteger l = size.height;
@@ -129,7 +200,7 @@ typedef QuadColor* QuadColorRef;
     }
     
     self.blockSize = 2.0;
-   
+    
     float width = floor(self.originalSize.width / self.blockSize);
     [self setScale:floor(640 / width)];
     self.changes = YES;
@@ -137,7 +208,7 @@ typedef QuadColor* QuadColorRef;
 
 -(CGSize)getCGImageSize:(CGImageRef)cgImage {
     if (cgImage) {
-        return (CGSize){.width = CGImageGetWidth(cgImage), .height = CGImageGetHeight(cgImage)};
+        return (CGSize){.width = static_cast<CGFloat>(CGImageGetWidth(cgImage)), .height = static_cast<CGFloat>(CGImageGetHeight(cgImage))};
     }
     
     return (CGSize){0};
@@ -155,9 +226,7 @@ typedef QuadColor* QuadColorRef;
 }
 
 -(void)saveImageAtURL:(NSURL *)url {
-    CGFloat width = floor(self.originalSize.width / self.blockSize);
-    CGFloat height = floor(self.originalSize.height / self.blockSize);
-    CGImageRef imageRef = [Extenions createCGImageFromPixelData:self.scratchData.bytes ofSize:CGSizeMake(width, height)];
+    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)self.scratchData.bytes ofSize:self.repixelatedSize];
     [Extenions writeCGImage:imageRef to:url];
 }
 
@@ -181,8 +250,8 @@ typedef QuadColor* QuadColorRef;
         UInt32* src = (UInt32 *)self.scratchData.bytes;
         UInt32* dest = (UInt32 *)pixelData;
         
-        int w = self.originalSize.width / self.blockSize;
-        int h = self.originalSize.height / self.blockSize;
+        int w = self.repixelatedSize.width;
+        int h = self.repixelatedSize.height;
         
         int x;
         int y;
@@ -197,53 +266,37 @@ typedef QuadColor* QuadColorRef;
     }];
 }
 
-typedef struct {
-    float r; // Red component (0-1)
-    float g; // Green component (0-1)
-    float b; // Blue component (0-1)
-} RGB;
 
-- (RGB)convertARGBToRgb:(UInt32) argb {
-    RGB rgb;
 
+
+- (ColorRGB)convertFromPackedRGB:(Color)color {
+    ColorRGB rgb;
+    
     // Extract the RGB components from the ARGB value
-    unsigned char r = (argb >> 16) & 0xFF; // Red (bits 16-23)
-    unsigned char g = (argb >> 8) & 0xFF;  // Green (bits 8-15)
-    unsigned char b = argb & 0xFF;         // Blue (bits 0-7)
-
+    unsigned char r = (color >> 16) & 0xFF; // Red (bits 16-23)
+    unsigned char g = (color >> 8) & 0xFF;  // Green (bits 8-15)
+    unsigned char b = color & 0xFF;         // Blue (bits 0-7)
+    
     // Normalize the values to the range 0-1
     rgb.r = r / 255.0f;
     rgb.g = g / 255.0f;
     rgb.b = b / 255.0f;
-
+    
     return rgb;
 }
 
-- (UInt32)convertRGBToARGB:(RGB) rgb withAlphaOf:(UInt8) alpha {
+- (Color)convertToPackedRGB:(ColorRGB)colorRGB withAlphaOf:(float)alpha {
     // Convert the RGB values (0-1 range) back to 0-255 range
-    unsigned char r = (unsigned char)(rgb.r * 255.0f);
-    unsigned char g = (unsigned char)(rgb.g * 255.0f);
-    unsigned char b = (unsigned char)(rgb.b * 255.0f);
-
+    Color r = (Color)(colorRGB.r * 255.0f);
+    Color g = (Color)(colorRGB.g * 255.0f);
+    Color b = (Color)(colorRGB.b * 255.0f);
+    Color a = (Color)(alpha * 255.0f);
+    
     // Combine ARGB into a 32-bit integer
-    unsigned int argb = (alpha << 24) | (r << 16) | (g << 8) | b;
-    return argb;
+    return a << 24 | r << 16 | g << 8 | b;
 }
 
-// Function to reduce resolution of a single color channel (0-1 float)
-- (float) postorizeValue:(float)value {
-    float step = 1.0f / (self.posterizeLevels - 1);  // Calculate step size for quantization
-    return round(value / step) * step; // Quantize by reducing the range
-}
 
-// Function to reduce the resolution of RGB channels (0-1 range)
-- (RGB) posterizeRGB:(RGB) rgb {
-    RGB reducedRgb;
-    reducedRgb.r = [self postorizeValue:rgb.r];
-    reducedRgb.g = [self postorizeValue:rgb.g];
-    reducedRgb.b = [self postorizeValue:rgb.b];
-    return reducedRgb;
-}
 
 - (UInt32)getPixelAt:(NSUInteger)x ofY:(NSUInteger)y {
     UInt32* pixels = (UInt32*)self.originalImageData.bytes;
@@ -256,8 +309,8 @@ typedef struct {
 
 - (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withColor:(UInt32)color {
     UInt32* pixels = (UInt32*)self.scratchData.bytes;
-    NSUInteger w = (NSUInteger)(self.originalSize.width / self.blockSize);
-    NSUInteger h = (NSUInteger)(self.originalSize.height / self.blockSize);
+    NSUInteger w = (NSUInteger)self.repixelatedSize.width;
+    NSUInteger h = (NSUInteger)self.repixelatedSize.height;
     
     if (x >= w || y >= h) return;
     pixels[x + y * w] = color;
@@ -283,7 +336,7 @@ typedef struct {
     
     point.x -= size / 2;
     point.y -= size / 2;
-   
+    
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
             color.ARGB = [self getPixelAt:point.x + j ofY:point.y + i];
@@ -300,7 +353,7 @@ typedef struct {
     color.channel.B = (UInt32)(b /= avarage);
     color.channel.A = (UInt32)(a /= avarage);
     
-   
+    
     return color.ARGB;
 }
 
@@ -312,20 +365,87 @@ typedef struct {
     for (y = 0; y < self.originalSize.height; y += self.blockSize) {
         for (x = 0; x < self.originalSize.width; x += self.blockSize) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
-            if (self.posterize) {
-                RGB rgb = [self convertARGBToRgb:color];
-                rgb = [self posterizeRGB:rgb];
-                color = [self convertRGBToARGB:rgb withAlphaOf:255];
-            }
             [self setPixelAt:floor(x / self.blockSize) ofY:floor(y / self.blockSize) withColor:color];
+        }
+    }
+    
+    if (self.isColorNormalizationEnabled) {
+        [self normalizeColors];
+    }
+    
+    if (self.isPosterizeEnabled) {
+        [self posterize];
+    }
+}
+
+- (void)normalizeColors {
+    mergeCloseColors((Color *)self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, self.threshold);
+    [self renderTexture];
+}
+
+- (void)posterize {
+    Color* color = (Color *)self.scratchData.bytes;
+    int x;
+    int y;
+    
+    for (y = 0; y < (int)self.repixelatedSize.height; ++y) {
+        for (x = 0; x < self.repixelatedSize.width; ++x) {
+            ColorRGB colorRGB = [self convertFromPackedRGB:*color];
+            colorRGB = posterizeRGB(colorRGB, (int)self.posterizeLevels);
+            *color = [self convertToPackedRGB:colorRGB withAlphaOf:1.0];
+            color++;
         }
     }
 }
 
+// MARK: - Getter/s
+
+- (CGSize)repixelatedSize {
+    return CGSizeMake((CGFloat)floor(self.originalSize.width / self.blockSize), (CGFloat)floor(self.originalSize.height / self.blockSize));
+}
+
+- (BOOL)isPosterizeEnabled {
+    return self.posterizeLevels < 256;
+}
+
+- (BOOL)isColorNormalizationEnabled {
+    return self.threshold > 0;
+}
+
+
+// MARK: - Setter/s
+
+- (void)setThreshold:(NSInteger)value {
+    if (value < 0 || value > 256) return;
+    _threshold = value;
+    self.changes = YES;
+}
+
+- (void)setAutoBlockSizeAdjustEnabled:(BOOL)state {
+    _isAutoBlockSizeAdjustEnabled = state;
+}
+
+- (void)setPosterizeLevels:(NSInteger)levels {
+    _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
+    self.changes = YES;
+}
+
+- (void)setSampleSize:(NSInteger)size {
+    NSInteger blockSize = self.blockSize;
+    
+    if (size > blockSize || size < 1) {
+        _sampleSize = 1;
+        return;
+    }
+
+    _sampleSize = size;
+    self.changes = YES;
+}
 
 - (void)setBlockSize:(float)size {
     if (size < 2.0) return;
-    if (self.autoAdjustBlockSize) {
+    
+    if (self.isAutoBlockSizeAdjustEnabled) {
         size = self.originalSize.width / floor(self.originalSize.width / floor(size));
         
         float integerPart;
@@ -346,32 +466,6 @@ typedef struct {
     
     [self setScale:floor(640 / floor(self.originalSize.width / self.blockSize))];
     
-    self.changes = YES;
-}
-
-- (void)setSampleSize:(NSInteger)size {
-    NSInteger blockSize = self.blockSize;
-    
-    if (size > blockSize || size < 1) {
-        _sampleSize = 1;
-        return;
-    }
-
-    _sampleSize = size;
-    self.changes = YES;
-}
-
-- (void)setAutoAdjustBlockSize:(BOOL)state {
-    _autoAdjustBlockSize = state;
-}
-
-- (void)setPosterizeLevels:(NSInteger)levels {
-    _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
-    self.changes = YES;
-}
-
-- (void)setPosterize:(BOOL)state {
-    _posterize = state;
     self.changes = YES;
 }
 

@@ -100,30 +100,31 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="vnE-75-jG5"/>
                                         <menuItem title="Block Size" id="Kfw-6f-Fnv" userLabel="Block Size">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Block Size" id="VTp-im-4IP">
                                                 <items>
-                                                    <menuItem title="2 by 2 Pixels" tag="2" id="pse-AV-JgC" userLabel="2 by 2 Pixels">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="2 by 2 Pixels" tag="2" keyEquivalent="2" id="pse-AV-JgC" userLabel="2 by 2 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="eGH-zx-bfh"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="3 by 3 Pixels" tag="3" id="w4Q-gc-0Oo" userLabel="3 by 3 Pixels">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="3 by 3 Pixels" tag="3" keyEquivalent="3" id="w4Q-gc-0Oo" userLabel="3 by 3 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="NiZ-Az-MYd"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="4 by 4 Pixels" tag="4" id="aCL-VC-xMR" userLabel="4 by 4 Pixels">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="4 by 4 Pixels" tag="4" keyEquivalent="4" id="aCL-VC-xMR" userLabel="4 by 4 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="QhK-0q-MjF"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="8 by 8 Pixels" tag="8" id="N4F-Ad-M0L">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    <menuItem title="8 by 8 Pixels" tag="8" keyEquivalent="8" id="N4F-Ad-M0L">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="NyD-Yh-bb8"/>
                                                         </connections>
@@ -132,15 +133,81 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem title="Auto Adjust Block Size" state="on" keyEquivalent="a" id="NsO-W2-Nf2">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                             <connections>
                                                 <action selector="autoAdjustBlockSize:" target="Voe-Tx-rLC" id="cf1-wT-E1Y"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Posterize" keyEquivalent="p" id="Ros-np-fha">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                        <menuItem isSeparatorItem="YES" id="oIz-U9-PnL"/>
+                                        <menuItem title="Postorize" tag="1" id="Tet-4n-HNq">
+                                            <menu key="submenu" title="Postorize" id="T8J-Uf-BC5">
+                                                <items>
+                                                    <menuItem title="Posterize to 2 Levels" state="on" tag="2" keyEquivalent="2" id="PXe-XE-50e">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="htf-CW-JId"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 4 Levels" tag="4" keyEquivalent="4" id="g4L-fX-hO8">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="mFk-8y-hUm"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 8 Levels" tag="8" id="RrQ-k5-I1Y">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="z4U-53-gX0"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 16 Levels" tag="16" keyEquivalent="6" id="kgJ-9R-7WK">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="snX-lj-UDA"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 32 Levels" tag="32" id="ghg-7h-WCI">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="IgL-E7-OW0"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 64 Levels" tag="64" id="cuC-b4-ocZ">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="87y-q1-dru"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 128 Levels" tag="128" id="Fds-la-Gtt">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="ST6-qg-e70"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Posterize to 256 Levels" tag="256" keyEquivalent="0" id="hcc-06-ICi">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="LGU-dG-lus"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
                                             <connections>
-                                                <action selector="postorize:" target="Voe-Tx-rLC" id="KTv-8u-5kl"/>
+                                                <action selector="sampleSize:" target="Voe-Tx-rLC" id="ncV-SS-5nr"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Normalize Colors" keyEquivalent="n" id="PmH-gx-NqQ">
+                                            <connections>
+                                                <action selector="normalizeColors:" target="Voe-Tx-rLC" id="GLb-Vj-6UC"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Increase Threshold" keyEquivalent="" id="yBK-U1-EFe">
+                                            <connections>
+                                                <action selector="increaseThreshold:" target="Voe-Tx-rLC" id="Ngx-mR-hxs"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Decrease Threshold" keyEquivalent="" id="aeD-aI-a2P">
+                                            <connections>
+                                                <action selector="decreaseThreshold:" target="Voe-Tx-rLC" id="u4z-zo-9wc"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -339,32 +406,6 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VMh-kZ-0NP">
-                                        <rect key="frame" x="174" y="18" width="90" height="14"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Posterize Levels" id="2nt-Jd-xjs">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rI-P7-Ssq">
-                                        <rect key="frame" x="267" y="11" width="19" height="28"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <stepperCell key="cell" continuous="YES" alignment="left" minValue="2" maxValue="256" doubleValue="256" id="p3T-6c-piz"/>
-                                        <connections>
-                                            <action selector="posterizeLevel:" target="XfG-lQ-9wD" id="RM2-k2-c9k"/>
-                                        </connections>
-                                    </stepper>
-                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Oz-md-9YB">
-                                        <rect key="frame" x="289" y="18" width="25" height="14"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="255" id="Kfy-8k-qHI">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1024" id="eoB-ss-bqo"/>
@@ -401,8 +442,6 @@
                     <connections>
                         <outlet property="heightText" destination="4ny-Pp-oPu" id="3hj-Ob-CuL"/>
                         <outlet property="infoText" destination="Szt-7k-fN0" id="ZMS-DS-cma"/>
-                        <outlet property="levelsText" destination="0Oz-md-9YB" id="3V1-pA-y09"/>
-                        <outlet property="posterizeLevel" destination="2rI-P7-Ssq" id="qCH-gS-25V"/>
                         <outlet property="skView" destination="m2S-Jp-Qdl" id="qux-te-cT3"/>
                         <outlet property="widthText" destination="UwJ-dK-VXR" id="jjh-pa-vKV"/>
                         <outlet property="zoomText" destination="frV-NF-XY5" id="N8v-rt-cPd"/>

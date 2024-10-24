@@ -26,8 +26,6 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    //private var image: Image?
-    
     @IBOutlet weak var mainMenu: NSMenu!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -45,28 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    // MARK: - Private Action Methods
-    
-    @IBAction private func zoomIn(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale < 11.0 {
-                image.setScale(image.yScale + 1.0)
-            }
-        }
-    }
-    
-    @IBAction private func zoomOut(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale > 1.0 {
-                image.setScale(image.yScale - 1.0)
-            }
-        }
-    }
-    
-    
-    
-    
-    
+    // MARK: - Action Methods
     
     @IBAction private func openDocument(_ sender: NSMenuItem) {
         let openPanel = NSOpenPanel()
@@ -119,7 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction private func autoAdjustBlockSize(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
-            image.setAutoAdjustBlockSize(!image.autoAdjustBlockSize);
+            image.setAutoBlockSizeAdjustEnabled(!image.isAutoBlockSizeAdjustEnabled)
         }
         
         updateAllMenus()
@@ -127,9 +104,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction private func postorize(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
-            image.setPosterize(!image.posterize);
+            image.setPosterizeLevels(sender.tag)
         }
         
+        updateAllMenus()
+    }
+    
+    @IBAction private func normalizeColors(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setThreshold(image.isColorNormalizationEnabled ? 0 : 10)
+        }
+        updateAllMenus()
+    }
+    
+    @IBAction private func increaseThreshold(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setThreshold(Int(image.threshold) + 1);
+        }
+        updateAllMenus()
+    }
+    
+    @IBAction private func decreaseThreshold(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setThreshold(Int(image.threshold) - 1);
+        }
         updateAllMenus()
     }
     
@@ -160,11 +158,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
             
             if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Adjust Block Size") {
-                item.state = image.autoAdjustBlockSize ? .on : .off
+                item.state = image.isAutoBlockSizeAdjustEnabled ? .on : .off
             }
             
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Posterize") {
-                item.state = image.posterize ? .on : .off
+            if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.submenu {
+                for item in submenu.items {
+                    if (item.tag == Int(image.posterizeLevels)) {
+                        item.state = .on
+                    }
+                    else {
+                        item.state = .off
+                    }
+                }
+            }
+            
+            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Normalize Colors") {
+                item.state = image.isColorNormalizationEnabled ? .on : .off
             }
         }
     }
