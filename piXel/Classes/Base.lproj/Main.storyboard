@@ -237,6 +237,65 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="XDp-PI-Cqs"/>
+                                        <menuItem title="Adjust Margins" id="7w8-CW-neB">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Adjust Margins" id="ibi-qX-7hq">
+                                                <items>
+                                                    <menuItem title="Decrease Left" tag="1" keyEquivalent="" id="AS8-u2-iTN">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="Yp9-TQ-6dc"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Increase Left" tag="2" keyEquivalent="" id="8q4-op-AAM">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="6Im-SD-XDi"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem isSeparatorItem="YES" id="beu-Us-hR7"/>
+                                                    <menuItem title="Decrease Right" tag="3" keyEquivalent="" id="z8f-ZH-YzI">
+                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="hKg-tW-vtY"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Increase Right" tag="4" keyEquivalent="" id="6f6-d2-0Fl">
+                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="EDh-RX-Vjn"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem isSeparatorItem="YES" id="0ak-Zw-Se5"/>
+                                                    <menuItem title="Decrease Top" tag="5" keyEquivalent="" id="G2R-si-S01">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="ape-jK-IX5"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Increase Top" tag="6" keyEquivalent="" id="Y1t-sS-soN">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="ioF-J8-BmO"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem isSeparatorItem="YES" id="7ae-lF-u0E"/>
+                                                    <menuItem title="Decrease Bottom" tag="7" keyEquivalent="" id="Hz1-ef-QJV">
+                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="Vi4-Jb-1IC"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="Increase Bottom" tag="8" keyEquivalent="" id="rSG-jn-W1t">
+                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
+                                                        <connections>
+                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="A6p-3h-QoJ"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="D3B-GG-RZg"/>
                                         <menuItem title="Use Palette" id="eHD-Q2-KNY">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

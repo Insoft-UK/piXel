@@ -28,6 +28,10 @@
 #ifndef Image_h
 #define Image_h
 
+typedef struct {
+    CGFloat top, left, bottom, right;
+} TMargin;
+
 @interface Image: SKNode
 
 @property (nonatomic, readonly) CGSize originalSize;
@@ -38,6 +42,7 @@
 
 @property (nonatomic, readonly) Palette* palette;
 
+@property (nonatomic, readonly) TMargin margin;
 
 @property (nonatomic, readonly) NSUInteger threshold;
 
@@ -58,6 +63,7 @@
 - (void)setThreshold:(NSUInteger)value;
 - (void)setAutoBlockSizeAdjustEnabled:(BOOL)state;
 - (void)setIsPaletteEnabled:(BOOL)state;
+- (void)setMargin:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right;
 @end
 
 #endif /* Image_h */

@@ -113,6 +113,45 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    @IBAction private func adjustMargin(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            var margin = image.margin;
+            
+            switch sender.tag {
+            case 1:
+                margin.left -= 1
+                
+            case 2:
+                margin.left += 1
+                
+            case 3:
+                margin.right -= 1
+                
+            case 4:
+                margin.right += 1
+                
+            case 5:
+                margin.top -= 1
+                
+            case 6:
+                margin.top += 1
+                
+            case 7:
+                margin.bottom -= 1
+                
+            case 8:
+                margin.bottom += 1
+                
+            default:
+                break
+            }
+            image.setMargin(margin.top, left: margin.left, bottom: margin.bottom, right: margin.right)
+            
+        }
+        
+        updateAllMenus()
+    }
+    
     @IBAction private func sampleSize(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
             image.setSampleSize(sender.tag);

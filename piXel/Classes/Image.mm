@@ -107,9 +107,9 @@ typedef struct {
         self.posterizeLevels = 256;
         
         _palette = [[Palette alloc] init];
+        _margin = {0, 0, 0, 0};
+        }
         
-    }
-    
     return self;
 }
 
@@ -297,14 +297,14 @@ typedef struct {
     float x;
     float y;
     
-    for (y = 0; y < self.originalSize.height; y += self.blockSize) {
-        for (x = 0; x < self.originalSize.width; x += self.blockSize) {
+    for (y = self.margin.top; y < self.originalSize.height - self.margin.bottom; y += self.blockSize) {
+        for (x = self.margin.left; x < self.originalSize.width - self.margin.right; x += self.blockSize) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
             [self setPixelAt:floor(x / self.blockSize) ofY:floor(y / self.blockSize) withColor:color];
         }
     }
     
-
+    
     if (self.isColorNormalizationEnabled) {
         ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, (unsigned int)self.threshold);
     }
@@ -395,6 +395,16 @@ typedef struct {
     _isPaletteEnabled = state;
     self.changes = YES;
 }
+
+- (void)setMargin:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right {
+    if (left < 0) left = 0;
+    if (right < 0) right = 0;
+    if (bottom < 0) bottom = 0;
+    if (top < 0) top = 0;
+    _margin = {top, left, bottom, right};
+    self.changes = YES;
+}
+
 @end
 
 
