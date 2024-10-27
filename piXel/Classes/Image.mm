@@ -21,14 +21,11 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-
 #import "Image.h"
 #import "piXel-Swift.h"
 
 #import "ImageAdjustments.hpp"
 #import <array>
-
-//#define BUCKET_SIZE 20  // Adjust this based on how similar colors should be grouped
 
 typedef UInt32 Color;
 
@@ -108,6 +105,9 @@ typedef struct {
         
         [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
         self.posterizeLevels = 256;
+        
+        _palette = [[Palette alloc] init];
+        
     }
     
     return self;
@@ -304,13 +304,19 @@ typedef struct {
         }
     }
     
+
     if (self.isColorNormalizationEnabled) {
-        ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, self.threshold);
+        ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, (unsigned int)self.threshold);
     }
     
     if (self.isPosterizeEnabled) {
         long length = self.repixelatedSize.width * self.repixelatedSize.height;
-        ImageAdjustments::postorize(self.scratchData.bytes, length, self.posterizeLevels);
+        ImageAdjustments::postorize(self.scratchData.bytes, length, (unsigned int)self.posterizeLevels);
+    }
+    
+    if (self.isPaletteEnabled) {
+        ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, (UInt32*)self.palette.bytes, (int)self.palette.colorCount);
+        return;
     }
 }
 
@@ -331,8 +337,8 @@ typedef struct {
 
 // MARK: - Setter/s
 
-- (void)setThreshold:(NSInteger)value {
-    if (value < 0 || value > 256) return;
+- (void)setThreshold:(NSUInteger)value {
+    if (value > 256) return;
     _threshold = value;
     self.changes = YES;
 }
@@ -341,7 +347,7 @@ typedef struct {
     _isAutoBlockSizeAdjustEnabled = state;
 }
 
-- (void)setPosterizeLevels:(NSInteger)levels {
+- (void)setPosterizeLevels:(NSUInteger)levels {
     _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
     self.changes = YES;
 }
@@ -353,7 +359,7 @@ typedef struct {
         _sampleSize = 1;
         return;
     }
-
+    
     _sampleSize = size;
     self.changes = YES;
 }
@@ -366,7 +372,7 @@ typedef struct {
         
         float integerPart;
         float fractionalPart;
-    
+        
         fractionalPart = modff(size, &integerPart);
         
         if (fractionalPart > 0.01) {
@@ -385,6 +391,10 @@ typedef struct {
     self.changes = YES;
 }
 
+- (void)setIsPaletteEnabled:(BOOL)state {
+    _isPaletteEnabled = state;
+    self.changes = YES;
+}
 @end
 
 

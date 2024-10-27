@@ -41,7 +41,7 @@ static void getColorComponents(Color color, int* r, int* g, int* b) {
 }
 
 // Function to calculate Euclidean distance between two ARGB colors
-static float colorDistance(Color color1, Color color2) {
+static unsigned colorDistance(Color color1, Color color2) {
     int r1, g1, b1;
     int r2, g2, b2;
     
@@ -82,13 +82,13 @@ static Color convertToPackedRGB(const ColorRGB colorRGB, float alpha) {
 }
 
 // Function to reduce resolution of a single color channel (0-1 float)
-static float postorizeChannel(float value, int levels) {
+static float postorizeChannel(float value, unsigned levels) {
     float step = 1.0f / (float)(levels - 1);
     return round(value / step) * step;
 }
 
 // Function to reduce the resolution of RGB channels (0-1 range)
-static ColorRGB posterizeRGB(ColorRGB colorRGB, int levels) {
+static ColorRGB posterizeRGB(ColorRGB colorRGB, unsigned levels) {
     colorRGB.r = postorizeChannel(colorRGB.r, levels);
     colorRGB.g = postorizeChannel(colorRGB.g, levels);
     colorRGB.b = postorizeChannel(colorRGB.b, levels);
@@ -96,7 +96,7 @@ static ColorRGB posterizeRGB(ColorRGB colorRGB, int levels) {
 }
 
 
-void ImageAdjustments::postorize(const void* pixels, long length, float levels) {
+void ImageAdjustments::postorize(const void* pixels, long length, unsigned levels) {
     uint32_t* color = (uint32_t*)pixels;
     
     for (long i = 0; i < length; ++i) {
@@ -107,7 +107,7 @@ void ImageAdjustments::postorize(const void* pixels, long length, float levels) 
     }
 }
 
-void ImageAdjustments::normalizeColors(const void* pixels, int w, int h, float threshold) {
+void ImageAdjustments::normalizeColors(const void* pixels, int w, int h, unsigned threshold) {
     typedef struct {
         Color baseColor;
         int count;
@@ -136,4 +136,26 @@ void ImageAdjustments::normalizeColors(const void* pixels, int w, int h, float t
     }
 
     free(buckets);
+}
+
+void ImageAdjustments::normalizeColorsToPalette(const void* pixels, int w, int h, const uint32_t* palt, int paletteSize) {
+    Color* colors = (Color *)pixels;
+    
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            int i = x + y * w;
+            Color baseColor = colors[i];
+            Color matchedColor = baseColor;
+            
+            int distance = 256;
+            for (int n = 0; n < paletteSize; ++n) {
+                if (colorDistance(baseColor, palt[n]) < distance) {
+                    distance = colorDistance(baseColor, palt[n]);
+                    matchedColor = palt[n];
+                }
+            }
+            
+            colors[i] = matchedColor;
+        }
+    }
 }

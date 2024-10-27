@@ -22,16 +22,30 @@
  SOFTWARE.
  */
 
-#ifndef ImageAdjustments_hpp
-#define ImageAdjustments_hpp
+#ifndef Palette_h
+#define Palette_h
 
-#include <stdint.h>
+@interface Palette: NSObject
 
-class ImageAdjustments {
-public:
-    static void postorize(const void* pixels, long length, unsigned levels);
-    static void normalizeColors(const void* pixels, int w, int h, unsigned threshold);
-    static void normalizeColorsToPalette(const void* pixels, int w, int h, const uint32_t* palt, int paletteSize);
-};
+// MARK: - Class Properties
 
-#endif /* ImageAdjustments_hpp */
+@property (readonly) NSInteger colorCount;
+@property (readonly) NSUInteger transparentIndex;
+@property (readonly) UInt8  * _Nonnull  bytes;
+
+// MARK: - Class Instance Methods
+
+-(void)loadPhotoshopActFile:( NSString* _Nonnull )file;
+-(void)saveAsPhotoshopActAtPath:( NSString* _Nonnull )path;
+-(UInt32)packedRGBColorAtIndex:(NSUInteger)index;
+
+// MARK: - Class Setters
+
+-(void)setPaletteColorWithPackedRGB:( UInt32 )rgb atIndex:(NSUInteger)index;
+-(void)setPaletteColorWithRed:(UInt8)r green:(UInt8)g blue:(UInt8)b atIndex:(NSUInteger)index;
+-(void)setTransparentIndex:(NSUInteger)index;
+
+@end
+
+
+#endif /* Palette_h */

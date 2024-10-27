@@ -23,6 +23,7 @@
  */
 
 #import <CoreGraphics/CoreGraphics.h>
+#import "Palette.h"
 
 #ifndef Image_h
 #define Image_h
@@ -33,11 +34,14 @@
 @property (nonatomic, readonly) CGSize repixelatedSize;
 @property (nonatomic, readonly) float blockSize;
 @property (nonatomic, readonly) NSInteger sampleSize;
-@property (nonatomic, readonly) NSInteger posterizeLevels;
+@property (nonatomic, readonly) NSUInteger posterizeLevels;
+
+@property (nonatomic, readonly) Palette* palette;
 
 
-@property (nonatomic, readonly) float threshold;
+@property (nonatomic, readonly) NSUInteger threshold;
 
+@property (nonatomic, readonly) BOOL isPaletteEnabled;
 @property (nonatomic, readonly) BOOL isPosterizeEnabled;
 @property (nonatomic, readonly) BOOL isColorNormalizationEnabled;
 @property (nonatomic, readonly) BOOL isAutoBlockSizeAdjustEnabled;
@@ -50,9 +54,10 @@
 
 - (void)setBlockSize:(float)size;
 - (void)setSampleSize:(NSInteger)size;
-- (void)setPosterizeLevels:(NSInteger)levels;
-- (void)setThreshold:(NSInteger)value;
+- (void)setPosterizeLevels:(NSUInteger)levels;
+- (void)setThreshold:(NSUInteger)value;
 - (void)setAutoBlockSizeAdjustEnabled:(BOOL)state;
+- (void)setIsPaletteEnabled:(BOOL)state;
 @end
 
 #endif /* Image_h */

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>piXel</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>x86_64</string>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>463</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>F7CE2FB8EBC3263A2083011FB898BFB0F587E69C</string>
+				<key>dateExpires</key>
+				<string>01/02/2027</string>
+				<key>type</key>
+				<string>Developer ID Application</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>com.apple.security.app-sandbox</key>
+				<true/>
+				<key>com.apple.security.files.downloads.read-write</key>
+				<true/>
+				<key>com.apple.security.files.user-selected.read-write</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>piXel.app</string>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>8XN79M4JCJ</string>
+				<key>name</key>
+				<string>Richard Hughes</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.0.2</string>
+		</dict>
+	</array>
+</dict>
+</plist>

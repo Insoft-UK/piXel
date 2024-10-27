@@ -66,6 +66,32 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="r2n-hg-vvp"/>
+                                        <menuItem title="Export" id="SBi-bz-Ikl">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Export" id="LKe-ZJ-XgO">
+                                                <items>
+                                                    <menuItem title="Photoshop ACT Palette File" id="7GM-Rr-PWE">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="exportAs:" target="Voe-Tx-rLC" id="Qj6-vZ-biV"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
+                                        <menuItem title="Import" id="jR8-4Y-yJi">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Import" id="qLX-05-Om4">
+                                                <items>
+                                                    <menuItem title="Photoshop ACT Palette File" id="hiZ-sd-vN5">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="importAct:" target="Voe-Tx-rLC" id="t4k-nf-DcE"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -208,6 +234,13 @@
                                         <menuItem title="Decrease Threshold" keyEquivalent="" id="aeD-aI-a2P">
                                             <connections>
                                                 <action selector="decreaseThreshold:" target="Voe-Tx-rLC" id="u4z-zo-9wc"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="XDp-PI-Cqs"/>
+                                        <menuItem title="Use Palette" id="eHD-Q2-KNY">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="usePalette:" target="Voe-Tx-rLC" id="WAn-uY-3N3"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -406,6 +439,11 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NFF-3b-OTz">
+                                        <rect key="frame" x="256" y="9" width="512" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="DcD-js-eSn"/>
+                                    </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1024" id="eoB-ss-bqo"/>
@@ -441,6 +479,7 @@
                     </view>
                     <connections>
                         <outlet property="heightText" destination="4ny-Pp-oPu" id="3hj-Ob-CuL"/>
+                        <outlet property="imageView" destination="NFF-3b-OTz" id="uDU-zY-ixh"/>
                         <outlet property="infoText" destination="Szt-7k-fN0" id="ZMS-DS-cma"/>
                         <outlet property="skView" destination="m2S-Jp-Qdl" id="qux-te-cT3"/>
                         <outlet property="widthText" destination="UwJ-dK-VXR" id="jjh-pa-vKV"/>
