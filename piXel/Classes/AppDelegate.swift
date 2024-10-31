@@ -249,7 +249,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 item.state = image.isPaletteEnabled ? .on : .off
             }
             
-            if let item = mainMenu.item(withTitle: "Window")?.submenu?.item(withTitle: "Auto Zoom") {
+            if let item = mainMenu.item(withTitle: "View")?.submenu?.item(withTitle: "Auto Zoom") {
                 item.state = image.isAutoZoomEnabled ? .on : .off
             }
 //            mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.isEnabled = false
