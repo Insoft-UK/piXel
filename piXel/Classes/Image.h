@@ -28,21 +28,17 @@
 #ifndef Image_h
 #define Image_h
 
-typedef struct {
-    CGFloat top, left, bottom, right;
-} TMargin;
 
 @interface Image: SKNode
 
 @property (nonatomic, readonly) CGSize originalSize;
-@property (nonatomic, readonly) CGSize repixelatedSize;
+@property (nonatomic, readonly) CGSize newImageSize;
 @property (nonatomic, readonly) float blockSize;
 @property (nonatomic, readonly) NSInteger sampleSize;
 @property (nonatomic, readonly) NSUInteger posterizeLevels;
 
 @property (nonatomic, readonly) Palette* palette;
 
-@property (nonatomic, readonly) TMargin margin;
 
 @property (nonatomic, readonly) NSUInteger threshold;
 
@@ -50,6 +46,7 @@ typedef struct {
 @property (nonatomic, readonly) BOOL isPosterizeEnabled;
 @property (nonatomic, readonly) BOOL isColorNormalizationEnabled;
 @property (nonatomic, readonly) BOOL isAutoBlockSizeAdjustEnabled;
+@property (nonatomic, readonly) BOOL isAutoZoomEnabled;
 
 - (id)initWithSize:(CGSize)size;
 
@@ -63,7 +60,10 @@ typedef struct {
 - (void)setThreshold:(NSUInteger)value;
 - (void)setAutoBlockSizeAdjustEnabled:(BOOL)state;
 - (void)setIsPaletteEnabled:(BOOL)state;
-- (void)setMargin:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right;
+- (void)setAutoZoomEnabled:(BOOL)state;
+
+-(void)showOriginal;
+-(void)hideOriginal;
 @end
 
 #endif /* Image_h */

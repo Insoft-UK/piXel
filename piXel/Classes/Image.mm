@@ -44,7 +44,7 @@ typedef struct {
 
 /// The image pixel data of the image thats being re-pixilated.
 @property NSMutableData *originalImageData;
-
+@property SKSpriteNode *originalImage;
 
 /// The image pixel data of the image thats been re-pixilated.
 @property NSMutableData *scratchData;
@@ -68,9 +68,7 @@ typedef struct {
         self.scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
         self.scratchData.length = lengthInBytes;
         
-        _isAutoBlockSizeAdjustEnabled = YES;
-        _posterizeLevels = 256;
-        _threshold = 0;
+        
         
         SKSpriteNode *node;
         SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
@@ -103,14 +101,29 @@ typedef struct {
             [self addChild:node];
         }
         
-        [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
-        self.posterizeLevels = 256;
         
+        [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
+     
         _palette = [[Palette alloc] init];
-        _margin = {0, 0, 0, 0};
+        
+        
+        
+        
+        [self updateOverlayOfOriginalImageScale];
+        
+        [self defaultSettings];
         }
         
     return self;
+}
+
+-(void)defaultSettings {
+    self.originalImage.alpha = 1.0;
+    self.posterizeLevels = 256;
+    self.threshold = 0;
+    
+    self.autoZoomEnabled = YES;
+    self.autoBlockSizeAdjustEnabled = NO;
 }
 
 // MARK: - Public Instance Methods
@@ -131,13 +144,31 @@ typedef struct {
         
         [self copyDataBytesOfCGImage:cgImage to:self.originalImageData];
         _originalSize = [self getCGImageSize:cgImage];
+        
+        if ([self childNodeWithName:@"OriginalImage"] != nil) {
+            [[self childNodeWithName:@"OriginalImage"] removeFromParent];
+        }
+        
+        self.originalImage = [SKSpriteNode spriteNodeWithColor:NSColor.clearColor size:[self getCGImageSize:cgImage]];
+        self.originalImage.texture = [SKTexture textureWithCGImage:cgImage];
+        self.originalImage.name = @"OriginalImage";
+        self.originalImage.hidden = YES;
+        
+        [self addChild:self.originalImage];
+        
         if (cgImage) CGImageRelease(cgImage);
+        
+        
+        
     }
     
-    self.blockSize = 2.0;
+    self.blockSize = 1.0;
     
-    float width = floor(self.originalSize.width / self.blockSize);
-    [self setScale:floor(640 / width)];
+    if (self.isAutoZoomEnabled) {
+        [self automaticallyAdjustZoom];
+    }
+    
+    
     self.changes = YES;
 }
 
@@ -161,7 +192,7 @@ typedef struct {
 }
 
 -(void)saveImageAtURL:(NSURL *)url {
-    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)self.scratchData.bytes ofSize:self.repixelatedSize];
+    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)self.scratchData.bytes ofSize:self.newImageSize];
     [Extenions writeCGImage:imageRef to:url];
 }
 
@@ -169,10 +200,33 @@ typedef struct {
     if (self.changes) {
         [self restorePixelatedImage];
         [self renderTexture];
+        
+        if (self.isAutoZoomEnabled) {
+            [self automaticallyAdjustZoom];
+        }
+        
+        [self updateOverlayOfOriginalImageScale];
+        
         self.changes = NO;
         return YES;
     }
     return NO;
+}
+
+- (void)automaticallyAdjustZoom {
+    float scaleX, scaleY;
+    scaleX = floor(640 / floor(self.originalSize.width / self.blockSize));
+    scaleY = floor(640 / floor(self.originalSize.height / self.blockSize));
+    if (scaleX > scaleY) {
+        [self setScale:scaleY];
+    }
+    else {
+        [self setScale:scaleX];
+    }
+}
+
+- (void)updateOverlayOfOriginalImageScale {
+    [self.originalImage setScale:1 / self.blockSize];
 }
 
 - (void)renderTexture {
@@ -185,8 +239,8 @@ typedef struct {
         UInt32* src = (UInt32 *)self.scratchData.bytes;
         UInt32* dest = (UInt32 *)pixelData;
         
-        int w = self.repixelatedSize.width;
-        int h = self.repixelatedSize.height;
+        int w = self.newImageSize.width;
+        int h = self.newImageSize.height;
         
         int x;
         int y;
@@ -244,8 +298,8 @@ typedef struct {
 
 - (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withColor:(UInt32)color {
     UInt32* pixels = (UInt32*)self.scratchData.bytes;
-    NSUInteger w = (NSUInteger)self.repixelatedSize.width;
-    NSUInteger h = (NSUInteger)self.repixelatedSize.height;
+    NSUInteger w = (NSUInteger)self.newImageSize.width;
+    NSUInteger h = (NSUInteger)self.newImageSize.height;
     
     if (x >= w || y >= h) return;
     pixels[x + y * w] = color;
@@ -294,35 +348,39 @@ typedef struct {
 
 - (void)restorePixelatedImage {
     UInt32 color;
-    float x;
-    float y;
+    float x, y;
+    int destX, destY;
     
-    for (y = self.margin.top; y < self.originalSize.height - self.margin.bottom; y += self.blockSize) {
-        for (x = self.margin.left; x < self.originalSize.width - self.margin.right; x += self.blockSize) {
+    for (destY = 0, y = 0; y < self.originalSize.height; y += self.blockSize, destY++) {
+        for (destX = 0, x = 0; x < self.originalSize.width; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
-            [self setPixelAt:floor(x / self.blockSize) ofY:floor(y / self.blockSize) withColor:color];
+            [self setPixelAt:destX ofY:destY withColor:color];
         }
     }
     
     
     if (self.isColorNormalizationEnabled) {
-        ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, (unsigned int)self.threshold);
+        ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (unsigned int)self.threshold);
     }
     
     if (self.isPosterizeEnabled) {
-        long length = self.repixelatedSize.width * self.repixelatedSize.height;
+        long length = self.newImageSize.width * self.newImageSize.height;
         ImageAdjustments::postorize(self.scratchData.bytes, length, (unsigned int)self.posterizeLevels);
     }
     
     if (self.isPaletteEnabled) {
-        ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.repixelatedSize.width, (int)self.repixelatedSize.height, (UInt32*)self.palette.bytes, (int)self.palette.colorCount);
+        ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (UInt32*)self.palette.bytes, (int)self.palette.colorCount);
         return;
     }
+    
+    SKNode *node = [self childNodeWithName:@"Image"];
+    auto size = self.newImageSize;
+    node.position = CGPointMake((int)size.width & 1 ? 0.5 : 0.0, (int)size.height & 1 ? -0.5 : 0.0);
 }
 
 // MARK: - Getter/s
 
-- (CGSize)repixelatedSize {
+- (CGSize)newImageSize {
     return CGSizeMake((CGFloat)floor(self.originalSize.width / self.blockSize), (CGFloat)floor(self.originalSize.height / self.blockSize));
 }
 
@@ -365,7 +423,7 @@ typedef struct {
 }
 
 - (void)setBlockSize:(float)size {
-    if (size < 2.0) return;
+    if (size < 1.0) return;
     
     if (self.isAutoBlockSizeAdjustEnabled) {
         size = self.originalSize.width / floor(self.originalSize.width / floor(size));
@@ -385,8 +443,7 @@ typedef struct {
         _blockSize = size;
     }
     self.sampleSize = self.sampleSize;
-    
-    [self setScale:floor(640 / floor(self.originalSize.width / self.blockSize))];
+
     
     self.changes = YES;
 }
@@ -396,15 +453,18 @@ typedef struct {
     self.changes = YES;
 }
 
-- (void)setMargin:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right {
-    if (left < 0) left = 0;
-    if (right < 0) right = 0;
-    if (bottom < 0) bottom = 0;
-    if (top < 0) top = 0;
-    _margin = {top, left, bottom, right};
-    self.changes = YES;
+
+
+- (void)setAutoZoomEnabled:(BOOL)state {
+    _isAutoZoomEnabled = state;
 }
 
+-(void)showOriginal {
+    self.originalImage.hidden = NO;
+}
+-(void)hideOriginal {
+    self.originalImage.hidden = YES;
+}
 @end
 
 

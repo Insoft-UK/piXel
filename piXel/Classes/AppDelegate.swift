@@ -37,11 +37,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
     }
     
-    func application(sender: NSApplication, openFile theDroppedFilePath: String) {
+    func application(sender: NSApplication, openFile theDroppedFilePath: String) -> Bool {
         if let url = URL(string: theDroppedFilePath) {
-            //Singleton.sharedInstance()?.image.modify(withContentsOf: url)
+            Singleton.sharedInstance()?.image.load(withContentsOf: url)
             NSApp.windows.first?.title = url.lastPathComponent
         }
+        return true
     }
     
     
@@ -112,45 +113,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
-    @IBAction private func adjustMargin(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            var margin = image.margin;
-            
-            switch sender.tag {
-            case 1:
-                margin.left -= 1
-                
-            case 2:
-                margin.left += 1
-                
-            case 3:
-                margin.right -= 1
-                
-            case 4:
-                margin.right += 1
-                
-            case 5:
-                margin.top -= 1
-                
-            case 6:
-                margin.top += 1
-                
-            case 7:
-                margin.bottom -= 1
-                
-            case 8:
-                margin.bottom += 1
-                
-            default:
-                break
-            }
-            image.setMargin(margin.top, left: margin.left, bottom: margin.bottom, right: margin.right)
-            
-        }
-        
-        updateAllMenus()
-    }
+
     
     @IBAction private func sampleSize(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
@@ -214,6 +177,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateAllMenus()
     }
     
+    @IBAction private func autoZoom(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setAutoZoomEnabled(!image.isAutoZoomEnabled)
+        }
+        updateAllMenus()
+    }
+    
+    @IBAction private func zoomIn(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            if image.yScale < 50.0 {
+                image.setScale(image.yScale + 1.0)
+            }
+        }
+    }
+    
+    @IBAction private func zoomOut(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            if image.yScale > 1.0 {
+                image.setScale(image.yScale - 1.0)
+            }
+        }
+    }
+    
     @objc func updateAllMenus() {
         if let image = Singleton.sharedInstance()?.image {
             if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Sample Size")?.submenu {
@@ -261,6 +247,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Use Palette") {
                 item.state = image.isPaletteEnabled ? .on : .off
+            }
+            
+            if let item = mainMenu.item(withTitle: "Window")?.submenu?.item(withTitle: "Auto Zoom") {
+                item.state = image.isAutoZoomEnabled ? .on : .off
             }
 //            mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.isEnabled = false
               

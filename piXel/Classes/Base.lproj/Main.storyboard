@@ -131,10 +131,16 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Block Size" id="VTp-im-4IP">
                                                 <items>
-                                                    <menuItem title="2 by 2 Pixels" tag="2" keyEquivalent="2" id="pse-AV-JgC" userLabel="2 by 2 Pixels">
+                                                    <menuItem title="1 by 1 Pixels" tag="1" keyEquivalent="1" id="pse-AV-JgC" userLabel="2 by 2 Pixels">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
                                                             <action selector="blockSize:" target="Voe-Tx-rLC" id="eGH-zx-bfh"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="2 by 2 Pixels" tag="2" keyEquivalent="2" id="dOQ-Vz-7Au" userLabel="2 by 2 Pixels">
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                                        <connections>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="VSd-35-ke5"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem title="3 by 3 Pixels" tag="3" keyEquivalent="3" id="w4Q-gc-0Oo" userLabel="3 by 3 Pixels">
@@ -158,7 +164,7 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Auto Adjust Block Size" state="on" keyEquivalent="a" id="NsO-W2-Nf2">
+                                        <menuItem title="Auto Adjust Block Size" state="on" keyEquivalent="b" id="NsO-W2-Nf2">
                                             <connections>
                                                 <action selector="autoAdjustBlockSize:" target="Voe-Tx-rLC" id="cf1-wT-E1Y"/>
                                             </connections>
@@ -237,69 +243,34 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="XDp-PI-Cqs"/>
-                                        <menuItem title="Adjust Margins" id="7w8-CW-neB">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Adjust Margins" id="ibi-qX-7hq">
-                                                <items>
-                                                    <menuItem title="Decrease Left" tag="1" keyEquivalent="" id="AS8-u2-iTN">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="Yp9-TQ-6dc"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Increase Left" tag="2" keyEquivalent="" id="8q4-op-AAM">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="6Im-SD-XDi"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="beu-Us-hR7"/>
-                                                    <menuItem title="Decrease Right" tag="3" keyEquivalent="" id="z8f-ZH-YzI">
-                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="hKg-tW-vtY"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Increase Right" tag="4" keyEquivalent="" id="6f6-d2-0Fl">
-                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="EDh-RX-Vjn"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="0ak-Zw-Se5"/>
-                                                    <menuItem title="Decrease Top" tag="5" keyEquivalent="" id="G2R-si-S01">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="ape-jK-IX5"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Increase Top" tag="6" keyEquivalent="" id="Y1t-sS-soN">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="ioF-J8-BmO"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="7ae-lF-u0E"/>
-                                                    <menuItem title="Decrease Bottom" tag="7" keyEquivalent="" id="Hz1-ef-QJV">
-                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="Vi4-Jb-1IC"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Increase Bottom" tag="8" keyEquivalent="" id="rSG-jn-W1t">
-                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES"/>
-                                                        <connections>
-                                                            <action selector="adjustMargin:" target="Voe-Tx-rLC" id="A6p-3h-QoJ"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="D3B-GG-RZg"/>
-                                        <menuItem title="Use Palette" id="eHD-Q2-KNY">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Use Palette" keyEquivalent="p" id="eHD-Q2-KNY">
                                             <connections>
                                                 <action selector="usePalette:" target="Voe-Tx-rLC" id="WAn-uY-3N3"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="View" id="xZQ-1H-oiH">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="View" id="Qq3-T1-hvw">
+                                    <items>
+                                        <menuItem title="Zoom In" keyEquivalent="z" id="XzX-a2-ybt">
+                                            <connections>
+                                                <action selector="zoomIn:" target="Voe-Tx-rLC" id="iLa-LM-IGw"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Zoom Out" keyEquivalent="z" id="rPI-mJ-PJV">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="zoomOut:" target="Voe-Tx-rLC" id="pgK-nM-ROg"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="Syg-UI-gcQ"/>
+                                        <menuItem title="Auto Zoom" tag="7" id="Nxr-Rw-vAf">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="autoZoom:" target="Voe-Tx-rLC" id="dTM-98-Scw"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -314,11 +285,9 @@
                                                 <action selector="performMiniaturize:" target="Ady-hI-5gd" id="VwT-WD-YPe"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="ry5-iA-IRe"/>
                                     </items>
                                 </menu>
-                            </menuItem>
-                            <menuItem title="View" id="ijg-zJ-oYI">
-                                <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
                             <menuItem title="Help" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -375,7 +344,7 @@
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="bdy-M1-2f5"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="MOs-Ca-nNB"/>
-                                <toolbarItem implicitItemIdentifier="D731321E-D2F8-496E-A8A3-E5C28ADFE116" label="" paletteLabel="Zoom Out" tag="-1" bordered="YES" id="gIB-wm-llm">
+                                <toolbarItem implicitItemIdentifier="D731321E-D2F8-496E-A8A3-E5C28ADFE116" label="Zoom Out" paletteLabel="Zoom Out" tag="-1" bordered="YES" id="gIB-wm-llm">
                                     <imageReference key="image" image="minus.magnifyingglass" catalog="system" symbolScale="large"/>
                                     <size key="minSize" width="32" height="25"/>
                                     <size key="maxSize" width="32" height="25"/>
@@ -383,7 +352,7 @@
                                         <action selector="zoomOut:" target="B8D-0N-5wS" id="Xo6-33-wEZ"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="F77046C9-13CA-48A6-920E-2EC2795BF342" label="" paletteLabel="Zoom In" tag="-1" bordered="YES" id="HKI-AT-gwy">
+                                <toolbarItem implicitItemIdentifier="F77046C9-13CA-48A6-920E-2EC2795BF342" label="Zoom In" paletteLabel="Zoom In" tag="-1" bordered="YES" id="HKI-AT-gwy">
                                     <imageReference key="image" image="plus.magnifyingglass" catalog="system" symbolScale="large"/>
                                     <size key="minSize" width="32" height="25"/>
                                     <size key="maxSize" width="32" height="25"/>
@@ -391,28 +360,28 @@
                                         <action selector="zoomIn:" target="B8D-0N-5wS" id="kzp-Hc-0pz"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="7DEE85E0-AB86-49AB-A703-280448DB0F3B" label="" paletteLabel="Coarse Increase" tag="1" image="NSTouchBarGoUpTemplate" bordered="YES" id="cjw-pe-wlD">
+                                <toolbarItem implicitItemIdentifier="7DEE85E0-AB86-49AB-A703-280448DB0F3B" label="Coarse Increase" paletteLabel="Coarse Increase" tag="1" image="NSTouchBarGoUpTemplate" bordered="YES" id="cjw-pe-wlD">
                                     <size key="minSize" width="27" height="25"/>
                                     <size key="maxSize" width="27" height="25"/>
                                     <connections>
                                         <action selector="coarse:" target="B8D-0N-5wS" id="RXe-Pw-wmk"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="7D19A0D4-E71B-4754-B32D-0D16C82C05EF" label="" paletteLabel="Coarse Decrease" tag="-1" image="NSTouchBarGoDownTemplate" bordered="YES" id="9tD-Jg-ZYd">
+                                <toolbarItem implicitItemIdentifier="7D19A0D4-E71B-4754-B32D-0D16C82C05EF" label="Coarse Decrease" paletteLabel="Coarse Decrease" tag="-1" image="NSTouchBarGoDownTemplate" bordered="YES" id="9tD-Jg-ZYd">
                                     <size key="minSize" width="27" height="25"/>
                                     <size key="maxSize" width="27" height="25"/>
                                     <connections>
                                         <action selector="coarse:" target="B8D-0N-5wS" id="3bs-9O-dkd"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="EC7FC5A3-A93A-495D-BED4-35098218596F" label="" paletteLabel="Fine Decrease" tag="-1" image="NSTouchBarGoBackTemplate" bordered="YES" id="DDr-9o-4Yk">
+                                <toolbarItem implicitItemIdentifier="EC7FC5A3-A93A-495D-BED4-35098218596F" label="Fine Decrease" paletteLabel="Fine Decrease" tag="-1" image="NSTouchBarGoBackTemplate" bordered="YES" id="DDr-9o-4Yk">
                                     <size key="minSize" width="24" height="25"/>
                                     <size key="maxSize" width="24" height="25"/>
                                     <connections>
                                         <action selector="fine:" target="B8D-0N-5wS" id="xmw-Nf-hvd"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="C5BFC30C-7522-489B-AEB6-B238394F79BF" label="" paletteLabel="Fine Increase" tag="1" image="NSTouchBarGoForwardTemplate" bordered="YES" id="pSf-ME-51Q">
+                                <toolbarItem implicitItemIdentifier="C5BFC30C-7522-489B-AEB6-B238394F79BF" label="Fine Increase" paletteLabel="Fine Increase" tag="1" image="NSTouchBarGoForwardTemplate" bordered="YES" id="pSf-ME-51Q">
                                     <size key="minSize" width="24" height="25"/>
                                     <size key="maxSize" width="24" height="25"/>
                                     <connections>
@@ -425,7 +394,7 @@
                                 <toolbarItem reference="9tD-Jg-ZYd"/>
                                 <toolbarItem reference="DDr-9o-4Yk"/>
                                 <toolbarItem reference="pSf-ME-51Q"/>
-                                <toolbarItem reference="MOs-Ca-nNB"/>
+                                <toolbarItem reference="bdy-M1-2f5"/>
                                 <toolbarItem reference="gIB-wm-llm"/>
                                 <toolbarItem reference="HKI-AT-gwy"/>
                             </defaultToolbarItems>
@@ -515,7 +484,7 @@
                                     <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Szt-7k-fN0">
                                         <rect key="frame" x="256" y="3" width="512" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0 bytes selected at offset 0 out of 0 bytes" id="ohm-Ua-b3w">
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Information" id="ohm-Ua-b3w">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

@@ -73,6 +73,7 @@
     Image* image = Singleton.sharedInstance.image;
     
     enum {
+        Space = 0x31,
         UpArrow = 126,
         DownArrow = 125,
         LeftArrow = 123,
@@ -80,6 +81,10 @@
     };
     
     switch (theEvent.keyCode) {
+        case Space:
+            [image showOriginal];
+            break;
+            
         case LeftArrow:
             if (image.isAutoBlockSizeAdjustEnabled) break;
             [image setBlockSize: image.blockSize -= 0.01];
@@ -102,6 +107,25 @@
         default:
 #ifdef DEBUG
             NSLog(@"keyDown:'%@' keyCode: 0x%02X", theEvent.characters, theEvent.keyCode);
+#endif
+            break;
+    }
+}
+
+- (void)keyUp:(NSEvent *)theEvent {
+    Image* image = Singleton.sharedInstance.image;
+    
+    enum {
+        Space = 0x31
+    };
+    
+    switch (theEvent.keyCode) {
+        case Space:
+            [image hideOriginal];
+            break;
+        default:
+#ifdef DEBUG
+            NSLog(@"keyUp:'%@' keyCode: 0x%02X", theEvent.characters, theEvent.keyCode);
 #endif
             break;
     }

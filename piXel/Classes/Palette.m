@@ -75,7 +75,7 @@
         }
         
         for (; c < self.colorCount; c++) {
-            [self setPaletteColorWithRed:byte[2] green:byte[1] blue:byte[0] atIndex:c];
+            [self setPaletteColorWithRed:byte[0] green:byte[1] blue:byte[2] atIndex:c];
             byte += 3;
         }
     }
