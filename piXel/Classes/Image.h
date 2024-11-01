@@ -38,7 +38,8 @@
 @property (nonatomic, readonly) NSUInteger posterizeLevels;
 
 @property (nonatomic, readonly) Palette* palette;
-
+@property (nonatomic, readonly) BOOL isTransparencyEnabled;
+@property (nonatomic, readonly) BOOL isOutlineEnabled;
 
 @property (nonatomic, readonly) NSUInteger threshold;
 
@@ -48,6 +49,8 @@
 @property (nonatomic, readonly) BOOL isAutoBlockSizeAdjustEnabled;
 @property (nonatomic, readonly) BOOL isAutoZoomEnabled;
 
+
+- (void)redraw;
 - (id)initWithSize:(CGSize)size;
 
 - (BOOL)updateWithDelta:(NSTimeInterval)delta;
@@ -60,7 +63,9 @@
 - (void)setThreshold:(NSUInteger)value;
 - (void)setAutoBlockSizeAdjustEnabled:(BOOL)state;
 - (void)setIsPaletteEnabled:(BOOL)state;
-- (void)setAutoZoomEnabled:(BOOL)state;
+- (void)setAutoZoom:(BOOL)state;
+- (void)setTransparency:(BOOL)state;
+- (void)setOutline:(BOOL)state;
 
 -(void)showOriginal;
 -(void)hideOriginal;

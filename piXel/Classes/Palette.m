@@ -55,6 +55,33 @@
     
 }
 
+- (NSColor *)convertFromPackedRGBA:(UInt32)color {
+    color = CFSwapInt32BigToHost(color);
+    
+    UInt8 r = (color >> 24) & 0xFF;
+    UInt8 g = (color >> 16) & 0xFF;
+    UInt8 b = (color >> 8) & 0xFF;
+    
+    float red = (float)r / 255.0f;
+    float green = (float)g / 255.0f;
+    float blue = (float)b / 255.0f;
+    
+    NSColor *nsColor = [NSColor colorWithRed:red green:green blue:blue alpha:1.0];
+    return nsColor;
+}
+
+- (UInt32)convertToPackedRGBA:(NSColor *)color {
+    UInt32 r = color.redComponent * 255;
+    UInt32 g = color.greenComponent * 255;
+    UInt32 b = color.blueComponent * 255;
+    
+    UInt32 packedRGB = r << 24 | g << 16 | b << 8 | 255;
+    packedRGB = CFSwapInt32BigToHost(packedRGB);
+    return packedRGB;
+}
+
+
+
 // MARK: - Public Instance Methods
 
 
@@ -78,6 +105,13 @@
             [self setPaletteColorWithRed:byte[0] green:byte[1] blue:byte[2] atIndex:c];
             byte += 3;
         }
+        
+        if (_transparentIndex == 0xFFFF) {
+            _transparencyColor = [NSColor clearColor];
+            return;
+        }
+        UInt32 *palt = (UInt32 *)self.mutableData.mutableBytes;
+        _transparencyColor = [self convertFromPackedRGBA:palt[self.transparentIndex]];
     }
 }
 
@@ -142,7 +176,7 @@
 
 
 
--(UInt32)packedRGBColorAtIndex:(NSUInteger)index {
+-(UInt32)packedRGBAColorAtIndex:(NSUInteger)index {
     UInt32 *pal = self.mutableData.mutableBytes;
     return pal[index & 255];
 }
@@ -150,10 +184,6 @@
 
 // MARK: - Public Getter & Setters
 
-
--(void)setPaletteColorWithPackedRGB:(UInt32)rgb atIndex:(NSUInteger)index {
-    *( UInt32* )( self.mutableData.mutableBytes + ( ( index & 255 ) * sizeof(UInt32) ) ) = rgb | 0xFF000000;
-}
 
 -(void)setPaletteColorWithRed:(UInt8)r green:(UInt8)g blue:(UInt8)b atIndex:(NSUInteger)index {
     *( UInt32* )( self.mutableData.mutableBytes + ( ( index & 255 ) * sizeof(UInt32) ) ) = (UInt32)r | ((UInt32)g << 8) | ((UInt32)b << 16) | 0xFF000000;
@@ -164,26 +194,14 @@
 
 -(void)setColorCount:(NSUInteger)count {
     _colorCount = count < 1 ? 256 : count;
-    //    [Colors redrawPalette:self.mutableData.bytes colorCount:self.colorCount];
 }
 
--(void)setTransparentIndex:(NSUInteger)index {
-    _transparentIndex = index & 255;
-}
-
-// MARK:- Private Class Methods
-
-+(BOOL)isAnyRepeatsInList:( const UInt16* )list withLength:( NSUInteger )length {
-    for (NSUInteger i = 0; i < length; i++) {
-        for (NSUInteger j = 0; j < length; j++) {
-            if (i != j) {
-                if (list[i] == list[j]) {
-                    return YES;
-                }
-            }
-        }
-    }
-    return NO;
+-(void)setTransparencyColor:(NSColor *)color {
+    if (self.transparentIndex == 0xFFFF) return;
+    
+    UInt32 *pal = self.mutableData.mutableBytes;
+    pal[self.transparentIndex] = [self convertToPackedRGBA:color];
+    _transparencyColor = color;
 }
 
 @end

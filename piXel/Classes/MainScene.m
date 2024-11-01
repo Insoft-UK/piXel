@@ -69,7 +69,7 @@
 
 // MARK: - Keyboard Events
 
-- (void)keyDown:(NSEvent *)theEvent {
+- (void)keyDown:(NSEvent *)event {
     Image* image = Singleton.sharedInstance.image;
     
     enum {
@@ -80,7 +80,7 @@
         RightArrow = 124
     };
     
-    switch (theEvent.keyCode) {
+    switch (event.keyCode) {
         case Space:
             [image showOriginal];
             break;
@@ -106,32 +106,39 @@
             
         default:
 #ifdef DEBUG
-            NSLog(@"keyDown:'%@' keyCode: 0x%02X", theEvent.characters, theEvent.keyCode);
+            NSLog(@"keyDown:'%@' keyCode: 0x%02X", event.characters, event.keyCode);
 #endif
             break;
     }
 }
 
-- (void)keyUp:(NSEvent *)theEvent {
+- (void)keyUp:(NSEvent *)event {
     Image* image = Singleton.sharedInstance.image;
     
     enum {
         Space = 0x31
     };
     
-    switch (theEvent.keyCode) {
+    switch (event.keyCode) {
         case Space:
             [image hideOriginal];
             break;
         default:
 #ifdef DEBUG
-            NSLog(@"keyUp:'%@' keyCode: 0x%02X", theEvent.characters, theEvent.keyCode);
+            NSLog(@"keyUp:'%@' keyCode: 0x%02X", event.characters, event.keyCode);
 #endif
             break;
     }
 }
 
 
+- (void)mouseDown:(NSEvent *)event {
+    
+    NSPoint location = event.locationInWindow;
+#ifdef DEBUG
+    NSLog(@"locationInWindow.x: 0x%02f locationInWindow.y: 0x%02f", location.x, location.y);
+#endif
+}
 
 // MARK: - Update
 

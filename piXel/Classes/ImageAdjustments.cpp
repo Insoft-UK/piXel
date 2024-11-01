@@ -159,3 +159,46 @@ void ImageAdjustments::normalizeColorsToPalette(const void* pixels, int w, int h
         }
     }
 }
+
+void ImageAdjustments::applyOutline(const void* pixels, int w, int h) {
+    Color color;
+    Color* colors = (Color *)pixels;
+    
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            color = colors[x + y * w];
+            if (!color) {
+                continue;
+            }
+            
+            if (color == 0xFF000000) {
+                continue;
+            }
+            
+            if (x > 1) {
+                if (colors[x + y * w - 1] == 0) {
+                    colors[x + y * w - 1] = 0xFF000000;
+                }
+            }
+            
+            if (x < w - 2) {
+                if (colors[x + y * w + 1] == 0) {
+                    colors[x + y * w + 1] = 0xFF000000;
+                }
+            }
+            
+            if (y > 1) {
+                if (colors[x + y * w - w] == 0) {
+                    colors[x + y * w - w] = 0xFF000000;
+                }
+            }
+            
+            if (y < h - 2) {
+                if (colors[x + y * w + w] == 0) {
+                    colors[x + y * w + w] = 0xFF000000;
+                }
+            }
+        }
+    }
+}
+

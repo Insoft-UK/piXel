@@ -32,6 +32,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         updateAllMenus()
+        
+        // Observe the color change notification
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(colorDidChange(_:)),
+            name: NSColorPanel.colorDidChangeNotification,
+            object: NSColorPanel.shared
+        )
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -43,6 +51,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSApp.windows.first?.title = url.lastPathComponent
         }
         return true
+    }
+    
+    // MARK: - Observer/s
+    
+    @objc func colorDidChange(_ notification: Notification) {
+        if let viewController = NSApplication.shared.windows.first?.contentViewController as? ViewController {
+            let pickedColor = NSColorPanel.shared.color
+            if let image = Singleton.sharedInstance()?.image {
+                image.palette.setTransparencyColor(pickedColor)
+            }
+            
+            let red = pickedColor.redComponent
+            let green = pickedColor.greenComponent
+            let blue = pickedColor.blueComponent
+            let alpha = pickedColor.alphaComponent
+            print("sRGB Color Values - Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
+        }
+        
+        if let image = Singleton.sharedInstance()?.image {
+            image.redraw()
+        }
     }
     
     
@@ -93,7 +122,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if modalresponse == .OK {
             if let url = openPanel.url {
                 Singleton.sharedInstance()?.image.palette.loadPhotoshopActFile(url.path)
-                let viewController = NSApplication.shared.windows.first?.contentViewController as! ViewController as ViewController
+                if let image = Singleton.sharedInstance()?.image {
+                    NSColorPanel.shared.color = image.palette.transparencyColor
+                }
             }
         }
     }
@@ -108,7 +139,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = savePanel.runModal()
         if modalresponse == .OK {
             if let url = savePanel.url {
-                
                 Singleton.sharedInstance()?.image.palette.saveAsPhotoshopAct(atPath: url.path)
             }
         }
@@ -176,10 +206,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         updateAllMenus()
     }
+    @IBAction private func transparency(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setTransparency(!image.isTransparencyEnabled)
+        }
+        updateAllMenus()
+    }
+    
+    @IBAction private func outline(_ sender: NSMenuItem) {
+        if let image = Singleton.sharedInstance()?.image {
+            image.setOutline(!image.isOutlineEnabled)
+        }
+        updateAllMenus()
+    }
     
     @IBAction private func autoZoom(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
-            image.setAutoZoomEnabled(!image.isAutoZoomEnabled)
+            image.setAutoZoom(!image.isAutoZoomEnabled)
         }
         updateAllMenus()
     }
@@ -249,11 +292,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 item.state = image.isPaletteEnabled ? .on : .off
             }
             
+            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Transparency") {
+                item.state = image.isTransparencyEnabled ? .on : .off
+            }
+            
+            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Outline") {
+                item.state = image.isOutlineEnabled ? .on : .off
+            }
+            
             if let item = mainMenu.item(withTitle: "View")?.submenu?.item(withTitle: "Auto Zoom") {
                 item.state = image.isAutoZoomEnabled ? .on : .off
             }
-//            mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.isEnabled = false
-              
         }
     }
     

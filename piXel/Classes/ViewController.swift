@@ -36,7 +36,6 @@ import GameplayKit
     @IBOutlet var infoText: NSTextField!
     @IBOutlet var imageView: NSImageView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,7 +57,7 @@ import GameplayKit
     
     @objc func redrawPalette(_ bytes: UnsafePointer<UInt8>, colorCount colors: Int) {
         if let cgImage: CGImage = .create(fromPixelData: bytes, ofSize: CGSize(width: colors, height: 1)) {
-            if let resized = cgImage.resize(CGSize(width: 512, height: 12)) {
+            if let resized = cgImage.resize(CGSize(width: 512, height: 16)) {
                 if let nsImage: NSImage = .create(fromCGImage: resized) {
                     self.imageView.image = nsImage
                 }

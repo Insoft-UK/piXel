@@ -41,6 +41,7 @@ typedef struct {
 // MARK: - Private Properties
 
 @property SKMutableTexture *mutableTexture;
+@property ViewController* viewController;
 
 /// The image pixel data of the image thats being re-pixilated.
 @property NSMutableData *originalImageData;
@@ -50,6 +51,8 @@ typedef struct {
 @property NSMutableData *scratchData;
 
 @property BOOL changes;
+@property (nonatomic) BOOL transparencyEnabled;
+@property (nonatomic) BOOL outlineEnabled;
 
 @end
 
@@ -60,6 +63,8 @@ typedef struct {
 
 - (id)initWithSize:(CGSize)size {
     if ((self = [super init])) {
+        self.viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
+        
         NSUInteger lengthInBytes = (NSUInteger)size.width * (NSUInteger)size.height * sizeof(UInt32);
         
         self.mutableTexture = [[SKMutableTexture alloc] initWithSize:size];
@@ -72,6 +77,7 @@ typedef struct {
         
         SKSpriteNode *node;
         SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
+        
         if (texture != nil) {
             [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
                 Color *pixel = (Color *)pixelData;
@@ -98,6 +104,9 @@ typedef struct {
             node.yScale = -1;
             node.texture.filteringMode = SKTextureFilteringNearest;
             node.name = @"Image";
+            node.lightingBitMask = 0;
+            node.shadowedBitMask = 0;
+            node.shadowCastBitMask = 0;
             [self addChild:node];
         }
         
@@ -122,7 +131,7 @@ typedef struct {
     self.posterizeLevels = 256;
     self.threshold = 0;
     
-    self.autoZoomEnabled = YES;
+    _isAutoZoomEnabled = YES;
     self.autoBlockSizeAdjustEnabled = NO;
 }
 
@@ -196,6 +205,10 @@ typedef struct {
     [Extenions writeCGImage:imageRef to:url];
 }
 
+- (void)redraw {
+    self.changes = YES;
+}
+
 -(BOOL)updateWithDelta:(NSTimeInterval)delta {
     if (self.changes) {
         [self restorePixelatedImage];
@@ -246,33 +259,45 @@ typedef struct {
         int y;
         
         dest += (height - h) / 2 * width + (width - w) / 2;
-        
+        Color color;
         for (y = 0; y < h; ++y) {
             for (x = 0; x < w; ++x) {
-                dest[x + width * y] = src[x + y * w];
+                color = src[x + y * w];
+                dest[x + width * y] = color;
             }
         }
     }];
 }
 
 
-
+- (Color)convertFromNSColor:(NSColor *)color {
+    Color packedColor;
+    
+    Color r = (Color)(color.redComponent * 255.0f);
+    Color g = (Color)(color.greenComponent * 255.0f);
+    Color b = (Color)(color.blueComponent * 255.0f);
+    
+    packedColor = r << 24 | g << 16 | b << 8 | 255;
+    
+    return CFSwapInt32BigToHost(packedColor);
+}
 
 - (ColorRGB)convertFromPackedRGB:(Color)color {
-    ColorRGB rgb;
+    color = CFSwapInt32BigToHost(color);
     
-    // Extract the RGB components from the ARGB value
-    unsigned char r = (color >> 16) & 0xFF; // Red (bits 16-23)
-    unsigned char g = (color >> 8) & 0xFF;  // Green (bits 8-15)
-    unsigned char b = color & 0xFF;         // Blue (bits 0-7)
+    UInt8 r = (color >> 24) & 0xFF;
+    UInt8 g = (color >> 16) & 0xFF;
+    UInt8 b = (color >> 8) & 0xFF;
     
-    // Normalize the values to the range 0-1
-    rgb.r = r / 255.0f;
-    rgb.g = g / 255.0f;
-    rgb.b = b / 255.0f;
+    ColorRGB colorRGB = {
+        .r = (float)r / 255.0f,
+        .g = (float)g / 255.0f,
+        .b = (float)b / 255.0f
+    };
     
-    return rgb;
+    return colorRGB;
 }
+
 
 - (Color)convertToPackedRGB:(ColorRGB)colorRGB withAlphaOf:(float)alpha {
     // Convert the RGB values (0-1 range) back to 0-255 range
@@ -296,7 +321,7 @@ typedef struct {
     return pixels[x + y * w];
 }
 
-- (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withColor:(UInt32)color {
+- (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withColor:(Color)color {
     UInt32* pixels = (UInt32*)self.scratchData.bytes;
     NSUInteger w = (NSUInteger)self.newImageSize.width;
     NSUInteger h = (NSUInteger)self.newImageSize.height;
@@ -351,12 +376,17 @@ typedef struct {
     float x, y;
     int destX, destY;
     
+    
+    
+    
     for (destY = 0, y = 0; y < self.originalSize.height; y += self.blockSize, destY++) {
         for (destX = 0, x = 0; x < self.originalSize.width; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
             [self setPixelAt:destX ofY:destY withColor:color];
         }
     }
+    
+    
     
     
     if (self.isColorNormalizationEnabled) {
@@ -370,7 +400,19 @@ typedef struct {
     
     if (self.isPaletteEnabled) {
         ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (UInt32*)self.palette.bytes, (int)self.palette.colorCount);
-        return;
+    }
+    
+    if (self.transparencyEnabled) {
+        Color transparencyColor = [self convertFromNSColor: self.palette.transparencyColor];
+        Color *pixels = (Color *)self.scratchData.bytes;
+        for (int i = 0; i < (int)self.newImageSize.width * (int)self.newImageSize.height; ++i) {
+            if (pixels[i] != transparencyColor) continue;
+            pixels[i] = 0;
+        }
+    }
+    
+    if (self.isOutlineEnabled) {
+        ImageAdjustments::applyOutline(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height);
     }
     
     SKNode *node = [self childNodeWithName:@"Image"];
@@ -392,8 +434,23 @@ typedef struct {
     return self.threshold > 0;
 }
 
+- (BOOL)isTransparencyEnabled {
+    return self.transparencyEnabled;
+}
+
+- (BOOL)isOutlineEnabled {
+    return self.outlineEnabled;
+}
 
 // MARK: - Setter/s
+
+- (void)setTransparency:(BOOL)state {
+    self.transparencyEnabled = state;
+}
+
+- (void)setOutline:(BOOL)state {
+    self.outlineEnabled = state;
+}
 
 - (void)setThreshold:(NSUInteger)value {
     if (value > 256) return;
@@ -453,11 +510,10 @@ typedef struct {
     self.changes = YES;
 }
 
-
-
-- (void)setAutoZoomEnabled:(BOOL)state {
+- (void)setAutoZoom:(BOOL)state {
     _isAutoZoomEnabled = state;
 }
+
 
 -(void)showOriginal {
     self.originalImage.hidden = NO;
@@ -465,6 +521,8 @@ typedef struct {
 -(void)hideOriginal {
     self.originalImage.hidden = YES;
 }
+
+
 @end
 
 

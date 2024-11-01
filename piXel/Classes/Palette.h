@@ -29,9 +29,10 @@
 
 // MARK: - Class Properties
 
-@property (readonly) NSInteger colorCount;
-@property (readonly) NSUInteger transparentIndex;
-@property (readonly) UInt8  * _Nonnull  bytes;
+@property (nonatomic, readonly) NSInteger colorCount;
+@property (nonatomic, readonly) NSUInteger transparentIndex;
+@property (nonatomic, readonly) UInt8  * _Nonnull  bytes;
+@property (nonatomic, readonly) NSColor * _Nonnull  transparencyColor;
 
 // MARK: - Class Instance Methods
 
@@ -39,11 +40,11 @@
 -(void)saveAsPhotoshopActAtPath:( NSString* _Nonnull )path;
 -(UInt32)packedRGBColorAtIndex:(NSUInteger)index;
 
+-(NSColor * _Nonnull)getTransparencyColor;
+
 // MARK: - Class Setters
 
--(void)setPaletteColorWithPackedRGB:( UInt32 )rgb atIndex:(NSUInteger)index;
--(void)setPaletteColorWithRed:(UInt8)r green:(UInt8)g blue:(UInt8)b atIndex:(NSUInteger)index;
--(void)setTransparentIndex:(NSUInteger)index;
+-(void)setTransparencyColor:(NSColor *)color;
 
 @end
 
