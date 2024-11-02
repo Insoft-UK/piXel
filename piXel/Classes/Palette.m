@@ -25,182 +25,118 @@
 #import "Palette.h"
 #import "piXel-Swift.h"
 
+typedef struct __attribute__((__packed__)) {
+    struct {
+        UInt8 r, g, b;
+    } colors[256];
+    
+    UInt16 defined;
+    UInt16 transparency;
+} AdobeColorTable;
+
 @interface Palette()
 
 // MARK: - Private Properties
 @property NSMutableData *mutableData;
 
-
 @end
-
 
 @implementation Palette
 
 // MARK: - Init
 
--(id)init {
+- (id)init {
     if ((self = [super init])) {
-        [self setup];
+        self.mutableData = [NSMutableData dataWithCapacity:1024];
+        [self.mutableData setLength:1024];
+        _colors = (UInt32 *)self.mutableData.mutableBytes;
+        [self loadPhotoshopActFile:[NSBundle.mainBundle pathForResource:@"Default" ofType:@"act"]];
     }
     
     return self;
 }
 
--(void)setup {
-    self.mutableData = [NSMutableData dataWithCapacity:1024];
-    
-    [self loadPhotoshopActFile:[NSBundle.mainBundle pathForResource:@"Default" ofType:@"act"]];
-    
-    _bytes = (UInt8 *)self.mutableData.bytes;
-    
-}
-
-- (NSColor *)convertFromPackedRGBA:(UInt32)color {
-    color = CFSwapInt32BigToHost(color);
-    
-    UInt8 r = (color >> 24) & 0xFF;
-    UInt8 g = (color >> 16) & 0xFF;
-    UInt8 b = (color >> 8) & 0xFF;
-    
-    float red = (float)r / 255.0f;
-    float green = (float)g / 255.0f;
-    float blue = (float)b / 255.0f;
-    
-    NSColor *nsColor = [NSColor colorWithRed:red green:green blue:blue alpha:1.0];
-    return nsColor;
-}
-
-- (UInt32)convertToPackedRGBA:(NSColor *)color {
-    UInt32 r = color.redComponent * 255;
-    UInt32 g = color.greenComponent * 255;
-    UInt32 b = color.blueComponent * 255;
-    
-    UInt32 packedRGB = r << 24 | g << 16 | b << 8 | 255;
-    packedRGB = CFSwapInt32BigToHost(packedRGB);
-    return packedRGB;
-}
-
-
-
 // MARK: - Public Instance Methods
 
-
--(void)loadPhotoshopActFile:(NSString* _Nonnull)file {
+- (void)loadPhotoshopActFile:(NSString * _Nonnull)file {
     NSData *data = [NSData dataWithContentsOfFile:file];
     
-    if ( data.length >= 768 ) {
-        UInt8* byte = ( UInt8* )data.bytes;
-        UInt16 c = 0;
+    if (data.length == 768 || data.length == 772) {
+        AdobeColorTable *adobeColorTable = (AdobeColorTable *)data.bytes;
         
-        if ( data.length == 772 ) {
-            _colorCount =  CFSwapInt16BigToHost(*(UInt16 *)(data.bytes + 768));
-            self.mutableData.length = self.colorCount * sizeof(UInt32);
-            _transparentIndex =  CFSwapInt16BigToHost(*(UInt16 *)(data.bytes + 770));
+        if (data.length == 772) {
+            _definedColors = CFSwapInt16BigToHost(adobeColorTable->defined);
+            [self.mutableData setLength:self.definedColors * sizeof(UInt32)];
+            _transparencyIndex = CFSwapInt16BigToHost(adobeColorTable->transparency);
         } else {
-            _colorCount = 256;
-            _transparentIndex = 0xFFFF;
+            _definedColors = 256;
+            _transparencyIndex = -1;
         }
         
-        for (; c < self.colorCount; c++) {
-            [self setPaletteColorWithRed:byte[0] green:byte[1] blue:byte[2] atIndex:c];
-            byte += 3;
+        UInt32 color;
+        for (int n = 0; n < self.definedColors; n++) {
+            color = (UInt32)adobeColorTable->colors[n].r << 24 | (UInt32)adobeColorTable->colors[n].g << 16 | (UInt32)adobeColorTable->colors[n].b << 8 | 255;
+            self.colors[n] = CFSwapInt32BigToHost(color);
         }
         
-        if (_transparentIndex == 0xFFFF) {
+        if (_transparencyIndex == -1) {
             _transparencyColor = [NSColor clearColor];
             return;
+        } else {
+            _transparencyColor = [Colors colorFromRgba:self.colors[self.transparencyIndex]];
         }
-        UInt32 *palt = (UInt32 *)self.mutableData.mutableBytes;
-        _transparencyColor = [self convertFromPackedRGBA:palt[self.transparentIndex]];
     }
 }
 
--(void)saveAsPhotoshopActAtPath:( NSString* _Nonnull )path {
-    
-    //NSFileHandle *fileHandler = [NSFileHandle fileHandleForWritingAtPath:path];
-    FILE *fp;
-    
-    fp = fopen([path UTF8String], "wb");
-    
-    if ( fp != nil ) {
-        NSMutableData* act = [NSMutableData dataWithCapacity:772];
-        if (act != nil) {
-            act.length = 772;
-            UInt8* byte = ( UInt8* )act.mutableBytes;
-            UInt16 c = 0;
-            
-            UInt32 *pal = self.mutableData.mutableBytes;
-            
-            for (; c < self.colorCount; c++) {
-                
-                UInt32 rgb = pal[c & 255];
-#ifdef __LITTLE_ENDIAN__
-                rgb = CFSwapInt32HostToBig(rgb); // / ABGR -> RGBA
-#endif
-                
-                // RGBA
-                byte[0] = rgb >> 24;
-                byte[1] = ( rgb >> 16 ) & 255;
-                byte[2] = ( rgb >> 8 ) & 255;
-                
-#ifdef DEBUG
-                NSLog(@"R:0x%02X, G:0x%02X, B:0x%02X", byte[0], byte[1], byte[2]);
-#endif
-                
-                byte += 3;
-            }
-            
-            // Zero... out any unused palette entries.
-            for (; c < 256; c++) {
-                *byte++ = 0;
-                *byte++ = 0;
-                *byte++ = 0;
-            }
-            
-            fwrite(act.bytes, sizeof(char), 768, fp);
-            
-            c = CFSwapInt16HostToBig(self.colorCount);
-            fwrite(&c, sizeof(UInt16), 1, fp);
-            
-            c = CFSwapInt16HostToBig(self.transparentIndex);
-            fwrite(&c, sizeof(UInt16), 1, fp);
-            
-            
-            //[fileHandler writeData:actData];
-            
-        }
-        //[fileHandler closeFile];
-        fclose(fp);
+-(void)saveAsPhotoshopActAtPath:(NSString * _Nonnull )path {
+    // Ensure the file exists before trying to open it
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // Create the file if it doesn't exist
+    if (![fileManager fileExistsAtPath:path]) {
+        [fileManager createFileAtPath:path contents:nil attributes:nil];
     }
-}
 
-
-
--(UInt32)packedRGBAColorAtIndex:(NSUInteger)index {
-    UInt32 *pal = self.mutableData.mutableBytes;
-    return pal[index & 255];
+    // Now try to open the file for writing
+    NSFileHandle *fileHandler = [NSFileHandle fileHandleForWritingAtPath:path];
+    
+    if (fileHandler == nil) return;
+    
+    NSMutableData* data = [NSMutableData dataWithCapacity:772];
+    if (data == nil) {
+        [fileHandler closeFile];
+        return;
+    }
+    
+    [data setLength:772];
+    AdobeColorTable *adobeColorTable = (AdobeColorTable *)data.bytes;
+    
+    adobeColorTable->defined = CFSwapInt16HostToBig(self.definedColors);
+    adobeColorTable->transparency = CFSwapInt16HostToBig(self.transparencyIndex);
+    
+    for (int n = 0; n < self.definedColors; n++) {
+        UInt32 color = CFSwapInt32HostToBig(self.colors[n]);
+        adobeColorTable->colors[n].r = color >> 24;
+        adobeColorTable->colors[n].g = color >> 16;
+        adobeColorTable->colors[n].b = color >> 8;
+    }
+    
+    [fileHandler writeData:data];
+    
+    [fileHandler closeFile];
 }
 
 
 // MARK: - Public Getter & Setters
 
-
--(void)setPaletteColorWithRed:(UInt8)r green:(UInt8)g blue:(UInt8)b atIndex:(NSUInteger)index {
-    *( UInt32* )( self.mutableData.mutableBytes + ( ( index & 255 ) * sizeof(UInt32) ) ) = (UInt32)r | ((UInt32)g << 8) | ((UInt32)b << 16) | 0xFF000000;
-    if (index == _transparentIndex) {
-        *( UInt32* )( self.mutableData.mutableBytes + ( ( index & 255 ) * sizeof(UInt32) ) ) &= 0x00FFFFFF;
-    }
+- (void)setDefinedColors:(NSUInteger)value {
+    _definedColors = value < 1 ? 256 : value;
 }
 
--(void)setColorCount:(NSUInteger)count {
-    _colorCount = count < 1 ? 256 : count;
-}
-
--(void)setTransparencyColor:(NSColor *)color {
-    if (self.transparentIndex == 0xFFFF) return;
+- (void)setTransparencyColor:(NSColor *)color {
+    if (self.transparencyIndex == -1) return;
     
-    UInt32 *pal = self.mutableData.mutableBytes;
-    pal[self.transparentIndex] = [self convertToPackedRGBA:color];
+    self.colors[self.transparencyIndex] = CFSwapInt32BigToHost((UInt32)(color.redComponent * 255) << 24 | (UInt32)(color.greenComponent * 255) << 16 | (UInt32)(color.blueComponent * 255) << 8 | (UInt32)(color.alphaComponent * 255));
     _transparencyColor = color;
 }
 

@@ -56,22 +56,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Observer/s
     
     @objc func colorDidChange(_ notification: Notification) {
-        if let viewController = NSApplication.shared.windows.first?.contentViewController as? ViewController {
-            let pickedColor = NSColorPanel.shared.color
-            if let image = Singleton.sharedInstance()?.image {
-                image.palette.setTransparencyColor(pickedColor)
-            }
-            
-            let red = pickedColor.redComponent
-            let green = pickedColor.greenComponent
-            let blue = pickedColor.blueComponent
-            let alpha = pickedColor.alphaComponent
-            print("sRGB Color Values - Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
-        }
-        
+        let pickedColor = NSColorPanel.shared.color
         if let image = Singleton.sharedInstance()?.image {
+            image.palette.setTransparencyColor(pickedColor)
             image.redraw()
         }
+        
+#if DEBUG
+        let red = pickedColor.redComponent
+        let green = pickedColor.greenComponent
+        let blue = pickedColor.blueComponent
+        let alpha = pickedColor.alphaComponent
+        print("sRGB Color Values - Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
+#endif
     }
     
     
@@ -294,6 +291,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Transparency") {
                 item.state = image.isTransparencyEnabled ? .on : .off
+                item.isEnabled = image.isPaletteEnabled
             }
             
             if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Outline") {
@@ -305,6 +303,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
-    
 }

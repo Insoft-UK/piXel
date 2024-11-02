@@ -22,29 +22,22 @@
  SOFTWARE.
  */
 
-#ifndef Palette_h
-#define Palette_h
-
-@interface Palette: NSObject
-
-// MARK: - Class Properties
-
-@property (nonatomic, readonly) UInt16 definedColors;
-@property (nonatomic, readonly) SInt16 transparencyIndex;
-@property (nonatomic, readonly) UInt32 * _Nonnull colors;
-@property (nonatomic, readonly) NSColor * _Nonnull transparencyColor;
-
-// MARK: - Class Instance Methods
-
-- (void)loadPhotoshopActFile:(NSString * _Nonnull )file;
-- (void)saveAsPhotoshopActAtPath:(NSString * _Nonnull )path;
+import Cocoa
 
 
-// MARK: - Class Getter & Setters
-
-- (void)setTransparencyColor:(NSColor *_Nonnull)color;
-
-@end
-
-
-#endif /* Palette_h */
+@objc class Colors : NSObject {
+    @objc class func colorFrom(rgba: UInt32) -> NSColor {
+        let r = (rgba.bigEndian >> 24) & 255
+        let g = (rgba.bigEndian >> 16) & 255
+        let b = (rgba.bigEndian >> 8) & 255
+        let a = rgba.bigEndian & 255
+        
+        return NSColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(a) / 255.0)
+    }
+    
+    @objc class func RgbaFrom(color: NSColor) -> UInt32 {
+        var result: UInt32
+        result = UInt32(color.redComponent * 255) << 24 | UInt32(color.greenComponent * 255) << 16 | UInt32(color.blueComponent * 255) << 8 | UInt32(color.alphaComponent * 255)
+        return result.bigEndian
+    }
+}

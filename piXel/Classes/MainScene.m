@@ -176,7 +176,7 @@
     }
     
     self.viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)image.xScale * 100];
-    [self.viewController redrawPalette:image.palette.bytes colorCount:image.palette.colorCount];
+    [self.viewController redrawPalette:image.palette.colors colorCount:image.palette.definedColors];
 }
 
 

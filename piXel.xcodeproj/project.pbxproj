@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13365F00284142A900524BF6 /* Extensions.swift */; };
 		13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13652F2F29B778E50042E555 /* CGImage.swift */; };
+		136449C02CD562370046BDC4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136449BF2CD562370046BDC4 /* Colors.swift */; };
 		1365C78E26057FA700B23CC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1365C78D26057FA700B23CC3 /* AppDelegate.swift */; };
 		1365C79626057FA700B23CC3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1365C79526057FA700B23CC3 /* ViewController.swift */; };
 		1365C79826057FAC00B23CC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1365C79726057FAC00B23CC3 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		13365F00284142A900524BF6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		136449BF2CD562370046BDC4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		13652F2F29B778E50042E555 /* CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
 		1365C78A26057FA700B23CC3 /* piXel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = piXel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1365C78D26057FA700B23CC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */,
 				138B91622CCE01E500A0D3AE /* Palette.h */,
 				138B91632CCE01E500A0D3AE /* Palette.m */,
+				136449BF2CD562370046BDC4 /* Colors.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13DB09232842F88C00FDF931 /* WindowController.swift in Sources */,
+				136449C02CD562370046BDC4 /* Colors.swift in Sources */,
 				138B91642CCE01E500A0D3AE /* Palette.m in Sources */,
 				138B91552CCABF8A00A0D3AE /* ImageAdjustments.cpp in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,

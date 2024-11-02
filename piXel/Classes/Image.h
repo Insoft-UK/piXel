@@ -31,31 +31,35 @@
 
 @interface Image: SKNode
 
+// MARK: - Class Properties
+
+@property (nonatomic, readonly) Palette * _Nonnull palette;
 @property (nonatomic, readonly) CGSize originalSize;
 @property (nonatomic, readonly) CGSize newImageSize;
 @property (nonatomic, readonly) float blockSize;
 @property (nonatomic, readonly) NSInteger sampleSize;
 @property (nonatomic, readonly) NSUInteger posterizeLevels;
-
-@property (nonatomic, readonly) Palette* palette;
+@property (nonatomic, readonly) NSUInteger threshold;
+@property (nonatomic, readonly) BOOL isPaletteEnabled;
+@property (nonatomic, readonly) BOOL isAutoZoomEnabled;
 @property (nonatomic, readonly) BOOL isTransparencyEnabled;
 @property (nonatomic, readonly) BOOL isOutlineEnabled;
-
-@property (nonatomic, readonly) NSUInteger threshold;
-
-@property (nonatomic, readonly) BOOL isPaletteEnabled;
 @property (nonatomic, readonly) BOOL isPosterizeEnabled;
 @property (nonatomic, readonly) BOOL isColorNormalizationEnabled;
 @property (nonatomic, readonly) BOOL isAutoBlockSizeAdjustEnabled;
-@property (nonatomic, readonly) BOOL isAutoZoomEnabled;
 
 
-- (void)redraw;
-- (id)initWithSize:(CGSize)size;
+// MARK: - Class Instance Methods
 
+- (id _Nonnull)initWithSize:(CGSize)size;
+- (void)loadImageWithContentsOfURL:(NSURL * _Nonnull)url;
 - (BOOL)updateWithDelta:(NSTimeInterval)delta;
-- (void)saveImageAtURL:(NSURL *)url;
-- (void)loadImageWithContentsOfURL:(NSURL *)url;
+- (void)redraw;
+- (void)saveImageAtURL:(NSURL * _Nonnull)url;
+- (void)showOriginal;
+- (void)hideOriginal;
+
+// MARK: - Class Getter & Setters
 
 - (void)setBlockSize:(float)size;
 - (void)setSampleSize:(NSInteger)size;
@@ -67,8 +71,6 @@
 - (void)setTransparency:(BOOL)state;
 - (void)setOutline:(BOOL)state;
 
--(void)showOriginal;
--(void)hideOriginal;
 @end
 
 #endif /* Image_h */

@@ -175,25 +175,25 @@ void ImageAdjustments::applyOutline(const void* pixels, int w, int h) {
                 continue;
             }
             
-            if (x > 1) {
+            if (x > 0) {
                 if (colors[x + y * w - 1] == 0) {
                     colors[x + y * w - 1] = 0xFF000000;
                 }
             }
             
-            if (x < w - 2) {
+            if (x < w - 1) {
                 if (colors[x + y * w + 1] == 0) {
                     colors[x + y * w + 1] = 0xFF000000;
                 }
             }
             
-            if (y > 1) {
+            if (y > 0) {
                 if (colors[x + y * w - w] == 0) {
                     colors[x + y * w - w] = 0xFF000000;
                 }
             }
             
-            if (y < h - 2) {
+            if (y < h - 1) {
                 if (colors[x + y * w + w] == 0) {
                     colors[x + y * w + w] = 0xFF000000;
                 }

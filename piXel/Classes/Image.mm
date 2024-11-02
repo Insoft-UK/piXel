@@ -25,18 +25,8 @@
 #import "piXel-Swift.h"
 
 #import "ImageAdjustments.hpp"
-#import <array>
-
-typedef UInt32 Color;
-
-typedef struct {
-    float r;
-    float g;
-    float b;
-} ColorRGB;
 
 @interface Image()
-
 
 // MARK: - Private Properties
 
@@ -80,7 +70,7 @@ typedef struct {
         
         if (texture != nil) {
             [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
-                Color *pixel = (Color *)pixelData;
+                UInt32 *pixel = (UInt32 *)pixelData;
                 
                 NSUInteger s = size.width;
                 NSUInteger l = size.height;
@@ -126,7 +116,9 @@ typedef struct {
     return self;
 }
 
--(void)defaultSettings {
+// MARK: - Private Helper Instance Methods for Init
+
+- (void)defaultSettings {
     self.originalImage.alpha = 1.0;
     self.posterizeLevels = 256;
     self.threshold = 0;
@@ -137,7 +129,7 @@ typedef struct {
 
 // MARK: - Public Instance Methods
 
--(void)loadImageWithContentsOfURL:(NSURL *)url {
+- (void)loadImageWithContentsOfURL:(NSURL *)url {
     CGImageRef cgImage = nil;
     
     CGDataProviderRef dataProvider = CGDataProviderCreateWithFilename([url.path UTF8String]);
@@ -181,35 +173,7 @@ typedef struct {
     self.changes = YES;
 }
 
--(CGSize)getCGImageSize:(CGImageRef)cgImage {
-    if (cgImage) {
-        return (CGSize){.width = static_cast<CGFloat>(CGImageGetWidth(cgImage)), .height = static_cast<CGFloat>(CGImageGetHeight(cgImage))};
-    }
-    
-    return (CGSize){0};
-}
-
--(void)copyDataBytesOfCGImage:(CGImageRef)cgImage to:(NSMutableData *)data {
-    if (!cgImage || !data) return;
-    
-    CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
-    if (!rawData) return;
-    
-    NSUInteger lengthInBytes = CGImageGetWidth(cgImage) * CGImageGetHeight(cgImage) * sizeof(UInt32);
-    memcpy((void *)data.bytes, CFDataGetBytePtr(rawData), lengthInBytes);
-    CFRelease(rawData);
-}
-
--(void)saveImageAtURL:(NSURL *)url {
-    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)self.scratchData.bytes ofSize:self.newImageSize];
-    [Extenions writeCGImage:imageRef to:url];
-}
-
-- (void)redraw {
-    self.changes = YES;
-}
-
--(BOOL)updateWithDelta:(NSTimeInterval)delta {
+- (BOOL)updateWithDelta:(NSTimeInterval)delta {
     if (self.changes) {
         [self restorePixelatedImage];
         [self renderTexture];
@@ -224,6 +188,44 @@ typedef struct {
         return YES;
     }
     return NO;
+}
+
+- (void)redraw {
+    self.changes = YES;
+}
+
+- (void)saveImageAtURL:(NSURL *)url {
+    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)self.scratchData.bytes ofSize:self.newImageSize];
+    [Extenions writeCGImage:imageRef to:url];
+}
+
+- (void)showOriginal {
+    self.originalImage.hidden = NO;
+}
+
+- (void)hideOriginal {
+    self.originalImage.hidden = YES;
+}
+
+// MARK: - Private Instance Methods
+
+- (CGSize)getCGImageSize:(CGImageRef)cgImage {
+    if (cgImage) {
+        return (CGSize){.width = static_cast<CGFloat>(CGImageGetWidth(cgImage)), .height = static_cast<CGFloat>(CGImageGetHeight(cgImage))};
+    }
+    
+    return (CGSize){0};
+}
+
+- (void)copyDataBytesOfCGImage:(CGImageRef)cgImage to:(NSMutableData *)data {
+    if (!cgImage || !data) return;
+    
+    CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
+    if (!rawData) return;
+    
+    NSUInteger lengthInBytes = CGImageGetWidth(cgImage) * CGImageGetHeight(cgImage) * sizeof(UInt32);
+    memcpy((void *)data.bytes, CFDataGetBytePtr(rawData), lengthInBytes);
+    CFRelease(rawData);
 }
 
 - (void)automaticallyAdjustZoom {
@@ -259,7 +261,7 @@ typedef struct {
         int y;
         
         dest += (height - h) / 2 * width + (width - w) / 2;
-        Color color;
+        UInt32 color;
         for (y = 0; y < h; ++y) {
             for (x = 0; x < w; ++x) {
                 color = src[x + y * w];
@@ -268,49 +270,6 @@ typedef struct {
         }
     }];
 }
-
-
-- (Color)convertFromNSColor:(NSColor *)color {
-    Color packedColor;
-    
-    Color r = (Color)(color.redComponent * 255.0f);
-    Color g = (Color)(color.greenComponent * 255.0f);
-    Color b = (Color)(color.blueComponent * 255.0f);
-    
-    packedColor = r << 24 | g << 16 | b << 8 | 255;
-    
-    return CFSwapInt32BigToHost(packedColor);
-}
-
-- (ColorRGB)convertFromPackedRGB:(Color)color {
-    color = CFSwapInt32BigToHost(color);
-    
-    UInt8 r = (color >> 24) & 0xFF;
-    UInt8 g = (color >> 16) & 0xFF;
-    UInt8 b = (color >> 8) & 0xFF;
-    
-    ColorRGB colorRGB = {
-        .r = (float)r / 255.0f,
-        .g = (float)g / 255.0f,
-        .b = (float)b / 255.0f
-    };
-    
-    return colorRGB;
-}
-
-
-- (Color)convertToPackedRGB:(ColorRGB)colorRGB withAlphaOf:(float)alpha {
-    // Convert the RGB values (0-1 range) back to 0-255 range
-    Color r = (Color)(colorRGB.r * 255.0f);
-    Color g = (Color)(colorRGB.g * 255.0f);
-    Color b = (Color)(colorRGB.b * 255.0f);
-    Color a = (Color)(alpha * 255.0f);
-    
-    // Combine ARGB into a 32-bit integer
-    return a << 24 | r << 16 | g << 8 | b;
-}
-
-
 
 - (UInt32)getPixelAt:(NSUInteger)x ofY:(NSUInteger)y {
     UInt32* pixels = (UInt32*)self.originalImageData.bytes;
@@ -321,7 +280,7 @@ typedef struct {
     return pixels[x + y * w];
 }
 
-- (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withColor:(Color)color {
+- (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withRgbaColor:(UInt32)color {
     UInt32* pixels = (UInt32*)self.scratchData.bytes;
     NSUInteger w = (NSUInteger)self.newImageSize.width;
     NSUInteger h = (NSUInteger)self.newImageSize.height;
@@ -377,16 +336,12 @@ typedef struct {
     int destX, destY;
     
     
-    
-    
     for (destY = 0, y = 0; y < self.originalSize.height; y += self.blockSize, destY++) {
         for (destX = 0, x = 0; x < self.originalSize.width; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
-            [self setPixelAt:destX ofY:destY withColor:color];
+            [self setPixelAt:destX ofY:destY withRgbaColor:color | 0xFF000000];
         }
     }
-    
-    
     
     
     if (self.isColorNormalizationEnabled) {
@@ -399,12 +354,12 @@ typedef struct {
     }
     
     if (self.isPaletteEnabled) {
-        ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (UInt32*)self.palette.bytes, (int)self.palette.colorCount);
+        ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (UInt32*)self.palette.colors, (int)self.palette.definedColors);
     }
     
-    if (self.transparencyEnabled) {
-        Color transparencyColor = [self convertFromNSColor: self.palette.transparencyColor];
-        Color *pixels = (Color *)self.scratchData.bytes;
+    if (self.transparencyEnabled && self.isPaletteEnabled) {
+        UInt32 transparencyColor = [Colors RgbaFromColor:self.palette.transparencyColor];
+        UInt32 *pixels = (UInt32 *)self.scratchData.bytes;
         for (int i = 0; i < (int)self.newImageSize.width * (int)self.newImageSize.height; ++i) {
             if (pixels[i] != transparencyColor) continue;
             pixels[i] = 0;
@@ -420,18 +375,10 @@ typedef struct {
     node.position = CGPointMake((int)size.width & 1 ? 0.5 : 0.0, (int)size.height & 1 ? -0.5 : 0.0);
 }
 
-// MARK: - Getter/s
+// MARK: - Public Getter & Setters
 
 - (CGSize)newImageSize {
     return CGSizeMake((CGFloat)floor(self.originalSize.width / self.blockSize), (CGFloat)floor(self.originalSize.height / self.blockSize));
-}
-
-- (BOOL)isPosterizeEnabled {
-    return self.posterizeLevels < 256;
-}
-
-- (BOOL)isColorNormalizationEnabled {
-    return self.threshold > 0;
 }
 
 - (BOOL)isTransparencyEnabled {
@@ -442,41 +389,12 @@ typedef struct {
     return self.outlineEnabled;
 }
 
-// MARK: - Setter/s
-
-- (void)setTransparency:(BOOL)state {
-    self.transparencyEnabled = state;
+- (BOOL)isPosterizeEnabled {
+    return self.posterizeLevels < 256;
 }
 
-- (void)setOutline:(BOOL)state {
-    self.outlineEnabled = state;
-}
-
-- (void)setThreshold:(NSUInteger)value {
-    if (value > 256) return;
-    _threshold = value;
-    self.changes = YES;
-}
-
-- (void)setAutoBlockSizeAdjustEnabled:(BOOL)state {
-    _isAutoBlockSizeAdjustEnabled = state;
-}
-
-- (void)setPosterizeLevels:(NSUInteger)levels {
-    _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
-    self.changes = YES;
-}
-
-- (void)setSampleSize:(NSInteger)size {
-    NSInteger blockSize = self.blockSize;
-    
-    if (size > blockSize || size < 1) {
-        _sampleSize = 1;
-        return;
-    }
-    
-    _sampleSize = size;
-    self.changes = YES;
+- (BOOL)isColorNormalizationEnabled {
+    return self.threshold > 0;
 }
 
 - (void)setBlockSize:(float)size {
@@ -505,6 +423,33 @@ typedef struct {
     self.changes = YES;
 }
 
+- (void)setSampleSize:(NSInteger)size {
+    NSInteger blockSize = self.blockSize;
+    
+    if (size > blockSize || size < 1) {
+        _sampleSize = 1;
+        return;
+    }
+    
+    _sampleSize = size;
+    self.changes = YES;
+}
+
+- (void)setPosterizeLevels:(NSUInteger)levels {
+    _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
+    self.changes = YES;
+}
+
+- (void)setThreshold:(NSUInteger)value {
+    if (value > 256) return;
+    _threshold = value;
+    self.changes = YES;
+}
+
+- (void)setAutoBlockSizeAdjustEnabled:(BOOL)state {
+    _isAutoBlockSizeAdjustEnabled = state;
+}
+
 - (void)setIsPaletteEnabled:(BOOL)state {
     _isPaletteEnabled = state;
     self.changes = YES;
@@ -514,15 +459,14 @@ typedef struct {
     _isAutoZoomEnabled = state;
 }
 
-
--(void)showOriginal {
-    self.originalImage.hidden = NO;
-}
--(void)hideOriginal {
-    self.originalImage.hidden = YES;
+- (void)setTransparency:(BOOL)state {
+    self.transparencyEnabled = state;
+    self.changes = YES;
 }
 
+- (void)setOutline:(BOOL)state {
+    self.outlineEnabled = state;
+    self.changes = YES;
+}
 
 @end
-
-

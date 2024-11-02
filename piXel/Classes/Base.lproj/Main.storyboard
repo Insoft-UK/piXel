@@ -55,38 +55,80 @@
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
                                         <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
+                                            <imageReference key="image" image="externaldrive.fill" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                <hierarchicalColors>
+                                                    <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                </hierarchicalColors>
+                                            </imageReference>
                                             <connections>
                                                 <action selector="openDocument:" target="Voe-Tx-rLC" id="0aA-GD-HeE"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                                         <menuItem title="Save As..." keyEquivalent="S" id="Bw7-FT-i3A">
+                                            <imageReference key="image" image="doc.fill" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                <hierarchicalColors>
+                                                    <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                </hierarchicalColors>
+                                            </imageReference>
                                             <connections>
                                                 <action selector="saveAs:" target="Voe-Tx-rLC" id="83s-hP-ZmN"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="r2n-hg-vvp"/>
-                                        <menuItem title="Export" id="SBi-bz-Ikl">
+                                        <menuItem title="Import" id="jR8-4Y-yJi">
+                                            <imageReference key="image" image="square.and.arrow.down.fill" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                <hierarchicalColors>
+                                                    <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                </hierarchicalColors>
+                                            </imageReference>
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Export" id="LKe-ZJ-XgO">
+                                            <menu key="submenu" title="Import" id="qLX-05-Om4">
                                                 <items>
-                                                    <menuItem title="Photoshop ACT Palette File" id="7GM-Rr-PWE">
+                                                    <menuItem title="Photoshop ACT Palette File" id="hiZ-sd-vN5">
+                                                        <imageReference key="image" image="paintpalette.fill" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                            <hierarchicalColors>
+                                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                            </hierarchicalColors>
+                                                        </imageReference>
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
-                                                            <action selector="exportAs:" target="Voe-Tx-rLC" id="Qj6-vZ-biV"/>
+                                                            <action selector="importAct:" target="Voe-Tx-rLC" id="t4k-nf-DcE"/>
                                                         </connections>
                                                     </menuItem>
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Import" id="jR8-4Y-yJi">
+                                        <menuItem title="Export" id="SBi-bz-Ikl">
+                                            <imageReference key="image" image="square.and.arrow.up.fill" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                <hierarchicalColors>
+                                                    <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                </hierarchicalColors>
+                                            </imageReference>
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Import" id="qLX-05-Om4">
+                                            <menu key="submenu" title="Export" id="LKe-ZJ-XgO">
                                                 <items>
-                                                    <menuItem title="Photoshop ACT Palette File" id="hiZ-sd-vN5">
+                                                    <menuItem title="Photoshop ACT Palette File" id="7GM-Rr-PWE">
+                                                        <imageReference key="image" image="paintpalette.fill" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                            <hierarchicalColors>
+                                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                            </hierarchicalColors>
+                                                        </imageReference>
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
-                                                            <action selector="importAct:" target="Voe-Tx-rLC" id="t4k-nf-DcE"/>
+                                                            <action selector="exportAs:" target="Voe-Tx-rLC" id="Qj6-vZ-biV"/>
                                                         </connections>
                                                     </menuItem>
                                                 </items>
@@ -600,10 +642,14 @@
         <image name="NSTouchBarGoForwardTemplate" width="12" height="17"/>
         <image name="NSTouchBarGoUpTemplate" width="18" height="11"/>
         <image name="circle.square" catalog="system" width="15" height="14"/>
-        <image name="minus.magnifyingglass" catalog="system" width="20" height="20"/>
+        <image name="doc.fill" catalog="system" width="14" height="16"/>
+        <image name="externaldrive.fill" catalog="system" width="18" height="13"/>
+        <image name="minus.magnifyingglass" catalog="system" width="16" height="15"/>
         <image name="paintpalette.fill" catalog="system" width="15" height="13"/>
-        <image name="plus.magnifyingglass" catalog="system" width="16" height="15"/>
+        <image name="plus.magnifyingglass" catalog="system" width="20" height="20"/>
         <image name="square" catalog="system" width="15" height="14"/>
+        <image name="square.and.arrow.down.fill" catalog="system" width="15" height="16"/>
+        <image name="square.and.arrow.up.fill" catalog="system" width="15" height="17"/>
         <image name="square.arrowtriangle.4.outward" catalog="system" width="17" height="16"/>
         <image name="square.fill.on.circle.fill" catalog="system" width="18" height="17"/>
         <image name="square.slash" catalog="system" width="15" height="17"/>
