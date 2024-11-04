@@ -22,16 +22,15 @@
  SOFTWARE.
  */
 
-#ifndef ImageAdjustments_hpp
-#define ImageAdjustments_hpp
+#ifndef Adjustments_hpp
+#define Adjustments_hpp
 
 #include <stdint.h>
 
-class ImageAdjustments {
+class Adjustments {
 public:
     static void postorize(const void* pixels, long length, unsigned levels);
-    static void normalizeColors(const void* pixels, int w, int h, unsigned threshold);
-    static void applyOutline(const void* pixels, int w, int h);
+    static void normalizeColors(const void* pixels, long length, unsigned threshold);
 };
 
-#endif /* ImageAdjustments_hpp */
+#endif /* Adjustments_hpp */

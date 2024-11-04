@@ -24,7 +24,8 @@
 #import "Image.hh"
 #import "piXel-Swift.h"
 
-#import "ImageAdjustments.hpp"
+#import "Adjustments.hpp"
+#import "Filter.hpp"
 
 @implementation Image {
     SKMutableTexture *mutableTexture;
@@ -124,7 +125,7 @@
     self.threshold = 0;
     
     _isAutoZoomEnabled = YES;
-    self.autoBlockSizeAdjustEnabled = NO;
+    self.autoBlockSizeAdjustEnabled = YES;
 }
 
 // MARK: - Public Instance Methods
@@ -346,7 +347,6 @@
     
     if (self.isPaletteEnabled) {
         [self.clut mapColorsToColorTable:scratchData.bytes lengthInBytes:(int)self.size.width * (int)self.size.height];
-//        ImageAdjustments::mapColorsToNearestPalette(scratchData.bytes, (int)self.size.width, (int)self.size.height, (UInt32*)self.clut.colors, (int)self.clut.defined);
         if (self.isTransparencyEnabled) {
             UInt32 transparencyColor = [Colors RgbaFromColor:self.clut.transparencyColor];
             UInt32 *pixels = (UInt32 *)scratchData.bytes;
@@ -356,13 +356,13 @@
             }
         }
         if (self.isOutlineEnabled) {
-            ImageAdjustments::applyOutline(scratchData.bytes, (int)self.size.width, (int)self.size.height);
+            Filter::outline(scratchData.bytes, (int)self.size.width, (int)self.size.height);
         }
     } else {
         if (self.isNormalizeEnabled) {
-            ImageAdjustments::normalizeColors(scratchData.bytes, (int)self.size.width, (int)self.size.height, (unsigned int)self.threshold);
+            Adjustments::normalizeColors(scratchData.bytes, self.size.width * self.size.height, (unsigned int)self.threshold);
         } else {
-            ImageAdjustments::postorize(scratchData.bytes, self.size.width * self.size.height, (unsigned int)self.posterizeLevels);
+            Adjustments::postorize(scratchData.bytes, self.size.width * self.size.height, (unsigned int)self.posterizeLevels);
         }
     }
     

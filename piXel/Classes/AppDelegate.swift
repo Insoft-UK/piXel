@@ -35,7 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let image = Singleton.sharedInstance()!.image!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        //        updateAllMenus()
+        updateAllMenus()
         
         // Observe the color change notification
         NotificationCenter.default.addObserver(

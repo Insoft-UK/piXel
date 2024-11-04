@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1300CD1E2CD935C7002A42F1 /* Filter.cpp */; };
 		13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13365F00284142A900524BF6 /* Extensions.swift */; };
 		13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13652F2F29B778E50042E555 /* CGImage.swift */; };
 		136449C02CD562370046BDC4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136449BF2CD562370046BDC4 /* Colors.swift */; };
@@ -18,7 +19,7 @@
 		1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C7CC260584AB00B23CC3 /* MainScene.m */; };
 		1365C870260A875700B23CC3 /* Image.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1365C86F260A875700B23CC3 /* Image.mm */; };
 		1365C8BC260FF62400B23CC3 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1365C8BB260FF62400B23CC3 /* Credits.rtf */; };
-		138B91552CCABF8A00A0D3AE /* ImageAdjustments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */; };
+		138B91552CCABF8A00A0D3AE /* Adjustments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 138B91542CCABF8A00A0D3AE /* Adjustments.cpp */; };
 		138B91642CCE01E500A0D3AE /* CLUT.m in Sources */ = {isa = PBXBuildFile; fileRef = 138B91632CCE01E500A0D3AE /* CLUT.m */; };
 		138B91682CCE87BA00A0D3AE /* Default.act in Resources */ = {isa = PBXBuildFile; fileRef = 138B91672CCE87BA00A0D3AE /* Default.act */; };
 		13DB09232842F88C00FDF931 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DB09222842F88B00FDF931 /* WindowController.swift */; };
@@ -26,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1300CD1D2CD935C7002A42F1 /* Filter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
+		1300CD1E2CD935C7002A42F1 /* Filter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
+		1300CD202CD95525002A42F1 /* build.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = build.txt; sourceTree = "<group>"; };
 		13365F00284142A900524BF6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		136449BF2CD562370046BDC4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		13652F2F29B778E50042E555 /* CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
@@ -47,8 +51,8 @@
 		1365C8A4260E77C300B23CC3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		1365C8B0260FB18300B23CC3 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = SOURCE_ROOT; };
 		1365C8BB260FF62400B23CC3 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		138B91532CCABF8A00A0D3AE /* ImageAdjustments.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageAdjustments.hpp; sourceTree = "<group>"; };
-		138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ImageAdjustments.cpp; sourceTree = "<group>"; };
+		138B91532CCABF8A00A0D3AE /* Adjustments.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Adjustments.hpp; sourceTree = "<group>"; };
+		138B91542CCABF8A00A0D3AE /* Adjustments.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Adjustments.cpp; sourceTree = "<group>"; };
 		138B91622CCE01E500A0D3AE /* CLUT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLUT.h; sourceTree = "<group>"; };
 		138B91632CCE01E500A0D3AE /* CLUT.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CLUT.m; sourceTree = "<group>"; };
 		138B91672CCE87BA00A0D3AE /* Default.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = Default.act; sourceTree = "<group>"; };
@@ -88,6 +92,7 @@
 			children = (
 				1365C8A4260E77C300B23CC3 /* README.md */,
 				1365C8B0260FB18300B23CC3 /* LICENSE.md */,
+				1300CD202CD95525002A42F1 /* build.txt */,
 				1365C7AB260580A400B23CC3 /* Resources */,
 				1365C7A526057FDF00B23CC3 /* Supporting Files */,
 				1365C7A426057FCE00B23CC3 /* Classes */,
@@ -145,11 +150,13 @@
 			children = (
 				1365C86F260A875700B23CC3 /* Image.mm */,
 				1365C872260A876E00B23CC3 /* Image.hh */,
-				138B91532CCABF8A00A0D3AE /* ImageAdjustments.hpp */,
-				138B91542CCABF8A00A0D3AE /* ImageAdjustments.cpp */,
+				138B91532CCABF8A00A0D3AE /* Adjustments.hpp */,
+				138B91542CCABF8A00A0D3AE /* Adjustments.cpp */,
 				138B91622CCE01E500A0D3AE /* CLUT.h */,
 				138B91632CCE01E500A0D3AE /* CLUT.m */,
 				136449BF2CD562370046BDC4 /* Colors.swift */,
+				1300CD1D2CD935C7002A42F1 /* Filter.hpp */,
+				1300CD1E2CD935C7002A42F1 /* Filter.cpp */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -284,7 +291,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nsource ${PROJECT_DIR}/${PROJECT}/build.sh\nexport BUILD_NUMBER=( $(cat ${PROJECT_DIR}/${PROJECT}/build.txt) )\nBUILD_NUMBER=$(($BUILD_NUMBER+1))\necho $BUILD_NUMBER > ${PROJECT_DIR}/${PROJECT}/build.txt\n\nBUILD_CODE=$(build_code \"$BUILD_NUMBER\")\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_CODE\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -296,12 +303,13 @@
 				13DB09232842F88C00FDF931 /* WindowController.swift in Sources */,
 				136449C02CD562370046BDC4 /* Colors.swift in Sources */,
 				138B91642CCE01E500A0D3AE /* CLUT.m in Sources */,
-				138B91552CCABF8A00A0D3AE /* ImageAdjustments.cpp in Sources */,
+				138B91552CCABF8A00A0D3AE /* Adjustments.cpp in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
 				1365C870260A875700B23CC3 /* Image.mm in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
 				1365C79626057FA700B23CC3 /* ViewController.swift in Sources */,
 				1365C78E26057FA700B23CC3 /* AppDelegate.swift in Sources */,
+				1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */,
 				1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */,
 				1365C7B72605818800B23CC3 /* Singleton.m in Sources */,
 			);
