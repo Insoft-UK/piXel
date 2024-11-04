@@ -31,7 +31,6 @@ class ImageAdjustments {
 public:
     static void postorize(const void* pixels, long length, unsigned levels);
     static void normalizeColors(const void* pixels, int w, int h, unsigned threshold);
-    static void normalizeColorsToPalette(const void* pixels, int w, int h, const uint32_t* palt, int paletteSize);
     static void applyOutline(const void* pixels, int w, int h);
 };
 

@@ -25,27 +25,29 @@
 #import "MainScene.h"
 
 #import "piXel-Swift.h"
-#import "Image.h"
+#import "Image.hh"
 #import <Cocoa/Cocoa.h>
 
 @interface MainScene()
 
 //@property SKLabelNode *info;
-@property NSTimeInterval lastUpdateTime;
-@property ViewController* viewController;
-@property AppDelegate* appDelegate;
+
 
 @end
 
 @implementation MainScene
+
+NSTimeInterval lastUpdateTime;
+const ViewController* viewController;
+const AppDelegate* appDelegate;
 
 // MARK: - View
 
 - (void)didMoveToView:(SKView *)view {
     [self setup];
     
-    self.viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
-    self.appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
+    viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
+    appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
     
     Singleton.sharedInstance.mainScene = self;
 }
@@ -80,27 +82,45 @@
         RightArrow = 124
     };
     
+    NSUInteger flags = [event modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
+    
     switch (event.keyCode) {
         case Space:
             [image showOriginal];
             break;
             
         case LeftArrow:
-            if (image.isAutoBlockSizeAdjustEnabled) break;
-            [image setBlockSize: image.blockSize -= 0.01];
+            if (flags & NSEventModifierFlagOption) {
+                [image setWidth: image.width - 1];
+            } else {
+                if (image.isAutoBlockSizeAdjustEnabled) break;
+                [image setBlockSize: image.blockSize -= 0.01];
+            }
             break;
             
         case RightArrow:
-            if (image.isAutoBlockSizeAdjustEnabled) break;
-            [image setBlockSize: image.blockSize += 0.01];
+            if (flags & NSEventModifierFlagOption) {
+                [image setWidth: image.width + 1];
+            } else {
+                if (image.isAutoBlockSizeAdjustEnabled) break;
+                [image setBlockSize: image.blockSize += 0.01];
+            }
             break;
             
         case DownArrow:
-            [image setBlockSize: image.blockSize -= 1];
+            if (flags & NSEventModifierFlagOption) {
+                [image setHeight: image.height - 1];
+            } else {
+                [image setBlockSize: image.blockSize -= 1];
+            }
             break;
             
         case UpArrow:
-            [image setBlockSize: image.blockSize += 1];
+            if (flags & NSEventModifierFlagOption) {
+                [image setHeight: image.height + 1];
+            } else {
+                [image setBlockSize: image.blockSize += 1];
+            }
             break;
             
             
@@ -143,8 +163,8 @@
 // MARK: - Update
 
 -(void)update:(CFTimeInterval)currentTime {
-    NSTimeInterval delta = currentTime - self.lastUpdateTime;
-    self.lastUpdateTime = currentTime;
+    NSTimeInterval delta = currentTime - lastUpdateTime;
+    lastUpdateTime = currentTime;
     
     Image* image = Singleton.sharedInstance.image;
     
@@ -152,10 +172,10 @@
         CGFloat w = image.originalSize.width / image.blockSize;
         CGFloat h = image.originalSize.height / image.blockSize;
         
-        self.viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.width];
-        self.viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.height];
-        if (image.isColorNormalizationEnabled) {
-            self.viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Image Resolution: %dx%d - Block Size: %.2f, Threshold %ld",
+        viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.width];
+        viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.height];
+        if (image.isNormalizeEnabled) {
+            viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Image Resolution: %dx%d - Block Size: %.2f, Threshold %ld",
                                                         (int)w,
                                                         (int)h,
                                                         image.blockSize,
@@ -163,20 +183,16 @@
             ];
         }
         else {
-            self.viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Image Resolution: %dx%d - Block Size: %.2f",
+            viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Image Resolution: %dx%d - Block Size: %.2f",
                                                         (int)w,
                                                         (int)h,
                                                         image.blockSize
             ];
         }
-        
-       
-        
-        [self.appDelegate updateAllMenus];
     }
     
-    self.viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)image.xScale * 100];
-    [self.viewController redrawPalette:image.palette.colors colorCount:image.palette.definedColors];
+    viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)image.xScale * 100];
+    [viewController redrawPalette:(const UInt8 *)image.clut.colors colorCount:image.clut.defined];
 }
 
 

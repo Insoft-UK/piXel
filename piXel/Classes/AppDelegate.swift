@@ -29,9 +29,13 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet weak var mainMenu: NSMenu!
+    @IBOutlet weak var posterize: NSMenuItem!
+    @IBOutlet weak var normalize: NSMenuItem!
+    
+    let image = Singleton.sharedInstance()!.image!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        updateAllMenus()
+        //        updateAllMenus()
         
         // Observe the color change notification
         NotificationCenter.default.addObserver(
@@ -57,10 +61,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc func colorDidChange(_ notification: Notification) {
         let pickedColor = NSColorPanel.shared.color
-        if let image = Singleton.sharedInstance()?.image {
-            image.palette.setTransparencyColor(pickedColor)
-            image.redraw()
-        }
+        image.clut.setTransparencyColor(pickedColor)
+        image.redraw()
         
 #if DEBUG
         let red = pickedColor.redComponent
@@ -91,7 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-
+    
     @IBAction private func saveAs(_ sender: NSMenuItem) {
         let savePanel = NSSavePanel()
         
@@ -118,9 +120,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = openPanel.runModal()
         if modalresponse == .OK {
             if let url = openPanel.url {
-                Singleton.sharedInstance()?.image.palette.loadPhotoshopActFile(url.path)
+                Singleton.sharedInstance()?.image.clut.loadAdobeColorTable(url.path)
                 if let image = Singleton.sharedInstance()?.image {
-                    NSColorPanel.shared.color = image.palette.transparencyColor
+                    NSColorPanel.shared.color = image.clut.transparencyColor
                 }
             }
         }
@@ -136,171 +138,179 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = savePanel.runModal()
         if modalresponse == .OK {
             if let url = savePanel.url {
-                Singleton.sharedInstance()?.image.palette.saveAsPhotoshopAct(atPath: url.path)
+                Singleton.sharedInstance()?.image.clut.saveAsAdobeColorTable(atPath: url.path)
             }
         }
     }
-
+    
     
     @IBAction private func sampleSize(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setSampleSize(sender.tag);
-        }
-        
+        image.sampleSize = UInt(sender.tag);
         updateAllMenus()
     }
     
     @IBAction private func blockSize(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setBlockSize(Float(sender.tag));
-        }
-        
+        image.blockSize = CGFloat(sender.tag);
         updateAllMenus()
     }
     
     @IBAction private func autoAdjustBlockSize(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setAutoBlockSizeAdjustEnabled(!image.isAutoBlockSizeAdjustEnabled)
-        }
-        
+        image.isAutoBlockSizeAdjustEnabled = !image.isAutoBlockSizeAdjustEnabled
         updateAllMenus()
     }
     
     @IBAction private func postorize(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setPosterizeLevels(UInt(sender.tag))
+        image.posterizeLevels = UInt(sender.tag)
+        if image.posterizeLevels != 256 {
+            image.isPaletteEnabled = false
+            image.threshold = 0
         }
-        
         updateAllMenus()
     }
     
-    @IBAction private func normalizeColors(_ sender: NSMenuItem) {
+    
+    @IBAction private func normalize(_ sender: NSMenuItem) {
         if let image = Singleton.sharedInstance()?.image {
-            image.setThreshold(image.isColorNormalizationEnabled ? 0 : 10)
+            image.threshold = image.isNormalizeEnabled ? 0 : 10
+            if image.isNormalizeEnabled {
+                image.isPaletteEnabled = false
+            }
         }
         updateAllMenus()
     }
     
     @IBAction private func increaseThreshold(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setThreshold(image.threshold + 1);
+        image.threshold += 1;
+        if image.isNormalizeEnabled {
+            image.isPaletteEnabled = false
         }
         updateAllMenus()
     }
     
     @IBAction private func decreaseThreshold(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.threshold != 0 {
-                image.setThreshold(image.threshold - 1);
-            }
+        if image.threshold != 0 {
+            image.threshold -= 1;
+        }
+        if image.isNormalizeEnabled {
+            image.isPaletteEnabled = false
         }
         updateAllMenus()
     }
     
-    @IBAction private func usePalette(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setIsPaletteEnabled(!image.isPaletteEnabled)
-        }
+    @IBAction private func enablePalette(_ sender: NSMenuItem) {
+        image.isPaletteEnabled = !image.isPaletteEnabled
+        posterize.isEnabled = false
+        normalize.isEnabled = false
         updateAllMenus()
     }
     @IBAction private func transparency(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setTransparency(!image.isTransparencyEnabled)
+        image.isTransparencyEnabled = !image.isTransparencyEnabled
+        if image.isTransparencyEnabled {
+            image.isPaletteEnabled = true
+            posterize.isEnabled = false
+            normalize.isEnabled = false
         }
         updateAllMenus()
     }
     
     @IBAction private func outline(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setOutline(!image.isOutlineEnabled)
+        image.isOutlineEnabled = !image.isOutlineEnabled
+        if image.isOutlineEnabled {
+            image.isPaletteEnabled = true
+            posterize.isEnabled = false
+            normalize.isEnabled = false
         }
         updateAllMenus()
     }
     
     @IBAction private func autoZoom(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            image.setAutoZoom(!image.isAutoZoomEnabled)
-        }
+        image.isAutoZoomEnabled = !image.isAutoZoomEnabled
         updateAllMenus()
     }
     
     @IBAction private func zoomIn(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale < 50.0 {
-                image.setScale(image.yScale + 1.0)
-            }
+        if image.yScale < 50.0 {
+            image.setScale(image.yScale + 1.0)
         }
     }
     
     @IBAction private func zoomOut(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale > 1.0 {
-                image.setScale(image.yScale - 1.0)
-            }
+        if image.yScale > 1.0 {
+            image.setScale(image.yScale - 1.0)
         }
     }
     
-    @objc func updateAllMenus() {
-        if let image = Singleton.sharedInstance()?.image {
-            if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Sample Size")?.submenu {
-                for item in submenu.items {
-                    item.isEnabled = (item.tag > Int(image.blockSize)) ? true : false;
-                    
-                    if (item.tag == image.sampleSize) {
-                        item.state = .on
-                    }
-                    else {
-                        item.state = .off
-                    }
+    
+    //    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    //        if menuItem.action == #selector(postorize) {
+    //            return isFeatureEnabled
+    //        }
+    //        return true // Enable other menu items by default
+    //    }
+    
+    func updateAllMenus() {
+        if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Sample Size")?.submenu {
+            for item in submenu.items {
+                item.isEnabled = (item.tag > Int(image.blockSize)) ? true : false;
+                
+                if (item.tag == image.sampleSize) {
+                    item.state = .on
+                }
+                else {
+                    item.state = .off
                 }
             }
-            
-            if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Block Size")?.submenu {
-                for item in submenu.items {
-                    if (item.tag == Int(image.blockSize)) {
-                        item.state = .on
-                    }
-                    else {
-                        item.state = .off
-                    }
+        }
+        
+        if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Block Size")?.submenu {
+            for item in submenu.items {
+                if (item.tag == Int(image.blockSize)) {
+                    item.state = .on
+                }
+                else {
+                    item.state = .off
                 }
             }
-            
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Adjust Block Size") {
-                item.state = image.isAutoBlockSizeAdjustEnabled ? .on : .off
-            }
-            
-            if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.submenu {
-                for item in submenu.items {
-                    if (item.tag == Int(image.posterizeLevels)) {
-                        item.state = .on
-                    }
-                    else {
-                        item.state = .off
-                    }
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Adjust Block Size") {
+            item.state = image.isAutoBlockSizeAdjustEnabled ? .on : .off
+        }
+        
+        if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.submenu {
+            for item in submenu.items {
+                if (item.tag == Int(image.posterizeLevels)) {
+                    item.state = .on
+                }
+                else {
+                    item.state = .off
                 }
             }
-            
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Normalize Colors") {
-                item.state = image.isColorNormalizationEnabled ? .on : .off
-            }
-            
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Use Palette") {
-                item.state = image.isPaletteEnabled ? .on : .off
-            }
-            
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Transparency") {
-                item.state = image.isTransparencyEnabled ? .on : .off
-                item.isEnabled = image.isPaletteEnabled
-            }
-            
-            if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Outline") {
-                item.state = image.isOutlineEnabled ? .on : .off
-            }
-            
-            if let item = mainMenu.item(withTitle: "View")?.submenu?.item(withTitle: "Auto Zoom") {
-                item.state = image.isAutoZoomEnabled ? .on : .off
-            }
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize") {
+            item.state = image.isPosterizeEnabled ? .on : .off
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Normalize") {
+            item.state = image.isNormalizeEnabled ? .on : .off
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Enable Palette") {
+            item.state = image.isPaletteEnabled ? .on : .off
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Transparency") {
+            item.state = image.isTransparencyEnabled && image.isPaletteEnabled ? .on : .off
+            item.isEnabled = image.isPaletteEnabled
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Outline") {
+            item.state = image.isOutlineEnabled && image.isPaletteEnabled ? .on : .off
+        }
+        
+        if let item = mainMenu.item(withTitle: "View")?.submenu?.item(withTitle: "Auto Zoom") {
+            item.state = image.isAutoZoomEnabled ? .on : .off
         }
     }
 }

@@ -243,6 +243,12 @@
                                             </imageReference>
                                             <menu key="submenu" title="Postorize" id="T8J-Uf-BC5">
                                                 <items>
+                                                    <menuItem title="Posterize Off" tag="256" id="hcc-06-ICi">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <connections>
+                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="LGU-dG-lus"/>
+                                                        </connections>
+                                                    </menuItem>
                                                     <menuItem title="Posterize to 2 Levels" state="on" tag="2" keyEquivalent="2" id="PXe-XE-50e">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                                         <connections>
@@ -285,21 +291,15 @@
                                                             <action selector="postorize:" target="Voe-Tx-rLC" id="ST6-qg-e70"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Posterize to 256 Levels" tag="256" keyEquivalent="0" id="hcc-06-ICi">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                                        <connections>
-                                                            <action selector="postorize:" target="Voe-Tx-rLC" id="LGU-dG-lus"/>
-                                                        </connections>
-                                                    </menuItem>
                                                 </items>
                                             </menu>
                                             <connections>
                                                 <action selector="sampleSize:" target="Voe-Tx-rLC" id="ncV-SS-5nr"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Normalize Colors" keyEquivalent="n" id="PmH-gx-NqQ">
+                                        <menuItem title="Normalize" keyEquivalent="n" id="PmH-gx-NqQ">
                                             <connections>
-                                                <action selector="normalizeColors:" target="Voe-Tx-rLC" id="GLb-Vj-6UC"/>
+                                                <action selector="normalize:" target="Voe-Tx-rLC" id="IUA-mo-Rzw"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Increase Threshold" keyEquivalent="" id="yBK-U1-EFe">
@@ -313,7 +313,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="XDp-PI-Cqs"/>
-                                        <menuItem title="Use Palette" keyEquivalent="p" id="eHD-Q2-KNY">
+                                        <menuItem title="Enable Palette" keyEquivalent="p" id="eHD-Q2-KNY">
                                             <imageReference key="image" image="paintpalette.fill" catalog="system" symbolScale="small" renderingMode="hierarchical-single">
                                                 <hierarchicalColors>
                                                     <color name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -322,7 +322,7 @@
                                                 </hierarchicalColors>
                                             </imageReference>
                                             <connections>
-                                                <action selector="usePalette:" target="Voe-Tx-rLC" id="WAn-uY-3N3"/>
+                                                <action selector="enablePalette:" target="Voe-Tx-rLC" id="aLG-wd-OBe"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Transparency" keyEquivalent="t" id="1X4-Fv-rFZ">
@@ -425,6 +425,8 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="piXel" customModuleProvider="target">
                     <connections>
                         <outlet property="mainMenu" destination="AYu-sK-qS6" id="Scj-AI-iLn"/>
+                        <outlet property="normalize" destination="PmH-gx-NqQ" id="OhU-31-rkG"/>
+                        <outlet property="posterize" destination="Tet-4n-HNq" id="Ywd-4f-Fum"/>
                     </connections>
                 </customObject>
                 <toolbar implicitIdentifier="09D11707-F4A3-4FD5-970E-AC5832E91C2B" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="XmR-JU-ePu">
@@ -645,8 +647,8 @@
         <image name="doc.fill" catalog="system" width="14" height="16"/>
         <image name="externaldrive.fill" catalog="system" width="18" height="13"/>
         <image name="minus.magnifyingglass" catalog="system" width="16" height="15"/>
-        <image name="paintpalette.fill" catalog="system" width="15" height="13"/>
-        <image name="plus.magnifyingglass" catalog="system" width="20" height="20"/>
+        <image name="paintpalette.fill" catalog="system" width="18" height="15"/>
+        <image name="plus.magnifyingglass" catalog="system" width="16" height="15"/>
         <image name="square" catalog="system" width="15" height="14"/>
         <image name="square.and.arrow.down.fill" catalog="system" width="15" height="16"/>
         <image name="square.and.arrow.up.fill" catalog="system" width="15" height="17"/>

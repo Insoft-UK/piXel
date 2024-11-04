@@ -21,47 +21,47 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-#import "Image.h"
+#import "Image.hh"
 #import "piXel-Swift.h"
 
 #import "ImageAdjustments.hpp"
 
-@interface Image()
+@implementation Image {
+    SKMutableTexture *mutableTexture;
+    ViewController* viewController;
+    
+    /// The image pixel data of the image thats being re-pixilated.
+    NSMutableData *originalImageData;
+    SKSpriteNode *originalImage;
 
-// MARK: - Private Properties
-
-@property SKMutableTexture *mutableTexture;
-@property ViewController* viewController;
-
-/// The image pixel data of the image thats being re-pixilated.
-@property NSMutableData *originalImageData;
-@property SKSpriteNode *originalImage;
-
-/// The image pixel data of the image thats been re-pixilated.
-@property NSMutableData *scratchData;
-
-@property BOOL changes;
-@property (nonatomic) BOOL transparencyEnabled;
-@property (nonatomic) BOOL outlineEnabled;
-
-@end
-
-@implementation Image
+    /// The image pixel data of the image thats been re-pixilated.
+    NSMutableData *scratchData;
+    
+    NSInteger margin;
+    
+    BOOL changes;
+}
 
 
 // MARK: - Init
 
 - (id)initWithSize:(CGSize)size {
     if ((self = [super init])) {
-        self.viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
+        viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
         
         NSUInteger lengthInBytes = (NSUInteger)size.width * (NSUInteger)size.height * sizeof(UInt32);
         
-        self.mutableTexture = [[SKMutableTexture alloc] initWithSize:size];
-        self.originalImageData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
-        self.originalImageData.length = lengthInBytes;
-        self.scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
-        self.scratchData.length = lengthInBytes;
+        mutableTexture = [[SKMutableTexture alloc] initWithSize:size];
+        
+        originalImageData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
+        if (originalImageData != nil) {
+            [originalImageData setLength:lengthInBytes];
+        }
+        
+        scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
+        if (scratchData != nil) {
+            [scratchData setLength:lengthInBytes];
+        }
         
         
         
@@ -89,8 +89,8 @@
             
         }
         
-        if (self.mutableTexture) {
-            node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)self.mutableTexture size:size];
+        if (mutableTexture) {
+            node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)mutableTexture size:size];
             node.yScale = -1;
             node.texture.filteringMode = SKTextureFilteringNearest;
             node.name = @"Image";
@@ -103,7 +103,7 @@
         
         [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
      
-        _palette = [[Palette alloc] init];
+        _clut = [[CLUT alloc] init];
         
         
         
@@ -119,7 +119,7 @@
 // MARK: - Private Helper Instance Methods for Init
 
 - (void)defaultSettings {
-    self.originalImage.alpha = 1.0;
+    originalImage.alpha = 1.0;
     self.posterizeLevels = 256;
     self.threshold = 0;
     
@@ -143,19 +143,19 @@
             cgImage = CGImageCreateWithJPEGDataProvider(dataProvider, NULL, true, kCGRenderingIntentDefault);
         CGDataProviderRelease(dataProvider);
         
-        [self copyDataBytesOfCGImage:cgImage to:self.originalImageData];
+        [self copyDataBytesOfCGImage:cgImage to:originalImageData];
         _originalSize = [self getCGImageSize:cgImage];
         
         if ([self childNodeWithName:@"OriginalImage"] != nil) {
             [[self childNodeWithName:@"OriginalImage"] removeFromParent];
         }
         
-        self.originalImage = [SKSpriteNode spriteNodeWithColor:NSColor.clearColor size:[self getCGImageSize:cgImage]];
-        self.originalImage.texture = [SKTexture textureWithCGImage:cgImage];
-        self.originalImage.name = @"OriginalImage";
-        self.originalImage.hidden = YES;
+        originalImage = [SKSpriteNode spriteNodeWithColor:NSColor.clearColor size:[self getCGImageSize:cgImage]];
+        originalImage.texture = [SKTexture textureWithCGImage:cgImage];
+        originalImage.name = @"OriginalImage";
+        originalImage.hidden = YES;
         
-        [self addChild:self.originalImage];
+        [self addChild:originalImage];
         
         if (cgImage) CGImageRelease(cgImage);
         
@@ -170,12 +170,12 @@
     }
     
     
-    self.changes = YES;
+    changes = YES;
 }
 
 - (BOOL)updateWithDelta:(NSTimeInterval)delta {
-    if (self.changes) {
-        [self restorePixelatedImage];
+    if (changes) {
+        [self reconstructPixelArt];
         [self renderTexture];
         
         if (self.isAutoZoomEnabled) {
@@ -184,27 +184,27 @@
         
         [self updateOverlayOfOriginalImageScale];
         
-        self.changes = NO;
+        changes = NO;
         return YES;
     }
     return NO;
 }
 
 - (void)redraw {
-    self.changes = YES;
+    changes = YES;
 }
 
 - (void)saveImageAtURL:(NSURL *)url {
-    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)self.scratchData.bytes ofSize:self.newImageSize];
+    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)scratchData.bytes ofSize:self.size];
     [Extenions writeCGImage:imageRef to:url];
 }
 
 - (void)showOriginal {
-    self.originalImage.hidden = NO;
+    originalImage.hidden = NO;
 }
 
 - (void)hideOriginal {
-    self.originalImage.hidden = YES;
+    originalImage.hidden = YES;
 }
 
 // MARK: - Private Instance Methods
@@ -241,21 +241,21 @@
 }
 
 - (void)updateOverlayOfOriginalImageScale {
-    [self.originalImage setScale:1 / self.blockSize];
+    [originalImage setScale:1 / self.blockSize];
 }
 
 - (void)renderTexture {
-    [self.mutableTexture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
+    [mutableTexture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
         memset(pixelData, 0, lengthInBytes);
         
-        int width = self.mutableTexture.size.width;
-        int height = self.mutableTexture.size.height;
+        int width = self->mutableTexture.size.width;
+        int height = self->mutableTexture.size.height;
         
-        UInt32* src = (UInt32 *)self.scratchData.bytes;
+        UInt32* src = (UInt32 *)self->scratchData.bytes;
         UInt32* dest = (UInt32 *)pixelData;
         
-        int w = self.newImageSize.width;
-        int h = self.newImageSize.height;
+        int w = self.size.width;
+        int h = self.size.height;
         
         int x;
         int y;
@@ -272,7 +272,7 @@
 }
 
 - (UInt32)getPixelAt:(NSUInteger)x ofY:(NSUInteger)y {
-    UInt32* pixels = (UInt32*)self.originalImageData.bytes;
+    UInt32* pixels = (UInt32*)originalImageData.bytes;
     NSUInteger w = (NSUInteger)self.originalSize.width;
     NSUInteger h = (NSUInteger)self.originalSize.height;
     
@@ -281,9 +281,9 @@
 }
 
 - (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withRgbaColor:(UInt32)color {
-    UInt32* pixels = (UInt32*)self.scratchData.bytes;
-    NSUInteger w = (NSUInteger)self.newImageSize.width;
-    NSUInteger h = (NSUInteger)self.newImageSize.height;
+    UInt32* pixels = (UInt32*)scratchData.bytes;
+    NSUInteger w = (NSUInteger)self.size.width;
+    NSUInteger h = (NSUInteger)self.size.height;
     
     if (x >= w || y >= h) return;
     pixels[x + y * w] = color;
@@ -330,74 +330,71 @@
     return color.ARGB;
 }
 
-- (void)restorePixelatedImage {
+- (void)reconstructPixelArt {
     UInt32 color;
     float x, y;
     int destX, destY;
     
     
+    
     for (destY = 0, y = 0; y < self.originalSize.height; y += self.blockSize, destY++) {
         for (destX = 0, x = 0; x < self.originalSize.width; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
-            [self setPixelAt:destX ofY:destY withRgbaColor:color | 0xFF000000];
+            [self setPixelAt:destX + margin ofY:destY + margin withRgbaColor:color | 0xFF000000];
         }
-    }
-    
-    
-    if (self.isColorNormalizationEnabled) {
-        ImageAdjustments::normalizeColors(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (unsigned int)self.threshold);
-    }
-    
-    if (self.isPosterizeEnabled) {
-        long length = self.newImageSize.width * self.newImageSize.height;
-        ImageAdjustments::postorize(self.scratchData.bytes, length, (unsigned int)self.posterizeLevels);
     }
     
     if (self.isPaletteEnabled) {
-        ImageAdjustments::normalizeColorsToPalette(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height, (UInt32*)self.palette.colors, (int)self.palette.definedColors);
-    }
-    
-    if (self.transparencyEnabled && self.isPaletteEnabled) {
-        UInt32 transparencyColor = [Colors RgbaFromColor:self.palette.transparencyColor];
-        UInt32 *pixels = (UInt32 *)self.scratchData.bytes;
-        for (int i = 0; i < (int)self.newImageSize.width * (int)self.newImageSize.height; ++i) {
-            if (pixels[i] != transparencyColor) continue;
-            pixels[i] = 0;
+        [self.clut mapColorsToColorTable:scratchData.bytes lengthInBytes:(int)self.size.width * (int)self.size.height];
+//        ImageAdjustments::mapColorsToNearestPalette(scratchData.bytes, (int)self.size.width, (int)self.size.height, (UInt32*)self.clut.colors, (int)self.clut.defined);
+        if (self.isTransparencyEnabled) {
+            UInt32 transparencyColor = [Colors RgbaFromColor:self.clut.transparencyColor];
+            UInt32 *pixels = (UInt32 *)scratchData.bytes;
+            for (int i = 0; i < (int)self.size.width * (int)self.size.height; ++i) {
+                if (pixels[i] != transparencyColor) continue;
+                pixels[i] = 0;
+            }
+        }
+        if (self.isOutlineEnabled) {
+            ImageAdjustments::applyOutline(scratchData.bytes, (int)self.size.width, (int)self.size.height);
+        }
+    } else {
+        if (self.isNormalizeEnabled) {
+            ImageAdjustments::normalizeColors(scratchData.bytes, (int)self.size.width, (int)self.size.height, (unsigned int)self.threshold);
+        } else {
+            ImageAdjustments::postorize(scratchData.bytes, self.size.width * self.size.height, (unsigned int)self.posterizeLevels);
         }
     }
     
-    if (self.isOutlineEnabled) {
-        ImageAdjustments::applyOutline(self.scratchData.bytes, (int)self.newImageSize.width, (int)self.newImageSize.height);
-    }
-    
+
     SKNode *node = [self childNodeWithName:@"Image"];
-    auto size = self.newImageSize;
+    auto size = self.size;
     node.position = CGPointMake((int)size.width & 1 ? 0.5 : 0.0, (int)size.height & 1 ? -0.5 : 0.0);
 }
 
 // MARK: - Public Getter & Setters
 
-- (CGSize)newImageSize {
-    return CGSizeMake((CGFloat)floor(self.originalSize.width / self.blockSize), (CGFloat)floor(self.originalSize.height / self.blockSize));
+- (CGSize)size {
+    return CGSizeMake((CGFloat)floor(self.originalSize.width / self.blockSize) + margin * 2, (CGFloat)floor(self.originalSize.height / self.blockSize) + margin * 2);
 }
 
-- (BOOL)isTransparencyEnabled {
-    return self.transparencyEnabled;
+- (CGFloat)width {
+    return self.size.width;
 }
 
-- (BOOL)isOutlineEnabled {
-    return self.outlineEnabled;
+- (void)setWidth:(CGFloat)newValue {
+    self.blockSize = self.originalSize.width / newValue;
 }
 
-- (BOOL)isPosterizeEnabled {
-    return self.posterizeLevels < 256;
+- (CGFloat)height {
+    return self.size.height;
 }
 
-- (BOOL)isColorNormalizationEnabled {
-    return self.threshold > 0;
+- (void)setHeight:(CGFloat)newValue {
+    self.blockSize = self.originalSize.height / newValue;
 }
 
-- (void)setBlockSize:(float)size {
+- (void)setBlockSize:(CGFloat)size {
     if (size < 1.0) return;
     
     if (self.isAutoBlockSizeAdjustEnabled) {
@@ -419,54 +416,67 @@
     }
     self.sampleSize = self.sampleSize;
 
+    int length = self.size.width * self.size.height * sizeof(UInt32);
+    [scratchData setLength:length];
     
-    self.changes = YES;
+    changes = YES;
 }
 
-- (void)setSampleSize:(NSInteger)size {
-    NSInteger blockSize = self.blockSize;
+- (void)setSampleSize:(NSUInteger)newValue {
+    _sampleSize = newValue;
     
-    if (size > blockSize || size < 1) {
+    if (newValue > self.blockSize || newValue < 1) {
         _sampleSize = 1;
-        return;
     }
     
-    _sampleSize = size;
-    self.changes = YES;
+    changes = YES;
 }
 
-- (void)setPosterizeLevels:(NSUInteger)levels {
-    _posterizeLevels = levels >= 2 && levels < 256 ? levels : 256;
-    self.changes = YES;
+- (void)setPosterizeLevels:(NSUInteger)newValue {
+    _posterizeLevels = newValue >= 2 && newValue < 256 ? newValue : 256;
+    changes = YES;
 }
 
-- (void)setThreshold:(NSUInteger)value {
-    if (value > 256) return;
-    _threshold = value;
-    self.changes = YES;
+- (void)setIsTransparencyEnabled:(BOOL)newValue {
+    _isTransparencyEnabled = newValue;
+    changes = YES;
 }
 
-- (void)setAutoBlockSizeAdjustEnabled:(BOOL)state {
-    _isAutoBlockSizeAdjustEnabled = state;
+- (void)setOutlineEnabled:(BOOL)state {
+    _isOutlineEnabled = state;
+//    _margin = state ? 1 : 0;
+    
+    changes = YES;
 }
 
-- (void)setIsPaletteEnabled:(BOOL)state {
-    _isPaletteEnabled = state;
-    self.changes = YES;
+
+- (BOOL)isPosterizeEnabled {
+    return self.posterizeLevels < 256 && !self.isNormalizeEnabled && !self.isPaletteEnabled;
 }
 
-- (void)setAutoZoom:(BOOL)state {
+- (BOOL)isNormalizeEnabled {
+    return self.threshold > 0 && !self.isPaletteEnabled;
+}
+
+- (void)setThreshold:(NSUInteger)newValue {
+    if (newValue > 256) return;
+    _threshold = newValue;
+    changes = YES;
+}
+
+- (void)setAutoBlockSizeAdjustEnabled:(BOOL)newValue {
+    _isAutoBlockSizeAdjustEnabled = newValue;
+}
+
+- (void)setIsPaletteEnabled:(BOOL)newValue {
+    _isPaletteEnabled = newValue;
+    changes = YES;
+}
+
+- (void)setIsAutoZoomEnabled:(BOOL)state {
     _isAutoZoomEnabled = state;
 }
 
-- (void)setTransparency:(BOOL)state {
-    self.transparencyEnabled = state;
-    self.changes = YES;
-}
 
-- (void)setOutline:(BOOL)state {
-    self.outlineEnabled = state;
-    self.changes = YES;
-}
 
 @end

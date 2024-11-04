@@ -22,22 +22,24 @@
  SOFTWARE.
  */
 
-#ifndef Palette_h
-#define Palette_h
+#ifndef CLUT_h
+#define CLUT_h
 
-@interface Palette: NSObject
+@interface CLUT: NSObject
 
 // MARK: - Class Properties
 
-@property (nonatomic, readonly) UInt16 definedColors;
-@property (nonatomic, readonly) SInt16 transparencyIndex;
+@property (nonatomic, readonly) UInt16 defined;
+@property (nonatomic, readonly) SInt16 transparency;
 @property (nonatomic, readonly) UInt32 * _Nonnull colors;
 @property (nonatomic, readonly) NSColor * _Nonnull transparencyColor;
 
 // MARK: - Class Instance Methods
 
-- (void)loadPhotoshopActFile:(NSString * _Nonnull )file;
-- (void)saveAsPhotoshopActAtPath:(NSString * _Nonnull )path;
+- (void)loadAdobeColorTable:(NSString * _Nonnull )file;
+- (void)saveAsAdobeColorTableAtPath:(NSString * _Nonnull )path;
+
+- (void)mapColorsToColorTable:(const void *_Nonnull)pixelData lengthInBytes:(size_t)length;
 
 
 // MARK: - Class Getter & Setters
@@ -47,4 +49,4 @@
 @end
 
 
-#endif /* Palette_h */
+#endif /* CLUT_h */

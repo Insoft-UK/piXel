@@ -23,31 +23,31 @@
  */
 
 #import <CoreGraphics/CoreGraphics.h>
-#import "Palette.h"
+#import "CLUT.h"
 
-#ifndef Image_h
-#define Image_h
-
+#ifndef Image_hh
+#define Image_hh
 
 @interface Image: SKNode
 
 // MARK: - Class Properties
 
-@property (nonatomic, readonly) Palette * _Nonnull palette;
+@property (nonatomic, readonly) CLUT * _Nonnull clut;
 @property (nonatomic, readonly) CGSize originalSize;
-@property (nonatomic, readonly) CGSize newImageSize;
-@property (nonatomic, readonly) float blockSize;
-@property (nonatomic, readonly) NSInteger sampleSize;
-@property (nonatomic, readonly) NSUInteger posterizeLevels;
-@property (nonatomic, readonly) NSUInteger threshold;
-@property (nonatomic, readonly) BOOL isPaletteEnabled;
-@property (nonatomic, readonly) BOOL isAutoZoomEnabled;
-@property (nonatomic, readonly) BOOL isTransparencyEnabled;
-@property (nonatomic, readonly) BOOL isOutlineEnabled;
+@property (nonatomic, readonly) CGSize size;
+@property (nonatomic) CGFloat width;
+@property (nonatomic) CGFloat height;
+@property (nonatomic) CGFloat blockSize;
+@property (nonatomic) NSUInteger sampleSize;
+@property (nonatomic) NSUInteger posterizeLevels;
+@property (nonatomic) NSUInteger threshold;
+@property (nonatomic) BOOL isPaletteEnabled;
+@property (nonatomic) BOOL isAutoZoomEnabled;
+@property (nonatomic) BOOL isTransparencyEnabled;
+@property (nonatomic) BOOL isOutlineEnabled;
 @property (nonatomic, readonly) BOOL isPosterizeEnabled;
-@property (nonatomic, readonly) BOOL isColorNormalizationEnabled;
-@property (nonatomic, readonly) BOOL isAutoBlockSizeAdjustEnabled;
-
+@property (nonatomic, readonly) BOOL isNormalizeEnabled;
+@property (nonatomic) BOOL isAutoBlockSizeAdjustEnabled;
 
 // MARK: - Class Instance Methods
 
@@ -59,18 +59,6 @@
 - (void)showOriginal;
 - (void)hideOriginal;
 
-// MARK: - Class Getter & Setters
-
-- (void)setBlockSize:(float)size;
-- (void)setSampleSize:(NSInteger)size;
-- (void)setPosterizeLevels:(NSUInteger)levels;
-- (void)setThreshold:(NSUInteger)value;
-- (void)setAutoBlockSizeAdjustEnabled:(BOOL)state;
-- (void)setIsPaletteEnabled:(BOOL)state;
-- (void)setAutoZoom:(BOOL)state;
-- (void)setTransparency:(BOOL)state;
-- (void)setOutline:(BOOL)state;
-
 @end
 
-#endif /* Image_h */
+#endif /* Image_hh */

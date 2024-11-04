@@ -35,7 +35,7 @@
 #import <SpriteKit/SpriteKit.h>
 
 /// Utilities
-#import "Image.h"
+#import "Image.hh"
 
 /// Singletons
 #import "Singleton.h"

@@ -45,10 +45,10 @@ class WindowController: NSWindowController {
     @IBAction private func coarse(_ sender: NSToolbarItem) {
         if let image = Singleton.sharedInstance()?.image {
             if sender.tag < 0 {
-                image.setBlockSize(image.blockSize - 1.0)
+                image.blockSize -= 1.0
             }
             else {
-                image.setBlockSize(image.blockSize + 1.0)
+                image.blockSize += 1.0
             }
         }
     }
@@ -56,10 +56,10 @@ class WindowController: NSWindowController {
     @IBAction private func fine(_ sender: NSToolbarItem) {
         if let image = Singleton.sharedInstance()?.image {
             if sender.tag < 0 {
-                image.setBlockSize(image.blockSize - 0.01)
+                image.blockSize -= 0.01
             }
             else {
-                image.setBlockSize(image.blockSize + 0.01)
+                image.blockSize += 0.01
             }
         }
     }

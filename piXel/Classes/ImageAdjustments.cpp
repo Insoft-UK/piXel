@@ -33,11 +33,30 @@ typedef struct {
     float b;
 } ColorRGB;
 
-// Function to extract color components from ARGB value
+template <typename T> static T swap_endian(T u) {
+    static_assert (CHAR_BIT == 8, "CHAR_BIT != 8");
+
+    union {
+        T u;
+        unsigned char u8[sizeof(T)];
+    } source, dest;
+
+    source.u = u;
+
+    for (size_t k = 0; k < sizeof(T); k++)
+        dest.u8[k] = source.u8[sizeof(T) - k - 1];
+
+    return dest.u;
+}
+
+// Function to extract color components from RGBA value
 static void getColorComponents(Color color, int* r, int* g, int* b) {
-    *r = (color >> 16) & 0xFF;  // Red component
-    *g = (color >> 8) & 0xFF;   // Green component
-    *b = color & 0xFF;          // Blue component
+#ifdef __LITTLE_ENDIAN__
+    color = swap_endian(color);
+#endif
+    *r = (color >> 24) & 255;
+    *g = (color >> 16) & 255;
+    *b = (color >> 8) & 255;
 }
 
 // Function to calculate Euclidean distance between two ARGB colors
@@ -54,13 +73,15 @@ static unsigned colorDistance(Color color1, Color color2) {
                 (b1 - b2) * (b1 - b2));
 }
 
-static ColorRGB convertFromPackedRGB(const Color color) {
+static ColorRGB convertFromPackedRGB(Color color) {
+#ifdef __LITTLE_ENDIAN__
+    color = swap_endian(color);
+#endif
     ColorRGB colorRGB;
     
-    // Extract the RGB components from the ARGB value
-    unsigned char r = (color >> 16) & 0xFF; // Red (bits 16-23)
-    unsigned char g = (color >> 8) & 0xFF;  // Green (bits 8-15)
-    unsigned char b = color & 0xFF;         // Blue (bits 0-7)
+    uint8_t r = color >> 24;
+    uint8_t g = color >> 16;
+    uint8_t b = color >> 8;
     
     // Normalize the values to the range 0-1
     colorRGB.r = r / 255.0f;
@@ -77,8 +98,11 @@ static Color convertToPackedRGB(const ColorRGB colorRGB, float alpha) {
     Color b = (Color)(colorRGB.b * 255.0f);
     Color a = (Color)(alpha * 255.0f);
     
-    // Combine ARGB into a 32-bit integer
-    return a << 24 | r << 16 | g << 8 | b;
+    Color color = r << 24 | g << 16 | b << 8 | a;
+#ifdef __LITTLE_ENDIAN__
+    color = swap_endian(color);
+#endif
+    return color;
 }
 
 // Function to reduce resolution of a single color channel (0-1 float)
@@ -120,6 +144,7 @@ void ImageAdjustments::normalizeColors(const void* pixels, int w, int h, unsigne
         for (int x = 0; x < w; ++x) {
             int i = x + y * w;
             Color baseColor = colors[i];
+            
             uint32_t key = baseColor & 0xFFFFFF;
             if (buckets[key].count >= 1) continue;
             
@@ -138,27 +163,6 @@ void ImageAdjustments::normalizeColors(const void* pixels, int w, int h, unsigne
     free(buckets);
 }
 
-void ImageAdjustments::normalizeColorsToPalette(const void* pixels, int w, int h, const uint32_t* palt, int paletteSize) {
-    Color* colors = (Color *)pixels;
-    
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
-            int i = x + y * w;
-            Color baseColor = colors[i];
-            Color matchedColor = baseColor;
-            
-            int distance = 256;
-            for (int n = 0; n < paletteSize; ++n) {
-                if (colorDistance(baseColor, palt[n]) < distance) {
-                    distance = colorDistance(baseColor, palt[n]);
-                    matchedColor = palt[n];
-                }
-            }
-            
-            colors[i] = matchedColor;
-        }
-    }
-}
 
 void ImageAdjustments::applyOutline(const void* pixels, int w, int h) {
     Color color;
