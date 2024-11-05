@@ -231,8 +231,8 @@
 
 - (void)automaticallyAdjustZoom {
     float scaleX, scaleY;
-    scaleX = 640 / floor(self.originalSize.width / self.blockSize);
-    scaleY = 640 / floor(self.originalSize.height / self.blockSize);
+    scaleX = 640 / self.width;
+    scaleY = 640 / self.height;
     if (scaleX > scaleY) {
         [self setScale:scaleY];
     }
@@ -336,8 +336,8 @@
     float x, y;
     int destX, destY;
     
-    for (destY = 0, y = 0; y < self.originalSize.height; y += self.blockSize, destY++) {
-        for (destX = 0, x = 0; x < self.originalSize.width; x += self.blockSize, destX++) {
+    for (destY = 0, y = self.topCropMargin; y < self.originalSize.height - self.bottomCropMargin; y += self.blockSize, destY++) {
+        for (destX = 0, x = self.leftCropMargin; x < self.originalSize.width - self.rightCropMargin; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
             [self setPixelAt:destX + margin ofY:destY + margin withRgbaColor:color | 0xFF000000];
         }
@@ -372,10 +372,43 @@
 
 // MARK: - Getter & Setters
 
+- (void)setLeftCropMargin:(NSInteger)newValue {
+    if (newValue < 0) return;
+    if (newValue + self.rightCropMargin > self.originalSize.width) return;
+    _leftCropMargin = newValue;
+    [self redraw];
+}
+
+- (void)setRightCropMargin:(NSInteger)newValue {
+    if (newValue < 0) return;
+    if (newValue + self.leftCropMargin > self.originalSize.width) return;
+    _rightCropMargin = newValue;
+    [self redraw];
+}
+
+- (void)setTopCropMargin:(NSInteger)newValue {
+    if (newValue < 0) return;
+    if (newValue + self.bottomCropMargin > self.originalSize.height) return;
+    _topCropMargin = newValue;
+    [self redraw];
+}
+
+- (void)setBottomCropMargin:(NSInteger)newValue {
+    if (newValue < 0) return;
+    if (newValue + self.topCropMargin > self.originalSize.height) return;
+    _bottomCropMargin = newValue;
+    [self redraw];
+}
+
 - (CGSize)size {
     CGSize size;
-    size.width = (CGFloat)floor(self.originalSize.width / self.blockSize);
-    size.height = (CGFloat)floor(self.originalSize.height / self.blockSize);
+    
+    size = self.originalSize;
+    size.width = size.width - self.leftCropMargin - self.rightCropMargin;
+    size.height = size.height - self.topCropMargin - self.bottomCropMargin;
+    size.width = floor(size.width / self.blockSize);
+    size.height = floor(size.height / self.blockSize);
+    
     if (margin) {
         size.width += 2;
         size.height += 2;

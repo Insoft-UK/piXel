@@ -283,7 +283,20 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="vnE-75-jG5"/>
-                                        <menuItem title="Block Size" id="Kfw-6f-Fnv" userLabel="Block Size">
+                                        <menuItem title="Image Settings…" id="Kfw-6f-Fnv">
+                                            <imageReference key="image" image="photo" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                <hierarchicalColors>
+                                                    <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                </hierarchicalColors>
+                                            </imageReference>
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <segue destination="tJX-Y7-UxI" kind="show" id="wbi-Ni-bvV"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Block Size" id="Vhd-xD-XoD" userLabel="Block Size">
                                             <imageReference key="image" image="square" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
                                                 <hierarchicalColors>
                                                     <color name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -292,36 +305,36 @@
                                                 </hierarchicalColors>
                                             </imageReference>
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Block Size" id="VTp-im-4IP">
+                                            <menu key="submenu" title="Block Size" id="wHU-Fy-8Rg">
                                                 <items>
-                                                    <menuItem title="1 by 1 Pixels" tag="1" keyEquivalent="1" id="pse-AV-JgC" userLabel="2 by 2 Pixels">
+                                                    <menuItem title="1 by 1 Pixels" tag="1" keyEquivalent="1" id="Zto-vw-hBH" userLabel="2 by 2 Pixels">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
-                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="eGH-zx-bfh"/>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="mYk-TC-hT3"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="2 by 2 Pixels" tag="2" keyEquivalent="2" id="dOQ-Vz-7Au" userLabel="2 by 2 Pixels">
+                                                    <menuItem title="2 by 2 Pixels" tag="2" keyEquivalent="2" id="DSq-BL-MiS" userLabel="2 by 2 Pixels">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
-                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="VSd-35-ke5"/>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="QQA-t9-zbU"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="3 by 3 Pixels" tag="3" keyEquivalent="3" id="w4Q-gc-0Oo" userLabel="3 by 3 Pixels">
+                                                    <menuItem title="3 by 3 Pixels" tag="3" keyEquivalent="3" id="BxQ-WY-083" userLabel="3 by 3 Pixels">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
-                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="NiZ-Az-MYd"/>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="XqM-6o-Faf"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="4 by 4 Pixels" tag="4" keyEquivalent="4" id="aCL-VC-xMR" userLabel="4 by 4 Pixels">
+                                                    <menuItem title="4 by 4 Pixels" tag="4" keyEquivalent="4" id="juh-bg-AuQ" userLabel="4 by 4 Pixels">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
-                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="QhK-0q-MjF"/>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="Ai2-Vk-FhR"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="8 by 8 Pixels" tag="8" keyEquivalent="8" id="N4F-Ad-M0L">
+                                                    <menuItem title="8 by 8 Pixels" tag="8" keyEquivalent="8" id="NxA-Tu-rxQ">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                                         <connections>
-                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="NyD-Yh-bb8"/>
+                                                            <action selector="blockSize:" target="Voe-Tx-rLC" id="K84-Zm-Vzl"/>
                                                         </connections>
                                                     </menuItem>
                                                 </items>
@@ -751,6 +764,130 @@
             </objects>
             <point key="canvasLocation" x="232" y="1295"/>
         </scene>
+        <!--Image Settings-->
+        <scene sceneID="Kr5-gi-jj2">
+            <objects>
+                <viewController title="Image Settings" showSeguePresentationStyle="single" id="tJX-Y7-UxI" customClass="ImageSettingsViewController" customModule="piXel" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="wNj-v9-khn">
+                        <rect key="frame" x="0.0" y="0.0" width="218" height="230"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box focusRingType="none" fixedFrame="YES" borderType="bezel" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="LqL-Ef-HNg">
+                                <rect key="frame" x="17" y="16" width="184" height="170"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView" id="yN6-Cf-Iza">
+                                    <rect key="frame" x="4" y="5" width="176" height="162"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Pa-ga-GAG">
+                                            <rect key="frame" x="38" y="125" width="32" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Left:" id="oOa-xg-AFO">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvw-Hb-6b4">
+                                            <rect key="frame" x="76" y="123" width="76" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" drawsBackground="YES" id="ybw-Y0-sPD">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="updateLeftCropMarginTo:" target="tJX-Y7-UxI" id="f0l-Rc-zvY"/>
+                                            </connections>
+                                        </textField>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XnA-zc-ZX7">
+                                            <rect key="frame" x="30" y="93" width="40" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Right:" id="fsN-aO-b7P">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HXC-De-xEX">
+                                            <rect key="frame" x="76" y="90" width="76" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" drawsBackground="YES" id="EYK-Ou-bL6">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="updateRightCropMarginTo:" target="tJX-Y7-UxI" id="6V9-ei-fr8"/>
+                                            </connections>
+                                        </textField>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="trJ-Hz-pXF">
+                                            <rect key="frame" x="39" y="60" width="31" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Top:" id="vHa-eO-51w">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ud-Np-RNq">
+                                            <rect key="frame" x="76" y="57" width="76" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" drawsBackground="YES" id="Am6-YC-YpW">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="updateTopCropMarginTo:" target="tJX-Y7-UxI" id="cJh-1q-ZzK"/>
+                                            </connections>
+                                        </textField>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x9E-ze-akP">
+                                            <rect key="frame" x="18" y="29" width="52" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Bottom:" id="ciD-Y9-EJZ">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKd-ca-PnN">
+                                            <rect key="frame" x="76" y="26" width="76" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" drawsBackground="YES" id="sf8-AA-3IK">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="updateBottomCropMarginTo:" target="tJX-Y7-UxI" id="bbi-Uh-VhP"/>
+                                            </connections>
+                                        </textField>
+                                    </subviews>
+                                </view>
+                            </box>
+                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gru-Ha-hP6">
+                                <rect key="frame" x="18" y="194" width="66" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Copping…" id="Xsc-KX-EFe">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="bottomCropMargin" destination="SKd-ca-PnN" id="Peu-Ed-z8S"/>
+                        <outlet property="leftCropMargin" destination="Wvw-Hb-6b4" id="vdU-cc-yqD"/>
+                        <outlet property="rightCropMargin" destination="HXC-De-xEX" id="dQi-fn-W6L"/>
+                        <outlet property="topCropMargin" destination="3ud-Np-RNq" id="83e-lh-Psm"/>
+                    </connections>
+                </viewController>
+                <customObject id="1QK-fk-lfA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="316" y="-342"/>
+        </scene>
     </scenes>
     <resources>
         <image name="NSTouchBarGoBackTemplate" width="12" height="17"/>
@@ -763,7 +900,8 @@
         <image name="externaldrive.fill" catalog="system" width="18" height="13"/>
         <image name="minus.magnifyingglass" catalog="system" width="16" height="15"/>
         <image name="paintpalette.fill" catalog="system" width="15" height="13"/>
-        <image name="plus.magnifyingglass" catalog="system" width="16" height="15"/>
+        <image name="photo" catalog="system" width="18" height="14"/>
+        <image name="plus.magnifyingglass" catalog="system" width="20" height="20"/>
         <image name="square" catalog="system" width="15" height="14"/>
         <image name="square.and.arrow.down.fill" catalog="system" width="15" height="16"/>
         <image name="square.and.arrow.up.fill" catalog="system" width="15" height="17"/>

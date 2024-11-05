@@ -34,6 +34,10 @@
 
 @property (nonatomic, readonly) CLUT * _Nonnull clut;
 @property (nonatomic, readonly) CGSize originalSize;
+@property (nonatomic) NSInteger leftCropMargin;
+@property (nonatomic) NSInteger rightCropMargin;
+@property (nonatomic) NSInteger topCropMargin;
+@property (nonatomic) NSInteger bottomCropMargin;
 @property (nonatomic, readonly) CGSize size;
 @property (nonatomic) CGFloat width;
 @property (nonatomic) CGFloat height;

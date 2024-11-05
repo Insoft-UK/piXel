@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1300CD1E2CD935C7002A42F1 /* Filter.cpp */; };
+		1300CD222CDA79C7002A42F1 /* ImageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1300CD212CDA79C7002A42F1 /* ImageSettingsViewController.swift */; };
 		13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13365F00284142A900524BF6 /* Extensions.swift */; };
 		13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13652F2F29B778E50042E555 /* CGImage.swift */; };
 		136449C02CD562370046BDC4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136449BF2CD562370046BDC4 /* Colors.swift */; };
@@ -30,6 +31,7 @@
 		1300CD1D2CD935C7002A42F1 /* Filter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
 		1300CD1E2CD935C7002A42F1 /* Filter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		1300CD202CD95525002A42F1 /* build.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = build.txt; sourceTree = "<group>"; };
+		1300CD212CDA79C7002A42F1 /* ImageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingsViewController.swift; sourceTree = "<group>"; };
 		13365F00284142A900524BF6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		136449BF2CD562370046BDC4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		13652F2F29B778E50042E555 /* CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			children = (
 				1365C78D26057FA700B23CC3 /* AppDelegate.swift */,
 				1365C79526057FA700B23CC3 /* ViewController.swift */,
+				1300CD212CDA79C7002A42F1 /* ImageSettingsViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				1365C78E26057FA700B23CC3 /* AppDelegate.swift in Sources */,
 				1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */,
 				1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */,
+				1300CD222CDA79C7002A42F1 /* ImageSettingsViewController.swift in Sources */,
 				1365C7B72605818800B23CC3 /* Singleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
