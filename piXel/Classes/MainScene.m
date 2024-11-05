@@ -30,9 +30,6 @@
 
 @interface MainScene()
 
-//@property SKLabelNode *info;
-
-
 @end
 
 @implementation MainScene
@@ -41,31 +38,79 @@ NSTimeInterval lastUpdateTime;
 const ViewController* viewController;
 const AppDelegate* appDelegate;
 
+UInt32 gridLightColor;
+UInt32 gridDarkColor;
+
 // MARK: - View
 
 - (void)didMoveToView:(SKView *)view {
-    [self setup];
+    
     
     viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
     appDelegate = (AppDelegate *)NSApplication.sharedApplication.delegate;
     
     Singleton.sharedInstance.mainScene = self;
+    [self setup];
 }
+
+
 
 - (void)willMoveFromView:(SKView *)view {
     
 }
+
+
 
 // MARK: - Setup
 
 - (void)setup {
     CGSize size = NSApp.windows.firstObject.frame.size;
     self.size = CGSizeMake(size.width, size.height - 28);
+
+    [self setGridColor: GridColorBlue];
+    [self setGridSize: 8];
     
-    
-    
-    Singleton.sharedInstance.image.position = CGPointMake(1024 / 2, 768 / 2);
+    Singleton.sharedInstance.image.position = CGPointMake(self.size.width / 2, self.size.height / 2);
+    [Singleton.sharedInstance.image setZPosition:1.0];
     [self addChild:Singleton.sharedInstance.image];
+}
+
+- (void)initGrid {
+    SKSpriteNode *node;
+    
+    if ([self childNodeWithName:@"Grid"]) {
+        [[self childNodeWithName:@"Grid"] removeFromParent];
+    }
+    
+    if (self.gridSize == 0) return;
+    
+    CGSize size = CGSizeMake(floor(self.size.width / (CGFloat)self.gridSize), floor(self.size.height / (CGFloat)self.gridSize));
+    SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
+    
+    if (texture != nil) {
+        [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
+            UInt32 *pixel = (UInt32 *)pixelData;
+            
+            for (NSUInteger y = 0; y < (NSUInteger)size.height; y++) {
+                for (NSUInteger x = 0; x < (NSUInteger)size.width; x++) {
+                    if (y & 1) {
+                        *pixel++ = x & 1 ? gridDarkColor : gridLightColor;
+                    } else {
+                        *pixel++ = x & 1 ? gridLightColor : gridDarkColor;
+                    }
+                }
+            }
+        }];
+    
+        if ((node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)texture size:texture.size]) != nil) {
+            [node.texture setFilteringMode:SKTextureFilteringNearest];
+            [node setPosition:CGPointMake(self.size.width / 2, self.size.height / 2)];
+            [node setZPosition:-1];
+            [node setScale:(CGFloat)self.gridSize];
+            [node setName:@"Grid"];
+            [self addChild:node];
+        }
+    }
 }
 
 
@@ -195,11 +240,70 @@ const AppDelegate* appDelegate;
     [viewController redrawPalette:(const UInt8 *)image.clut.colors colorCount:image.clut.defined];
 }
 
+// MARK: - Getter & Setters
 
+- (void)setGridSize:(NSUInteger)newValue {
+    _gridSize = newValue;
+    [self initGrid];
+}
 
-
-
-
+- (void)setGridColor:(GridColor)newValue {
+    _gridColor = newValue;
+    
+    UInt32 light, dark;
+    
+    switch (self.gridColor) {
+        case GridColorLight:
+            light = 0xEEEEEEFF;
+            dark = 0xDDDDDDFF;
+            break;
+            
+        case GridColorMedium:
+            light = 0x888888FF;
+            dark = 0x666666FF;
+            break;
+            
+        case GridColorDark:
+            light = 0x333333FF;
+            dark = 0x222222FF;
+            break;
+        
+        case GridColorRed:
+            light = 0xCC0000FF;
+            dark = 0x880000FF;
+            break;
+        
+        case GridColorOrange:
+            light = 0xFF8800FF;
+            dark = 0xCC4400FF;
+            break;
+        
+        case GridColorGreen:
+            light = 0x00CC00FF;
+            dark = 0x008800FF;
+            break;
+        
+        case GridColorBlue:
+            light = 0x0000FFFF;
+            dark = 0x0000AAFF;
+            break;
+        
+        case GridColorPurple:
+            light = 0xDD00DDFF;
+            dark = 0x880088FF;
+            break;
+        
+        case GridColorNone:
+        default:
+            light = dark = 0;
+            break;
+    }
+    
+    gridLightColor = CFSwapInt32BigToHost(light);
+    gridDarkColor = CFSwapInt32BigToHost(dark);
+    
+    [self initGrid];
+}
 
 
 @end

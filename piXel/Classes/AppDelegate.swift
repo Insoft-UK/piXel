@@ -29,10 +29,12 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet weak var mainMenu: NSMenu!
-    @IBOutlet weak var posterize: NSMenuItem!
-    @IBOutlet weak var normalize: NSMenuItem!
+    
+    var window: NSWindow?
+    var scene: MainScene?
     
     let image = Singleton.sharedInstance()!.image!
+    
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         updateAllMenus()
@@ -44,6 +46,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             name: NSColorPanel.colorDidChangeNotification,
             object: NSColorPanel.shared
         )
+        
+        if let window = NSApplication.shared.windows.first {
+             self.window = window
+             
+             if let rootViewController = window.contentViewController as? ViewController {
+                 self.scene = rootViewController.skView.scene as? MainScene
+             }
+         }
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -143,6 +153,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    @IBAction private func gridSize(_ sender: NSMenuItem) {
+        scene?.gridSize = UInt(sender.tag)
+        updateAllMenus()
+    }
+    
+    @IBAction private func gridColor(_ sender: NSMenuItem) {
+        scene?.gridColor.rawValue = UInt(sender.tag)
+        updateAllMenus()
+    }
     
     @IBAction private func sampleSize(_ sender: NSMenuItem) {
         image.sampleSize = UInt(sender.tag);
@@ -199,27 +218,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction private func enablePalette(_ sender: NSMenuItem) {
         image.isPaletteEnabled = !image.isPaletteEnabled
-        posterize.isEnabled = false
-        normalize.isEnabled = false
         updateAllMenus()
     }
     @IBAction private func transparency(_ sender: NSMenuItem) {
         image.isTransparencyEnabled = !image.isTransparencyEnabled
-        if image.isTransparencyEnabled {
-            image.isPaletteEnabled = true
-            posterize.isEnabled = false
-            normalize.isEnabled = false
-        }
         updateAllMenus()
     }
     
     @IBAction private func outline(_ sender: NSMenuItem) {
         image.isOutlineEnabled = !image.isOutlineEnabled
-        if image.isOutlineEnabled {
-            image.isPaletteEnabled = true
-            posterize.isEnabled = false
-            normalize.isEnabled = false
-        }
         updateAllMenus()
     }
     
@@ -249,6 +256,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //    }
     
     func updateAllMenus() {
+        if let submenu = mainMenu.item(withTitle: "piXel")?.submenu?.item(withTitle: "Settings…")?.submenu?.item(withTitle: "Transparency")?.submenu?.item(withTitle: "Grid Size")?.submenu {
+            if let mainScene = Singleton.sharedInstance()!.mainScene {
+                for item in submenu.items {
+                    if (item.tag == mainScene.gridSize) {
+                        item.state = .on
+                    }
+                    else {
+                        item.state = .off
+                    }
+                }
+            }
+        }
+        
+        if let submenu = mainMenu.item(withTitle: "piXel")?.submenu?.item(withTitle: "Settings…")?.submenu?.item(withTitle: "Transparency")?.submenu?.item(withTitle: "Grid Color")?.submenu {
+            if let mainScene = Singleton.sharedInstance()!.mainScene {
+                for item in submenu.items {
+                    if (item.tag == mainScene.gridColor.rawValue) {
+                        item.state = .on
+                    }
+                    else {
+                        item.state = .off
+                    }
+                }
+            }
+        }
+        
         if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Sample Size")?.submenu {
             for item in submenu.items {
                 item.isEnabled = (item.tag > Int(image.blockSize)) ? true : false;
@@ -305,8 +338,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             item.isEnabled = image.isPaletteEnabled
         }
         
-        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Outline") {
-            item.state = image.isOutlineEnabled && image.isPaletteEnabled ? .on : .off
+        if let item = mainMenu.item(withTitle: "Filter")?.submenu?.item(withTitle: "Outline") {
+            item.state = image.isOutlineEnabled ? .on : .off
         }
         
         if let item = mainMenu.item(withTitle: "View")?.submenu?.item(withTitle: "Auto Zoom") {

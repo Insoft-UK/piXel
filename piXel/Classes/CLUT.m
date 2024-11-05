@@ -68,31 +68,34 @@ NSMutableData *closestLUT;
 - (void)loadAdobeColorTable:(NSString * _Nonnull)file {
     NSData *data = [NSData dataWithContentsOfFile:file];
     
-    if (data.length == 768 || data.length == 772) {
-        memset(closestLUT.mutableBytes, 0xFF, closestLUT.length);
-        AdobeColorTable *adobeColorTable = (AdobeColorTable *)data.bytes;
-        
-        if (data.length == 772) {
-            _defined = CFSwapInt16BigToHost(adobeColorTable->defined);
-            [self.mutableData setLength:self.defined * sizeof(UInt32)];
-            _transparency = CFSwapInt16BigToHost(adobeColorTable->transparency);
-        } else {
-            _defined = 256;
-            _transparency = -1;
-        }
-        
-        UInt32 color;
-        for (int n = 0; n < self.defined; n++) {
-            color = (UInt32)adobeColorTable->colors[n].r << 24 | (UInt32)adobeColorTable->colors[n].g << 16 | (UInt32)adobeColorTable->colors[n].b << 8 | 255;
-            colorLUT[n] = CFSwapInt32BigToHost(color);
-        }
-        
-        if (self.transparency == -1) {
-            _transparencyColor = [NSColor clearColor];
-            return;
-        } else {
-            _transparencyColor = [Colors colorFromRgba:colorLUT[self.transparency]];
-        }
+    if (!(data.length == 768 || data.length == 772)) {
+        data = nil;
+        return;
+    }
+    
+    memset(closestLUT.mutableBytes, 0xFF, closestLUT.length);
+    AdobeColorTable *adobeColorTable = (AdobeColorTable *)data.bytes;
+    
+    if (data.length == 772) {
+        _defined = CFSwapInt16BigToHost(adobeColorTable->defined);
+        [self.mutableData setLength:self.defined * sizeof(UInt32)];
+        _transparency = CFSwapInt16BigToHost(adobeColorTable->transparency);
+    } else {
+        _defined = 256;
+        _transparency = -1;
+    }
+    
+    UInt32 color;
+    for (int n = 0; n < self.defined; n++) {
+        color = (UInt32)adobeColorTable->colors[n].r << 24 | (UInt32)adobeColorTable->colors[n].g << 16 | (UInt32)adobeColorTable->colors[n].b << 8 | 255;
+        colorLUT[n] = CFSwapInt32BigToHost(color);
+    }
+    
+    if (self.transparency == -1) {
+        _transparencyColor = [NSColor clearColor];
+        return;
+    } else {
+        _transparencyColor = [Colors colorFromRgba:colorLUT[self.transparency]];
     }
 }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,7 +22,115 @@
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
+                                        <menuItem title="Settings…" id="4sf-2f-0Il">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Settings…" id="k04-Oy-Ahw">
+                                                <items>
+                                                    <menuItem title="Transparency" id="p9l-yW-b92">
+                                                        <imageReference key="image" image="checkerboard.rectangle" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                                            <hierarchicalColors>
+                                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                            </hierarchicalColors>
+                                                        </imageReference>
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <menu key="submenu" title="Transparency" id="M5o-Bc-V4k">
+                                                            <items>
+                                                                <menuItem title="Grid Size" id="n5Y-Cr-KMi">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    <menu key="submenu" title="Grid Size" id="KO6-Fg-6zM">
+                                                                        <items>
+                                                                            <menuItem title="None" id="b4d-6i-MzN">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridSize:" target="Voe-Tx-rLC" id="PAi-af-iIb"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Small" tag="8" id="2gV-Xa-ddV">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridSize:" target="Voe-Tx-rLC" id="qh6-lZ-f1Q"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Medium" tag="16" id="pBU-7b-LmD">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridSize:" target="Voe-Tx-rLC" id="amq-6F-twA"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Large" tag="24" id="GrX-o9-LxP">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridSize:" target="Voe-Tx-rLC" id="zQs-Ux-oyG"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </menuItem>
+                                                                <menuItem title="Grid Color" id="ub8-HX-phL">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    <menu key="submenu" title="Grid Color" id="VLg-KP-AVc">
+                                                                        <items>
+                                                                            <menuItem title="Light" tag="1" id="E1q-hA-MRZ">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="a5x-2e-xrj"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Medium" tag="2" id="9eq-Y8-GzY">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="R8a-C6-fE5"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Dark" tag="3" id="Pov-b6-Vhj">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="5S6-rc-FsG"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem isSeparatorItem="YES" id="6EO-5X-YJf"/>
+                                                                            <menuItem title="Red" tag="4" id="eiY-Je-eFd">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="ld1-ve-xwU"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Orange" tag="5" id="Fie-Ki-fA9">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="DbY-tI-uHq"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Green" tag="6" id="H4v-xx-NJb">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="dsN-m2-cBr"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Blue" tag="7" id="YwV-tL-Q88">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="UcN-Mi-iEY"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                            <menuItem title="Purple" tag="8" id="2iE-cK-6QB">
+                                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                                                <connections>
+                                                                                    <action selector="gridColor:" target="Voe-Tx-rLC" id="opV-ve-1rR"/>
+                                                                                </connections>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="yQN-LL-PGZ"/>
                                         <menuItem title="Hide piXel" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
@@ -297,6 +404,7 @@
                                                 <action selector="sampleSize:" target="Voe-Tx-rLC" id="ncV-SS-5nr"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="YII-U9-S0O"/>
                                         <menuItem title="Normalize" keyEquivalent="n" id="PmH-gx-NqQ">
                                             <connections>
                                                 <action selector="normalize:" target="Voe-Tx-rLC" id="IUA-mo-Rzw"/>
@@ -337,7 +445,14 @@
                                                 <action selector="transparency:" target="Voe-Tx-rLC" id="Gr6-lF-UIZ"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Outline" keyEquivalent="o" id="vqL-eu-03U">
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Filter" id="xWF-C4-ZFE">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Filter" id="Wla-xJ-F39">
+                                    <items>
+                                        <menuItem title="Outline" keyEquivalent="O" id="5ml-WJ-Sn8">
                                             <imageReference key="image" image="circle.square" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
                                                 <hierarchicalColors>
                                                     <color name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -346,7 +461,7 @@
                                                 </hierarchicalColors>
                                             </imageReference>
                                             <connections>
-                                                <action selector="outline:" target="Voe-Tx-rLC" id="au1-sK-6Pl"/>
+                                                <action selector="outline:" target="Voe-Tx-rLC" id="Mye-k5-wOF"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -425,7 +540,6 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="piXel" customModuleProvider="target">
                     <connections>
                         <outlet property="mainMenu" destination="AYu-sK-qS6" id="Scj-AI-iLn"/>
-                        <outlet property="normalize" destination="PmH-gx-NqQ" id="OhU-31-rkG"/>
                         <outlet property="posterize" destination="Tet-4n-HNq" id="Ywd-4f-Fum"/>
                     </connections>
                 </customObject>
@@ -643,11 +757,12 @@
         <image name="NSTouchBarGoDownTemplate" width="18" height="11"/>
         <image name="NSTouchBarGoForwardTemplate" width="12" height="17"/>
         <image name="NSTouchBarGoUpTemplate" width="18" height="11"/>
+        <image name="checkerboard.rectangle" catalog="system" width="18" height="14"/>
         <image name="circle.square" catalog="system" width="15" height="14"/>
         <image name="doc.fill" catalog="system" width="14" height="16"/>
         <image name="externaldrive.fill" catalog="system" width="18" height="13"/>
         <image name="minus.magnifyingglass" catalog="system" width="16" height="15"/>
-        <image name="paintpalette.fill" catalog="system" width="18" height="15"/>
+        <image name="paintpalette.fill" catalog="system" width="15" height="13"/>
         <image name="plus.magnifyingglass" catalog="system" width="16" height="15"/>
         <image name="square" catalog="system" width="15" height="14"/>
         <image name="square.and.arrow.down.fill" catalog="system" width="15" height="16"/>

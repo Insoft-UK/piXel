@@ -52,7 +52,7 @@
 // MARK: - Setup
 #pragma mark - Setup
 -(void)setup {
-    _image = [[Image alloc] initWithSize:CGSizeMake(1024, 768)];
+    _image = [[Image alloc] initWithSize:CGSizeMake(1024 * 4, 768 * 4)];
     
 }
 

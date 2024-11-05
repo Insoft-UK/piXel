@@ -108,7 +108,7 @@
 				1365C7AA2605805100B23CC3 /* Storyboards */,
 				13DB092A2844338900FDF931 /* Window Controller */,
 				1365C7A92605804400B23CC3 /* View Controller */,
-				1365C7A82605803000B23CC3 /* Utilities */,
+				1365C7A82605803000B23CC3 /* rePiX */,
 				1365C7A72605801C00B23CC3 /* Singletons */,
 				1365C7A62605800500B23CC3 /* Scenes */,
 			);
@@ -145,7 +145,7 @@
 			name = Singletons;
 			sourceTree = "<group>";
 		};
-		1365C7A82605803000B23CC3 /* Utilities */ = {
+		1365C7A82605803000B23CC3 /* rePiX */ = {
 			isa = PBXGroup;
 			children = (
 				1365C86F260A875700B23CC3 /* Image.mm */,
@@ -158,7 +158,7 @@
 				1300CD1D2CD935C7002A42F1 /* Filter.hpp */,
 				1300CD1E2CD935C7002A42F1 /* Filter.cpp */,
 			);
-			name = Utilities;
+			name = rePiX;
 			sourceTree = "<group>";
 		};
 		1365C7A92605804400B23CC3 /* View Controller */ = {
@@ -473,7 +473,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -508,7 +508,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -24,13 +24,27 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+typedef enum GridColor : NSUInteger {
+    GridColorNone   = 0,
+    GridColorLight  = 1,
+    GridColorMedium = 2,
+    GridColorDark   = 3,
+    GridColorRed    = 4,
+    GridColorOrange = 5,
+    GridColorGreen  = 6,
+    GridColorBlue   = 7,
+    GridColorPurple = 8
+} GridColor;
+
 @interface MainScene : SKScene
 
 // MARK: - Class Properties
 
+@property (nonatomic) NSUInteger gridSize;
+@property (nonatomic) GridColor gridColor;
+
 // MARK: - Class Instance Methods
 
-// MARK: - Class Getter & Setters
 
 
 @end

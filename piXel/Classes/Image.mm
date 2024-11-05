@@ -32,13 +32,17 @@
     ViewController* viewController;
     
     /// The image pixel data of the image thats being re-pixilated.
-    NSMutableData *originalImageData;
+//    NSMutableData *originalImageData;
+    
     SKSpriteNode *originalImage;
 
-    /// The image pixel data of the image thats been re-pixilated.
-    NSMutableData *scratchData;
+    NSData *sourceImageData;
     
-    NSInteger margin;
+    /// The image pixel data of the image thats been re-pixilated.
+    NSMutableData *workBuffer;
+    
+    BOOL margin;
+    
     
     BOOL changes;
 }
@@ -50,45 +54,10 @@
     if ((self = [super init])) {
         viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
         
-        NSUInteger lengthInBytes = (NSUInteger)size.width * (NSUInteger)size.height * sizeof(UInt32);
-        
+
         mutableTexture = [[SKMutableTexture alloc] initWithSize:size];
-        
-        originalImageData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
-        if (originalImageData != nil) {
-            [originalImageData setLength:lengthInBytes];
-        }
-        
-        scratchData = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
-        if (scratchData != nil) {
-            [scratchData setLength:lengthInBytes];
-        }
-        
-        
-        
+
         SKSpriteNode *node;
-        SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
-        
-        if (texture != nil) {
-            [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
-                UInt32 *pixel = (UInt32 *)pixelData;
-                
-                NSUInteger s = size.width;
-                NSUInteger l = size.height;
-                
-                for (NSUInteger r = 0; r < l; ++r) {
-                    for (NSUInteger c = 0; c < s; ++c) {
-                        pixel[r * s + c] = (r & 0b1000 ? c+8 : c) & 0b1000 ? 0xFFFF0000 : 0xFFAA0000;
-                    }
-                }
-            }];
-            
-            
-            node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)texture size:size];
-            node.texture.filteringMode = SKTextureFilteringNearest;
-            [self addChild:node];
-            
-        }
         
         if (mutableTexture) {
             node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)mutableTexture size:size];
@@ -121,8 +90,10 @@
 
 - (void)defaultSettings {
     originalImage.alpha = 1.0;
-    self.posterizeLevels = 256;
+    self.posterizeLevels = 2;
     self.threshold = 0;
+    margin = NO;
+    _blockSize = 4;
     
     _isAutoZoomEnabled = YES;
     self.autoBlockSizeAdjustEnabled = YES;
@@ -144,12 +115,21 @@
             cgImage = CGImageCreateWithJPEGDataProvider(dataProvider, NULL, true, kCGRenderingIntentDefault);
         CGDataProviderRelease(dataProvider);
         
-        [self copyDataBytesOfCGImage:cgImage to:originalImageData];
-        _originalSize = [self getCGImageSize:cgImage];
+        [self copyDataBytesOfCGImage:cgImage];
+        
         
         if ([self childNodeWithName:@"OriginalImage"] != nil) {
             [[self childNodeWithName:@"OriginalImage"] removeFromParent];
         }
+        
+        _originalSize = [self getCGImageSize:cgImage];
+        
+        // Make sure we allow for a surounding margin of 1px
+        int width = self.originalSize.width + 2;
+        int height = self.originalSize.height + 2;
+        size_t lengthInBytes = width * height * sizeof(UInt32);
+        
+        [self reallocateWorkBuffer:lengthInBytes];
         
         originalImage = [SKSpriteNode spriteNodeWithColor:NSColor.clearColor size:[self getCGImageSize:cgImage]];
         originalImage.texture = [SKTexture textureWithCGImage:cgImage];
@@ -159,9 +139,6 @@
         [self addChild:originalImage];
         
         if (cgImage) CGImageRelease(cgImage);
-        
-        
-        
     }
     
     self.blockSize = 1.0;
@@ -196,7 +173,7 @@
 }
 
 - (void)saveImageAtURL:(NSURL *)url {
-    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)scratchData.bytes ofSize:self.size];
+    CGImageRef imageRef = [Extenions createCGImageFromPixelData:(UInt8 *)workBuffer.bytes ofSize:self.size];
     [Extenions writeCGImage:imageRef to:url];
 }
 
@@ -210,6 +187,29 @@
 
 // MARK: - Private Instance Methods
 
+- (void)reallocateWorkBuffer:(size_t)lengthInBytes {
+    workBuffer = nil;
+    
+    workBuffer = [[NSMutableData alloc] initWithCapacity:lengthInBytes];
+    
+    if (workBuffer != nil) {
+        [workBuffer setLength:lengthInBytes];
+        [workBuffer resetBytesInRange:NSMakeRange(0, workBuffer.length)];
+    }
+}
+
+- (void)copyDataBytesOfCGImage:(CGImageRef)cgImage {
+    if (!cgImage) return;
+    
+    CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
+    if (!rawData) return;
+    
+    NSUInteger lengthInBytes = CGImageGetWidth(cgImage) * CGImageGetHeight(cgImage) * sizeof(UInt32);
+    sourceImageData = nil;
+    sourceImageData = [NSData dataWithBytes:CFDataGetBytePtr(rawData) length:lengthInBytes];
+    CFRelease(rawData);
+}
+
 - (CGSize)getCGImageSize:(CGImageRef)cgImage {
     if (cgImage) {
         return (CGSize){.width = static_cast<CGFloat>(CGImageGetWidth(cgImage)), .height = static_cast<CGFloat>(CGImageGetHeight(cgImage))};
@@ -218,21 +218,21 @@
     return (CGSize){0};
 }
 
-- (void)copyDataBytesOfCGImage:(CGImageRef)cgImage to:(NSMutableData *)data {
-    if (!cgImage || !data) return;
-    
-    CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
-    if (!rawData) return;
-    
-    NSUInteger lengthInBytes = CGImageGetWidth(cgImage) * CGImageGetHeight(cgImage) * sizeof(UInt32);
-    memcpy((void *)data.bytes, CFDataGetBytePtr(rawData), lengthInBytes);
-    CFRelease(rawData);
-}
+//- (void)copyDataBytesOfCGImage:(CGImageRef)cgImage {
+//    if (!cgImage) return;
+//    
+//    CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
+//    if (!rawData) return;
+//    
+//    NSUInteger lengthInBytes = CGImageGetWidth(cgImage) * CGImageGetHeight(cgImage) * sizeof(UInt32);
+//    memcpy((void *)sourceImageData.bytes, CFDataGetBytePtr(rawData), lengthInBytes);
+//    CFRelease(rawData);
+//}
 
 - (void)automaticallyAdjustZoom {
     float scaleX, scaleY;
-    scaleX = floor(640 / floor(self.originalSize.width / self.blockSize));
-    scaleY = floor(640 / floor(self.originalSize.height / self.blockSize));
+    scaleX = 640 / floor(self.originalSize.width / self.blockSize);
+    scaleY = 640 / floor(self.originalSize.height / self.blockSize);
     if (scaleX > scaleY) {
         [self setScale:scaleY];
     }
@@ -252,7 +252,7 @@
         int width = self->mutableTexture.size.width;
         int height = self->mutableTexture.size.height;
         
-        UInt32* src = (UInt32 *)self->scratchData.bytes;
+        UInt32* src = (UInt32 *)self->workBuffer.bytes;
         UInt32* dest = (UInt32 *)pixelData;
         
         int w = self.size.width;
@@ -273,7 +273,7 @@
 }
 
 - (UInt32)getPixelAt:(NSUInteger)x ofY:(NSUInteger)y {
-    UInt32* pixels = (UInt32*)originalImageData.bytes;
+    UInt32* pixels = (UInt32*)sourceImageData.bytes;
     NSUInteger w = (NSUInteger)self.originalSize.width;
     NSUInteger h = (NSUInteger)self.originalSize.height;
     
@@ -282,7 +282,7 @@
 }
 
 - (void)setPixelAt:(NSUInteger)x ofY:(NSUInteger)y withRgbaColor:(UInt32)color {
-    UInt32* pixels = (UInt32*)scratchData.bytes;
+    UInt32* pixels = (UInt32*)workBuffer.bytes;
     NSUInteger w = (NSUInteger)self.size.width;
     NSUInteger h = (NSUInteger)self.size.height;
     
@@ -336,8 +336,6 @@
     float x, y;
     int destX, destY;
     
-    
-    
     for (destY = 0, y = 0; y < self.originalSize.height; y += self.blockSize, destY++) {
         for (destX = 0, x = 0; x < self.originalSize.width; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
@@ -346,36 +344,43 @@
     }
     
     if (self.isPaletteEnabled) {
-        [self.clut mapColorsToColorTable:scratchData.bytes lengthInBytes:(int)self.size.width * (int)self.size.height];
+        [self.clut mapColorsToColorTable:workBuffer.bytes lengthInBytes:(int)self.size.width * (int)self.size.height];
         if (self.isTransparencyEnabled) {
             UInt32 transparencyColor = [Colors RgbaFromColor:self.clut.transparencyColor];
-            UInt32 *pixels = (UInt32 *)scratchData.bytes;
+            UInt32 *pixels = (UInt32 *)workBuffer.bytes;
             for (int i = 0; i < (int)self.size.width * (int)self.size.height; ++i) {
                 if (pixels[i] != transparencyColor) continue;
                 pixels[i] = 0;
             }
         }
-        if (self.isOutlineEnabled) {
-            Filter::outline(scratchData.bytes, (int)self.size.width, (int)self.size.height);
-        }
     } else {
         if (self.isNormalizeEnabled) {
-            Adjustments::normalizeColors(scratchData.bytes, self.size.width * self.size.height, (unsigned int)self.threshold);
+            Adjustments::normalizeColors(workBuffer.bytes, self.size.width * self.size.height, (unsigned int)self.threshold);
         } else {
-            Adjustments::postorize(scratchData.bytes, self.size.width * self.size.height, (unsigned int)self.posterizeLevels);
+            Adjustments::postorize(workBuffer.bytes, self.size.width * self.size.height, (unsigned int)self.posterizeLevels);
         }
     }
     
+    if (self.isOutlineEnabled) {
+        Filter::outline(workBuffer.bytes, (int)self.size.width, (int)self.size.height);
+    }
 
     SKNode *node = [self childNodeWithName:@"Image"];
     auto size = self.size;
     node.position = CGPointMake((int)size.width & 1 ? 0.5 : 0.0, (int)size.height & 1 ? -0.5 : 0.0);
 }
 
-// MARK: - Public Getter & Setters
+// MARK: - Getter & Setters
 
 - (CGSize)size {
-    return CGSizeMake((CGFloat)floor(self.originalSize.width / self.blockSize) + margin * 2, (CGFloat)floor(self.originalSize.height / self.blockSize) + margin * 2);
+    CGSize size;
+    size.width = (CGFloat)floor(self.originalSize.width / self.blockSize);
+    size.height = (CGFloat)floor(self.originalSize.height / self.blockSize);
+    if (margin) {
+        size.width += 2;
+        size.height += 2;
+    }
+    return size;
 }
 
 - (CGFloat)width {
@@ -417,7 +422,7 @@
     self.sampleSize = self.sampleSize;
 
     int length = self.size.width * self.size.height * sizeof(UInt32);
-    [scratchData setLength:length];
+    [workBuffer setLength:length];
     
     changes = YES;
 }
@@ -444,8 +449,6 @@
 
 - (void)setOutlineEnabled:(BOOL)state {
     _isOutlineEnabled = state;
-//    _margin = state ? 1 : 0;
-    
     changes = YES;
 }
 
