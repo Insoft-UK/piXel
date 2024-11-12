@@ -150,6 +150,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateAllMenus()
     }
     
+    @IBAction private func margin(_ sender: NSMenuItem) {
+        image.hasMargin = !image.hasMargin
+        updateAllMenus()
+    }
+    
     @IBAction private func postorize(_ sender: NSMenuItem) {
         image.posterizeLevels = UInt(sender.tag)
         if image.posterizeLevels != 256 {
@@ -249,6 +254,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Auto Adjust Block Size") {
             item.state = image.isAutoBlockSizeAdjustEnabled ? .on : .off
+        }
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Margin") {
+            item.state = image.hasMargin ? .on : .off
         }
         
         

@@ -147,7 +147,7 @@
 
 - (void)update {
     [self removeOverlayGuideImage];
-    [self reconstructPixelArt];
+    [self createAlteredImage];
     [self renderTexture];
     
     if (self.isAutoZoomEnabled) {
@@ -358,20 +358,41 @@
     return color.ARGB;
 }
 
-- (void)reconstructPixelArt {
+- (void)createAlteredImage {
     UInt32 color;
     float x, y;
-    int destX, destY;
+    int dx, dy;
     
-    for (destY = 0, y = self.topCropMargin; y < self.originalSize.height - self.bottomCropMargin; y += self.blockSize, destY++) {
-        for (destX = 0, x = self.leftCropMargin; x < self.originalSize.width - self.rightCropMargin; x += self.blockSize, destX++) {
+    float x1 = self.leftCropMargin;
+    float y1 = self.topCropMargin;
+    float x2 = self.originalSize.width - self.rightCropMargin;
+    float y2 = self.originalSize.height - self.bottomCropMargin;
+    
+    for (dy = 0, y = y1; y < y2; y += self.blockSize, dy++) {
+        for (dx = 0, x = x1; x < x2; x += self.blockSize, dx++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
-            [self setPixelAt:destX ofY:destY withRgbaColor:color | 0xFF000000];
+            [self setPixelAt:dx ofY:dy withRgbaColor:color | 0xFF000000];
         }
     }
     
+    int width = self.size.width;
+    int height = self.size.height;
+    
+    if (self.hasMargin) {
+        for (dy = 0; dy < height; dy++) {
+            [self setPixelAt:0 ofY:dy withRgbaColor:0];
+            [self setPixelAt:width - 1 ofY:dy withRgbaColor:0];
+        }
+        
+        for (dx = 0; dx < width; dx++) {
+            [self setPixelAt:dx ofY:0 withRgbaColor:0];
+            [self setPixelAt:dx ofY:height - 1 withRgbaColor:0];
+        }
+    }
+   
+    
     if (self.isPaletteEnabled) {
-        [self.clut mapColorsToColorTable:workBuffer.bytes lengthInBytes:(int)self.size.width * (int)self.size.height];
+        [self.clut mapColorsToColorTable:workBuffer.bytes lengthInBytes:width * height];
         if (self.isTransparencyEnabled) {
             UInt32 transparencyColor = [Colors RgbaFromColor:self.clut.transparencyColor];
             UInt32 *pixels = (UInt32 *)workBuffer.bytes;
@@ -382,14 +403,14 @@
         }
     } else {
         if (self.isNormalizeEnabled) {
-            Adjustments::normalizeColors(workBuffer.bytes, self.size.width * self.size.height, (unsigned int)self.threshold);
+            Adjustments::normalizeColors(workBuffer.bytes, width * height, (unsigned int)self.threshold);
         } else {
-            Adjustments::postorize(workBuffer.bytes, self.size.width * self.size.height, (unsigned int)self.posterizeLevels);
+            Adjustments::postorize(workBuffer.bytes, width * height, (unsigned int)self.posterizeLevels);
         }
     }
     
     if (self.isOutlineEnabled) {
-        Filter::outline(workBuffer.bytes, (int)self.size.width, (int)self.size.height);
+        Filter::outline(workBuffer.bytes, width, height);
     }
     
     [self centerAlteredImage];
@@ -399,6 +420,7 @@
 - (void)centerAlteredImage {
     NSInteger width = self.width;
     NSInteger height = self.height;
+ 
     alteredImage.position = CGPointMake(width & 1 ? 0.5 : 0.0, height & 1 ? -0.5 : 0.0);
 }
 
@@ -456,10 +478,6 @@
     size.width = floor(size.width / self.blockSize);
     size.height = floor(size.height / self.blockSize);
     
-    if (self.isOutlineEnabled) {
-        size.width += 2;
-        size.height += 2;
-    }
     return size;
 }
 
@@ -527,7 +545,7 @@
     _hasChanged = YES;
 }
 
-- (void)setOutlineEnabled:(BOOL)state {
+- (void)setIsOutlineEnabled:(BOOL)state {
     _isOutlineEnabled = state;
     _hasChanged = YES;
 }
@@ -556,8 +574,13 @@
     _hasChanged = YES;
 }
 
-- (void)setIsAutoZoomEnabled:(BOOL)state {
-    _isAutoZoomEnabled = state;
+- (void)setIsAutoZoomEnabled:(BOOL)newValue {
+    _isAutoZoomEnabled = newValue;
+}
+
+- (void)setHasMargin:(BOOL)newValue {
+    _hasMargin = newValue;
+    _hasChanged = YES;
 }
 
 

@@ -54,6 +54,7 @@
 @property (nonatomic, readonly) BOOL isNormalizeEnabled;
 @property (nonatomic) BOOL isAutoBlockSizeAdjustEnabled;
 @property (nonatomic, readonly) BOOL hasChanged;
+@property (nonatomic) BOOL hasMargin;
 
 // MARK: - Class Instance Methods
 
