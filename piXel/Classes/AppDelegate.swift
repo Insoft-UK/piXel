@@ -27,31 +27,27 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+
+
     
     @IBOutlet weak var mainMenu: NSMenu!
     
     var window: NSWindow?
     var scene: MainScene?
     
-    let image = Singleton.sharedInstance()!.image!
+    var image: Image!
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         updateAllMenus()
-        
-        // Observe the color change notification
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(colorDidChange(_:)),
-            name: NSColorPanel.colorDidChangeNotification,
-            object: NSColorPanel.shared
-        )
+
         
         if let window = NSApplication.shared.windows.first {
              self.window = window
              
              if let rootViewController = window.contentViewController as? ViewController {
                  self.scene = rootViewController.skView.scene as? MainScene
+                 self.image = scene?.image
              }
          }
     }
@@ -61,27 +57,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func application(sender: NSApplication, openFile theDroppedFilePath: String) -> Bool {
         if let url = URL(string: theDroppedFilePath) {
-            Singleton.sharedInstance()?.image.load(withContentsOf: url)
+            image.load(withContentsOf: url)
             NSApp.windows.first?.title = url.lastPathComponent
         }
         return true
     }
     
     // MARK: - Observer/s
-    
-    @objc func colorDidChange(_ notification: Notification) {
-        let pickedColor = NSColorPanel.shared.color
-        image.clut.setTransparencyColor(pickedColor)
-        image.redraw()
-        
-#if DEBUG
-        let red = pickedColor.redComponent
-        let green = pickedColor.greenComponent
-        let blue = pickedColor.blueComponent
-        let alpha = pickedColor.alphaComponent
-        print("sRGB Color Values - Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
-#endif
-    }
     
     
     // MARK: - Action Methods
@@ -97,7 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = openPanel.runModal()
         if modalresponse == .OK {
             if let url = openPanel.url {
-                Singleton.sharedInstance()?.image.load(withContentsOf: url)
+                image.load(withContentsOf: url)
                 NSApp.windows.first?.title = url.lastPathComponent
             }
         }
@@ -114,7 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = savePanel.runModal()
         if modalresponse == .OK {
             if let url = savePanel.url {
-                Singleton.sharedInstance()?.image.save(at: url)
+                image.save(at: url)
             }
         }
     }
@@ -130,10 +112,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = openPanel.runModal()
         if modalresponse == .OK {
             if let url = openPanel.url {
-                Singleton.sharedInstance()?.image.clut.loadAdobeColorTable(url.path)
-                if let image = Singleton.sharedInstance()?.image {
-                    NSColorPanel.shared.color = image.clut.transparencyColor
-                }
+                image.clut.loadAdobeColorTable(url.path)
+               NSColorPanel.shared.color = image.clut.transparencyColor
             }
         }
     }
@@ -148,20 +128,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let modalresponse = savePanel.runModal()
         if modalresponse == .OK {
             if let url = savePanel.url {
-                Singleton.sharedInstance()?.image.clut.saveAsAdobeColorTable(atPath: url.path)
+                image.clut.saveAsAdobeColorTable(atPath: url.path)
             }
         }
     }
     
-    @IBAction private func gridSize(_ sender: NSMenuItem) {
-        scene?.gridSize = UInt(sender.tag)
-        updateAllMenus()
-    }
     
-    @IBAction private func gridColor(_ sender: NSMenuItem) {
-        scene?.gridColor.rawValue = UInt(sender.tag)
-        updateAllMenus()
-    }
     
     @IBAction private func sampleSize(_ sender: NSMenuItem) {
         image.sampleSize = UInt(sender.tag);
@@ -189,12 +161,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     @IBAction private func normalize(_ sender: NSMenuItem) {
-        if let image = Singleton.sharedInstance()?.image {
+       
             image.threshold = image.isNormalizeEnabled ? 0 : 10
             if image.isNormalizeEnabled {
                 image.isPaletteEnabled = false
             }
-        }
+        
         updateAllMenus()
     }
     
@@ -247,51 +219,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    
-    //    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-    //        if menuItem.action == #selector(postorize) {
-    //            return isFeatureEnabled
-    //        }
-    //        return true // Enable other menu items by default
-    //    }
-    
     func updateAllMenus() {
-        if let submenu = mainMenu.item(withTitle: "piXel")?.submenu?.item(withTitle: "Settings…")?.submenu?.item(withTitle: "Transparency")?.submenu?.item(withTitle: "Grid Size")?.submenu {
-            if let mainScene = Singleton.sharedInstance()!.mainScene {
-                for item in submenu.items {
-                    if (item.tag == mainScene.gridSize) {
-                        item.state = .on
-                    }
-                    else {
-                        item.state = .off
-                    }
-                }
-            }
-        }
-        
-        if let submenu = mainMenu.item(withTitle: "piXel")?.submenu?.item(withTitle: "Settings…")?.submenu?.item(withTitle: "Transparency")?.submenu?.item(withTitle: "Grid Color")?.submenu {
-            if let mainScene = Singleton.sharedInstance()!.mainScene {
-                for item in submenu.items {
-                    if (item.tag == mainScene.gridColor.rawValue) {
-                        item.state = .on
-                    }
-                    else {
-                        item.state = .off
-                    }
-                }
-            }
+        guard let image = Singleton.sharedInstance()?.mainScene.image else {
+            return
         }
         
         if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Sample Size")?.submenu {
             for item in submenu.items {
-                item.isEnabled = (item.tag > Int(image.blockSize)) ? true : false;
-                
                 if (item.tag == image.sampleSize) {
                     item.state = .on
                 }
                 else {
                     item.state = .off
                 }
+//                item.isEnabled = item.tag > Int(image.blockSize) ? true : false;
             }
         }
         
@@ -310,23 +251,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             item.state = image.isAutoBlockSizeAdjustEnabled ? .on : .off
         }
         
-        if let submenu = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize")?.submenu {
-            for item in submenu.items {
-                if (item.tag == Int(image.posterizeLevels)) {
-                    item.state = .on
-                }
-                else {
-                    item.state = .off
+        
+        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize") {
+            item.state = image.isPosterizeEnabled ? .on : .off
+            item.isEnabled = image.isNormalizeEnabled || image.isPaletteEnabled ? false : true
+            
+            if let submenu = item.submenu {
+                for item in submenu.items {
+                    if (item.tag == Int(image.posterizeLevels)) {
+                        item.state = .on
+                    }
+                    else {
+                        item.state = .off
+                    }
                 }
             }
         }
         
-        if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Postorize") {
-            item.state = image.isPosterizeEnabled ? .on : .off
-        }
-        
         if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Normalize") {
             item.state = image.isNormalizeEnabled ? .on : .off
+            item.isEnabled = !image.isPaletteEnabled
+            
+        }
+        
+        if let submenu = mainMenu.item(withTitle: "Image")?.submenu {
+            if let item = submenu.item(withTitle: "Increase Threshold") {
+                item.isEnabled = image.isNormalizeEnabled
+            }
+            if let item = submenu.item(withTitle: "Decrease Threshold") {
+                item.isEnabled = image.isNormalizeEnabled
+            }
         }
         
         if let item = mainMenu.item(withTitle: "Image")?.submenu?.item(withTitle: "Enable Palette") {

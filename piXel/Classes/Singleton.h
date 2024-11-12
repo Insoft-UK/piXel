@@ -28,7 +28,6 @@
 @interface Singleton : NSObject
 
 @property MainScene* mainScene;
-@property Image* image;
 
 +(instancetype)sharedInstance;
 

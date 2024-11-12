@@ -22,18 +22,16 @@
  SOFTWARE.
  */
 
-#import <SpriteKit/SpriteKit.h>
-@class SKGridNode;
+import Cocoa
 
-@interface MainScene : SKScene
+class SmallWindowController: NSWindowController {
+    override func windowDidLoad() {
+        super.windowDidLoad()
 
-// MARK: - Class Properties
-
-@property (nonatomic, readonly) SKGridNode *grid;
-@property (nonatomic, readonly) Image* image;
-
-// MARK: - Class Instance Methods
-
-
-
-@end
+        window?.styleMask = .borderless
+        window?.styleMask.insert([.closable, .titled])
+        window?.level = .floating // Keeps the window above other windows if needed
+        window?.isOpaque = true
+        window?.hasShadow = true
+    }
+}

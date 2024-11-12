@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13001B9C2CDB6AAF0033F1DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13001B9B2CDB6AAF0033F1DA /* SettingsViewController.swift */; };
 		1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1300CD1E2CD935C7002A42F1 /* Filter.cpp */; };
-		1300CD222CDA79C7002A42F1 /* ImageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1300CD212CDA79C7002A42F1 /* ImageSettingsViewController.swift */; };
+		1300CD222CDA79C7002A42F1 /* CroppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1300CD212CDA79C7002A42F1 /* CroppingViewController.swift */; };
 		13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13365F00284142A900524BF6 /* Extensions.swift */; };
 		13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13652F2F29B778E50042E555 /* CGImage.swift */; };
 		136449C02CD562370046BDC4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136449BF2CD562370046BDC4 /* Colors.swift */; };
@@ -25,13 +26,16 @@
 		138B91682CCE87BA00A0D3AE /* Default.act in Resources */ = {isa = PBXBuildFile; fileRef = 138B91672CCE87BA00A0D3AE /* Default.act */; };
 		13DB09232842F88C00FDF931 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DB09222842F88B00FDF931 /* WindowController.swift */; };
 		13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */ = {isa = PBXBuildFile; fileRef = 13DE88F82CC83D4400F0BEDA /* piXel.png */; };
+		13E2AF8B2CE14898006698E7 /* SKGridNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF8A2CE14898006698E7 /* SKGridNode.swift */; };
+		13E2AF8F2CE3850C006698E7 /* SmallWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13001B9B2CDB6AAF0033F1DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1300CD1D2CD935C7002A42F1 /* Filter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
 		1300CD1E2CD935C7002A42F1 /* Filter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		1300CD202CD95525002A42F1 /* build.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = build.txt; sourceTree = "<group>"; };
-		1300CD212CDA79C7002A42F1 /* ImageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingsViewController.swift; sourceTree = "<group>"; };
+		1300CD212CDA79C7002A42F1 /* CroppingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroppingViewController.swift; sourceTree = "<group>"; };
 		13365F00284142A900524BF6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		136449BF2CD562370046BDC4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		13652F2F29B778E50042E555 /* CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 		138B91672CCE87BA00A0D3AE /* Default.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = Default.act; sourceTree = "<group>"; };
 		13DB09222842F88B00FDF931 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		13DE88F82CC83D4400F0BEDA /* piXel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = piXel.png; sourceTree = "<group>"; };
+		13E2AF8A2CE14898006698E7 /* SKGridNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKGridNode.swift; sourceTree = "<group>"; };
+		13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWindowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,7 @@
 		1365C7A426057FCE00B23CC3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				13E2AF892CE14878006698E7 /* Nodes */,
 				1365C9B2261A31FD00B23CC3 /* Extensions */,
 				1365C7AA2605805100B23CC3 /* Storyboards */,
 				13DB092A2844338900FDF931 /* Window Controller */,
@@ -168,7 +175,8 @@
 			children = (
 				1365C78D26057FA700B23CC3 /* AppDelegate.swift */,
 				1365C79526057FA700B23CC3 /* ViewController.swift */,
-				1300CD212CDA79C7002A42F1 /* ImageSettingsViewController.swift */,
+				1300CD212CDA79C7002A42F1 /* CroppingViewController.swift */,
+				13001B9B2CDB6AAF0033F1DA /* SettingsViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -203,8 +211,17 @@
 			isa = PBXGroup;
 			children = (
 				13DB09222842F88B00FDF931 /* WindowController.swift */,
+				13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */,
 			);
 			name = "Window Controller";
+			sourceTree = "<group>";
+		};
+		13E2AF892CE14878006698E7 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				13E2AF8A2CE14898006698E7 /* SKGridNode.swift */,
+			);
+			name = Nodes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,9 +329,12 @@
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
 				1365C79626057FA700B23CC3 /* ViewController.swift in Sources */,
 				1365C78E26057FA700B23CC3 /* AppDelegate.swift in Sources */,
+				13001B9C2CDB6AAF0033F1DA /* SettingsViewController.swift in Sources */,
+				13E2AF8B2CE14898006698E7 /* SKGridNode.swift in Sources */,
+				13E2AF8F2CE3850C006698E7 /* SmallWindowController.swift in Sources */,
 				1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */,
 				1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */,
-				1300CD222CDA79C7002A42F1 /* ImageSettingsViewController.swift in Sources */,
+				1300CD222CDA79C7002A42F1 /* CroppingViewController.swift in Sources */,
 				1365C7B72605818800B23CC3 /* Singleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

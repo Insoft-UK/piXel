@@ -24,41 +24,87 @@
 
 import Foundation
 
-@objc class ImageSettingsViewController: NSViewController {
+@objc class CroppingViewController: NSViewController {
     @IBOutlet weak var leftCropMargin: NSTextField!
     @IBOutlet weak var rightCropMargin: NSTextField!
     @IBOutlet weak var topCropMargin: NSTextField!
     @IBOutlet weak var bottomCropMargin: NSTextField!
     
+    @IBOutlet weak var leftCropMarginStepper: NSStepper!
+    @IBOutlet weak var rightCropMarginStepper: NSStepper!
+    @IBOutlet weak var topCropMarginStepper: NSStepper!
+    @IBOutlet weak var bottomCropMarginStepper: NSStepper!
+    
+    
+    let image = Singleton.sharedInstance()!.mainScene.image!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        leftCropMargin.integerValue = image.leftCropMargin
-        rightCropMargin.integerValue = image.rightCropMargin
-        topCropMargin.integerValue = image.topCropMargin
-        bottomCropMargin.integerValue = image.bottomCropMargin
+    
+        image.showGuide()
+        updateUI()
+     }
+    
+    override func viewWillDisappear() {
+        image.hideGuide()
     }
     
-    let image = Singleton.sharedInstance()!.image!
+//    @IBAction func closeWindow(_ sender: NSButton) {
+//        self.view.window?.close()
+//    }
     
+
     @IBAction private func updateLeftCropMargin(to sender: NSTextField) {
         image.leftCropMargin = sender.integerValue
-        leftCropMargin.integerValue = image.leftCropMargin
+        updateUI()
     }
     
     @IBAction private func updateRightCropMargin(to sender: NSTextField) {
         image.rightCropMargin = sender.integerValue
-        rightCropMargin.integerValue = image.rightCropMargin
+        updateUI()
     }
     
     @IBAction private func updateTopCropMargin(to sender: NSTextField) {
         image.topCropMargin = sender.integerValue
-        topCropMargin.integerValue = image.topCropMargin
+        updateUI()
     }
     
     @IBAction private func updateBottomCropMargin(to sender: NSTextField) {
         image.bottomCropMargin = sender.integerValue
+        updateUI()
+    }
+    
+    @IBAction private func stepperLeftCropMargin(to sender: NSStepper) {
+        image.leftCropMargin = sender.integerValue
+        updateUI()
+    }
+    
+    @IBAction private func stepperRightCropMargin(to sender: NSStepper) {
+        image.rightCropMargin = sender.integerValue
+        updateUI()
+    }
+    
+    @IBAction private func stepperTopCropMargin(to sender: NSStepper) {
+        image.topCropMargin = sender.integerValue
+        updateUI()
+    }
+    
+    @IBAction private func stepperBottomCropMargin(to sender: NSStepper) {
+        image.bottomCropMargin = sender.integerValue
+        updateUI()
+    }
+    
+    private func updateUI() {
+        leftCropMargin.integerValue = image.leftCropMargin
+        rightCropMargin.integerValue = image.rightCropMargin
+        topCropMargin.integerValue = image.topCropMargin
         bottomCropMargin.integerValue = image.bottomCropMargin
+        
+        leftCropMarginStepper.integerValue = image.leftCropMargin
+        rightCropMarginStepper.integerValue = image.rightCropMargin
+        topCropMarginStepper.integerValue = image.topCropMargin
+        bottomCropMarginStepper.integerValue = image.bottomCropMargin
     }
 
 }

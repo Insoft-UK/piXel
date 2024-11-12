@@ -26,41 +26,48 @@
 import Cocoa
 
 class WindowController: NSWindowController {
+    
+    
+    
     @IBAction private func zoomIn(_ sender: NSToolbarItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale < 50.0 {
-                image.setScale(image.yScale + 1.0)
-            }
+        guard let image = Singleton.sharedInstance()?.mainScene.image else {
+            return
+        }
+        if image.yScale < 50.0 {
+            image.setScale(image.yScale + 1.0)
         }
     }
     
     @IBAction private func zoomOut(_ sender: NSToolbarItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if image.yScale > 1.0 {
-                image.setScale(image.yScale - 1.0)
-            }
+        guard let image = Singleton.sharedInstance()?.mainScene.image else {
+            return
+        }
+        if image.yScale > 1.0 {
+            image.setScale(image.yScale - 1.0)
         }
     }
     
     @IBAction private func coarse(_ sender: NSToolbarItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if sender.tag < 0 {
-                image.blockSize -= 1.0
-            }
-            else {
-                image.blockSize += 1.0
-            }
+        guard let image = Singleton.sharedInstance()?.mainScene.image else {
+            return
+        }
+        if sender.tag < 0 {
+            image.blockSize -= 1.0
+        }
+        else {
+            image.blockSize += 1.0
         }
     }
     
     @IBAction private func fine(_ sender: NSToolbarItem) {
-        if let image = Singleton.sharedInstance()?.image {
-            if sender.tag < 0 {
-                image.blockSize -= 0.01
-            }
-            else {
-                image.blockSize += 0.01
-            }
+        guard let image = Singleton.sharedInstance()?.mainScene.image else {
+            return
+        }
+        if sender.tag < 0 {
+            image.blockSize -= 0.01
+        }
+        else {
+            image.blockSize += 0.01
         }
     }
     

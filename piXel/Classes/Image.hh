@@ -34,6 +34,7 @@
 
 @property (nonatomic, readonly) CLUT * _Nonnull clut;
 @property (nonatomic, readonly) CGSize originalSize;
+@property (nonatomic, readonly) CGSize croppedSize;
 @property (nonatomic) NSInteger leftCropMargin;
 @property (nonatomic) NSInteger rightCropMargin;
 @property (nonatomic) NSInteger topCropMargin;
@@ -52,16 +53,16 @@
 @property (nonatomic, readonly) BOOL isPosterizeEnabled;
 @property (nonatomic, readonly) BOOL isNormalizeEnabled;
 @property (nonatomic) BOOL isAutoBlockSizeAdjustEnabled;
+@property (nonatomic, readonly) BOOL hasChanged;
 
 // MARK: - Class Instance Methods
 
 - (id _Nonnull)initWithSize:(CGSize)size;
 - (void)loadImageWithContentsOfURL:(NSURL * _Nonnull)url;
-- (BOOL)updateWithDelta:(NSTimeInterval)delta;
-- (void)redraw;
 - (void)saveImageAtURL:(NSURL * _Nonnull)url;
-- (void)showOriginal;
-- (void)hideOriginal;
+- (void)update;
+- (void)showGuideImage;
+- (void)hideGuideImage;
 
 @end
 

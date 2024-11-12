@@ -24,22 +24,16 @@
 
 #import "MainScene.h"
 
-#import "piXel-Swift.h"
 #import "Image.hh"
 #import <Cocoa/Cocoa.h>
 
-@interface MainScene()
-
-@end
+#import "piXel-Swift.h"
 
 @implementation MainScene
 
-NSTimeInterval lastUpdateTime;
+//NSTimeInterval lastUpdateTime;
 const ViewController* viewController;
 const AppDelegate* appDelegate;
-
-UInt32 gridLightColor;
-UInt32 gridDarkColor;
 
 // MARK: - View
 
@@ -67,57 +61,24 @@ UInt32 gridDarkColor;
     CGSize size = NSApp.windows.firstObject.frame.size;
     self.size = CGSizeMake(size.width, size.height - 28);
 
-    [self setGridColor: GridColorBlue];
-    [self setGridSize: 8];
+    _image = [[Image alloc] initWithSize:CGSizeMake(1024 * 4, 768 * 4)];
+    _image.position = CGPointMake(self.size.width / 2, self.size.height / 2);
+    [_image setZPosition:1.0];
+    [self addChild:_image];
     
-    Singleton.sharedInstance.image.position = CGPointMake(self.size.width / 2, self.size.height / 2);
-    [Singleton.sharedInstance.image setZPosition:1.0];
-    [self addChild:Singleton.sharedInstance.image];
-}
-
-- (void)initGrid {
-    SKSpriteNode *node;
-    
-    if ([self childNodeWithName:@"Grid"]) {
-        [[self childNodeWithName:@"Grid"] removeFromParent];
+    _grid = [[SKGridNode alloc] initWithSize:CGSizeMake(self.size.width / 8, self.size.height / 8)];
+    if (_grid != nil) {
+        _grid.position = CGPointMake(self.size.width / 2, self.size.height / 2);
+        [_grid update];
+        [self addChild:_grid];
     }
     
-    if (self.gridSize == 0) return;
     
-    CGSize size = CGSizeMake(floor(self.size.width / (CGFloat)self.gridSize), floor(self.size.height / (CGFloat)self.gridSize));
-    SKMutableTexture *texture = [[SKMutableTexture alloc] initWithSize:size];
-    
-    if (texture != nil) {
-        [texture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
-            UInt32 *pixel = (UInt32 *)pixelData;
-            
-            for (NSUInteger y = 0; y < (NSUInteger)size.height; y++) {
-                for (NSUInteger x = 0; x < (NSUInteger)size.width; x++) {
-                    if (y & 1) {
-                        *pixel++ = x & 1 ? gridDarkColor : gridLightColor;
-                    } else {
-                        *pixel++ = x & 1 ? gridLightColor : gridDarkColor;
-                    }
-                }
-            }
-        }];
-    
-        if ((node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)texture size:texture.size]) != nil) {
-            [node.texture setFilteringMode:SKTextureFilteringNearest];
-            [node setPosition:CGPointMake(self.size.width / 2, self.size.height / 2)];
-            [node setZPosition:-1];
-            [node setScale:(CGFloat)self.gridSize];
-            [node setName:@"Grid"];
-            [self addChild:node];
-        }
-    }
 }
-
 
 // MARK: - Keyboard Events
 
 - (void)keyDown:(NSEvent *)event {
-    Image* image = Singleton.sharedInstance.image;
     
     enum {
         Space = 0x31,
@@ -131,40 +92,40 @@ UInt32 gridDarkColor;
     
     switch (event.keyCode) {
         case Space:
-            [image showOriginal];
+            [self.image showGuideImage];
             break;
             
         case LeftArrow:
             if (flags & NSEventModifierFlagOption) {
-                [image setWidth: image.width - 1];
+                [self.image setWidth: self.image.width - 1];
             } else {
-                if (image.isAutoBlockSizeAdjustEnabled) break;
-                [image setBlockSize: image.blockSize -= 0.01];
+                if (self.image.isAutoBlockSizeAdjustEnabled) break;
+                [self.image setBlockSize: self.image.blockSize -= 0.01];
             }
             break;
             
         case RightArrow:
             if (flags & NSEventModifierFlagOption) {
-                [image setWidth: image.width + 1];
+                [self.image setWidth: self.image.width + 1];
             } else {
-                if (image.isAutoBlockSizeAdjustEnabled) break;
-                [image setBlockSize: image.blockSize += 0.01];
+                if (self.image.isAutoBlockSizeAdjustEnabled) break;
+                [self.image setBlockSize: self.image.blockSize += 0.01];
             }
             break;
             
         case DownArrow:
             if (flags & NSEventModifierFlagOption) {
-                [image setHeight: image.height - 1];
+                [self.image setHeight: self.image.height - 1];
             } else {
-                [image setBlockSize: image.blockSize -= 1];
+                [self.image setBlockSize: self.image.blockSize -= 1];
             }
             break;
             
         case UpArrow:
             if (flags & NSEventModifierFlagOption) {
-                [image setHeight: image.height + 1];
+                [self.image setHeight: self.image.height + 1];
             } else {
-                [image setBlockSize: image.blockSize += 1];
+                [self.image setBlockSize: self.image.blockSize += 1];
             }
             break;
             
@@ -178,15 +139,13 @@ UInt32 gridDarkColor;
 }
 
 - (void)keyUp:(NSEvent *)event {
-    Image* image = Singleton.sharedInstance.image;
-    
     enum {
         Space = 0x31
     };
     
     switch (event.keyCode) {
         case Space:
-            [image hideOriginal];
+            [self.image hideGuideImage];
             break;
         default:
 #ifdef DEBUG
@@ -208,101 +167,39 @@ UInt32 gridDarkColor;
 // MARK: - Update
 
 -(void)update:(CFTimeInterval)currentTime {
-    NSTimeInterval delta = currentTime - lastUpdateTime;
-    lastUpdateTime = currentTime;
+//    NSTimeInterval delta = currentTime - lastUpdateTime;
+//    lastUpdateTime = currentTime;
     
-    Image* image = Singleton.sharedInstance.image;
     
-    if ([image updateWithDelta:delta]) {
-        CGFloat w = image.originalSize.width / image.blockSize;
-        CGFloat h = image.originalSize.height / image.blockSize;
+    if (self.image.hasChanged) {
+        [self.image update];
         
-        viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.width];
-        viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)image.originalSize.height];
-        if (image.isNormalizeEnabled) {
+        CGFloat w = self.image.originalSize.width / self.image.blockSize;
+        CGFloat h = self.image.originalSize.height / self.image.blockSize;
+        
+        viewController.widthText.stringValue = [NSString stringWithFormat:@"%d", (int)self.image.originalSize.width];
+        viewController.heightText.stringValue = [NSString stringWithFormat:@"%d", (int)self.image.originalSize.height];
+        if (self.image.isNormalizeEnabled) {
             viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Image Resolution: %dx%d - Block Size: %.2f, Threshold %ld",
                                                         (int)w,
                                                         (int)h,
-                                                        image.blockSize,
-                                                        image.threshold
+                                                   self.image.blockSize,
+                                                   self.image.threshold
             ];
         }
         else {
             viewController.infoText.stringValue = [NSString stringWithFormat:@"Repixelated Image Resolution: %dx%d - Block Size: %.2f",
                                                         (int)w,
                                                         (int)h,
-                                                        image.blockSize
+                                                   self.image.blockSize
             ];
         }
+        [viewController redrawPalette:(const UInt8 *)self.image.clut.colors colorCount:self.image.clut.defined];
+        viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)self.image.xScale * 100];
     }
     
-    viewController.zoomText.stringValue = [NSString stringWithFormat:@"%d%%", (int)image.xScale * 100];
-    [viewController redrawPalette:(const UInt8 *)image.clut.colors colorCount:image.clut.defined];
-}
-
-// MARK: - Getter & Setters
-
-- (void)setGridSize:(NSUInteger)newValue {
-    _gridSize = newValue;
-    [self initGrid];
-}
-
-- (void)setGridColor:(GridColor)newValue {
-    _gridColor = newValue;
     
-    UInt32 light, dark;
     
-    switch (self.gridColor) {
-        case GridColorLight:
-            light = 0xEEEEEEFF;
-            dark = 0xDDDDDDFF;
-            break;
-            
-        case GridColorMedium:
-            light = 0x888888FF;
-            dark = 0x666666FF;
-            break;
-            
-        case GridColorDark:
-            light = 0x333333FF;
-            dark = 0x222222FF;
-            break;
-        
-        case GridColorRed:
-            light = 0xCC0000FF;
-            dark = 0x880000FF;
-            break;
-        
-        case GridColorOrange:
-            light = 0xFF8800FF;
-            dark = 0xCC4400FF;
-            break;
-        
-        case GridColorGreen:
-            light = 0x00CC00FF;
-            dark = 0x008800FF;
-            break;
-        
-        case GridColorBlue:
-            light = 0x0000FFFF;
-            dark = 0x0000AAFF;
-            break;
-        
-        case GridColorPurple:
-            light = 0xDD00DDFF;
-            dark = 0x880088FF;
-            break;
-        
-        case GridColorNone:
-        default:
-            light = dark = 0;
-            break;
-    }
-    
-    gridLightColor = CFSwapInt32BigToHost(light);
-    gridDarkColor = CFSwapInt32BigToHost(dark);
-    
-    [self initGrid];
 }
 
 

@@ -31,21 +31,16 @@
     SKMutableTexture *mutableTexture;
     ViewController* viewController;
     
-    /// The image pixel data of the image thats being re-pixilated.
-//    NSMutableData *originalImageData;
     
-    SKSpriteNode *originalImage;
-
     NSData *sourceImageData;
+    SKSpriteNode *overlayGuideImage;
+    SKSpriteNode *alteredImage;
+    
     
     /// The image pixel data of the image thats been re-pixilated.
     NSMutableData *workBuffer;
-    
-    BOOL margin;
-    
-    
-    BOOL changes;
 }
+
 
 
 // MARK: - Init
@@ -54,46 +49,46 @@
     if ((self = [super init])) {
         viewController = (ViewController *)NSApplication.sharedApplication.windows.firstObject.contentViewController;
         
-
+        
         mutableTexture = [[SKMutableTexture alloc] initWithSize:size];
-
-        SKSpriteNode *node;
+        
         
         if (mutableTexture) {
-            node = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)mutableTexture size:size];
-            node.yScale = -1;
-            node.texture.filteringMode = SKTextureFilteringNearest;
-            node.name = @"Image";
-            node.lightingBitMask = 0;
-            node.shadowedBitMask = 0;
-            node.shadowCastBitMask = 0;
-            [self addChild:node];
+            alteredImage = [SKSpriteNode spriteNodeWithTexture:(SKTexture*)mutableTexture size:size];
+            alteredImage.yScale = -1;
+            alteredImage.texture.filteringMode = SKTextureFilteringNearest;
+            alteredImage.lightingBitMask = 0;
+            alteredImage.shadowedBitMask = 0;
+            alteredImage.shadowCastBitMask = 0;
+            [self addChild:alteredImage];
         }
         
         
         [self loadImageWithContentsOfURL:[NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"piXel" ofType:@"png"]]];
-     
+        
         _clut = [[CLUT alloc] init];
         
         
         
         
-        [self updateOverlayOfOriginalImageScale];
         
         [self defaultSettings];
-        }
-        
+    }
+    
     return self;
 }
 
 // MARK: - Private Helper Instance Methods for Init
 
 - (void)defaultSettings {
-    originalImage.alpha = 1.0;
+    overlayGuideImage.alpha = 1.0;
     self.posterizeLevels = 2;
     self.threshold = 0;
-    margin = NO;
     _blockSize = 4;
+    _leftCropMargin = 76;
+    _rightCropMargin = 72;
+    _topCropMargin = 64;
+    _bottomCropMargin = 58;
     
     _isAutoZoomEnabled = YES;
     self.autoBlockSizeAdjustEnabled = YES;
@@ -131,12 +126,6 @@
         
         [self reallocateWorkBuffer:lengthInBytes];
         
-        originalImage = [SKSpriteNode spriteNodeWithColor:NSColor.clearColor size:[self getCGImageSize:cgImage]];
-        originalImage.texture = [SKTexture textureWithCGImage:cgImage];
-        originalImage.name = @"OriginalImage";
-        originalImage.hidden = YES;
-        
-        [self addChild:originalImage];
         
         if (cgImage) CGImageRelease(cgImage);
     }
@@ -148,28 +137,7 @@
     }
     
     
-    changes = YES;
-}
-
-- (BOOL)updateWithDelta:(NSTimeInterval)delta {
-    if (changes) {
-        [self reconstructPixelArt];
-        [self renderTexture];
-        
-        if (self.isAutoZoomEnabled) {
-            [self automaticallyAdjustZoom];
-        }
-        
-        [self updateOverlayOfOriginalImageScale];
-        
-        changes = NO;
-        return YES;
-    }
-    return NO;
-}
-
-- (void)redraw {
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)saveImageAtURL:(NSURL *)url {
@@ -177,15 +145,87 @@
     [Extenions writeCGImage:imageRef to:url];
 }
 
-- (void)showOriginal {
-    originalImage.hidden = NO;
+- (void)update {
+    [self removeOverlayGuideImage];
+    [self reconstructPixelArt];
+    [self renderTexture];
+    
+    if (self.isAutoZoomEnabled) {
+        [self automaticallyAdjustZoom];
+    }
+    
+    _hasChanged = NO;
 }
 
-- (void)hideOriginal {
-    originalImage.hidden = YES;
+- (void)showGuideImage {
+    [self removeOverlayGuideImage];
+    [self createOverlayGuideImage];
+    [self rescaleOverlayGuideImage];
+    [self centerOverlayGuideImage];
+    if (overlayGuideImage == nil) {
+        return;
+    }
+    [self addChild:overlayGuideImage];
+    alteredImage.hidden = YES;
+}
+
+- (void)hideGuideImage {
+    alteredImage.hidden = NO;
+    [self removeOverlayGuideImage];
+    _hasChanged = YES;
 }
 
 // MARK: - Private Instance Methods
+
+- (void)removeOverlayGuideImage {
+    if (overlayGuideImage != nil) {
+        [overlayGuideImage removeFromParent];
+        overlayGuideImage = nil;
+    }
+}
+
+- (void)createOverlayGuideImage {
+    SKMutableTexture *mutableTexture = [[SKMutableTexture alloc] initWithSize:self.croppedSize];
+    overlayGuideImage = [SKSpriteNode spriteNodeWithTexture:mutableTexture];
+    
+    int destWidth = mutableTexture.size.width;
+    int destHeight = mutableTexture.size.height;
+    int width = self.originalSize.width;
+    
+    [mutableTexture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
+        UInt32 *src = (UInt32 *)self->sourceImageData.bytes;
+        UInt32 *dest = (UInt32 *)pixelData;
+        size_t size = destWidth * sizeof(UInt32);
+        
+        src += (int)self.leftCropMargin;
+        src += (int)self.topCropMargin * width;
+        
+        for (int y = destHeight - 1; y >= 0; y--) {
+            memcpy(&dest[y * destWidth], src, size);
+            src += width;
+        }
+    }];
+}
+
+- (void)rescaleOverlayGuideImage {
+    if (overlayGuideImage == nil) {
+        return;
+    }
+    [overlayGuideImage setScale:1 / self.blockSize];
+    float xScale = self.width / overlayGuideImage.size.width;
+    float yScale = self.height / overlayGuideImage.size.height;
+    overlayGuideImage.xScale *= xScale;
+    overlayGuideImage.yScale *= yScale;
+}
+
+- (void)centerOverlayGuideImage {
+    if (overlayGuideImage == nil) {
+        return;
+    }
+    NSInteger width = self.croppedSize.width;
+    NSInteger height = self.croppedSize.height;
+    overlayGuideImage.position = CGPointMake(width & 1 ? 0.5 : 0.0, height & 1 ? -0.5 : 0.0);
+}
 
 - (void)reallocateWorkBuffer:(size_t)lengthInBytes {
     workBuffer = nil;
@@ -218,17 +258,6 @@
     return (CGSize){0};
 }
 
-//- (void)copyDataBytesOfCGImage:(CGImageRef)cgImage {
-//    if (!cgImage) return;
-//    
-//    CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
-//    if (!rawData) return;
-//    
-//    NSUInteger lengthInBytes = CGImageGetWidth(cgImage) * CGImageGetHeight(cgImage) * sizeof(UInt32);
-//    memcpy((void *)sourceImageData.bytes, CFDataGetBytePtr(rawData), lengthInBytes);
-//    CFRelease(rawData);
-//}
-
 - (void)automaticallyAdjustZoom {
     float scaleX, scaleY;
     scaleX = 640 / self.width;
@@ -241,9 +270,7 @@
     }
 }
 
-- (void)updateOverlayOfOriginalImageScale {
-    [originalImage setScale:1 / self.blockSize];
-}
+
 
 - (void)renderTexture {
     [mutableTexture modifyPixelDataWithBlock:^(void *pixelData, size_t lengthInBytes) {
@@ -339,7 +366,7 @@
     for (destY = 0, y = self.topCropMargin; y < self.originalSize.height - self.bottomCropMargin; y += self.blockSize, destY++) {
         for (destX = 0, x = self.leftCropMargin; x < self.originalSize.width - self.rightCropMargin; x += self.blockSize, destX++) {
             color = [self averageColorForSampleSize:self.sampleSize atPoint:CGPointMake(x + self.blockSize / 2, y + self.blockSize / 2)];
-            [self setPixelAt:destX + margin ofY:destY + margin withRgbaColor:color | 0xFF000000];
+            [self setPixelAt:destX ofY:destY withRgbaColor:color | 0xFF000000];
         }
     }
     
@@ -364,40 +391,60 @@
     if (self.isOutlineEnabled) {
         Filter::outline(workBuffer.bytes, (int)self.size.width, (int)self.size.height);
     }
+    
+    [self centerAlteredImage];
+    
+}
 
-    SKNode *node = [self childNodeWithName:@"Image"];
-    auto size = self.size;
-    node.position = CGPointMake((int)size.width & 1 ? 0.5 : 0.0, (int)size.height & 1 ? -0.5 : 0.0);
+- (void)centerAlteredImage {
+    NSInteger width = self.width;
+    NSInteger height = self.height;
+    alteredImage.position = CGPointMake(width & 1 ? 0.5 : 0.0, height & 1 ? -0.5 : 0.0);
+}
+
+- (void)refreshOverlayGuideImage {
+    [self removeOverlayGuideImage];
+    [self createOverlayGuideImage];
+    [self rescaleOverlayGuideImage];
+    [self centerOverlayGuideImage];
+    if (overlayGuideImage == nil) {
+        return;
+    }
+    [self addChild:overlayGuideImage];
 }
 
 // MARK: - Getter & Setters
+
+- (CGSize)croppedSize {
+    return CGSizeMake(self.originalSize.width - self.leftCropMargin - self.rightCropMargin, self.originalSize.height - self.topCropMargin - self.bottomCropMargin);
+}
 
 - (void)setLeftCropMargin:(NSInteger)newValue {
     if (newValue < 0) return;
     if (newValue + self.rightCropMargin > self.originalSize.width) return;
     _leftCropMargin = newValue;
-    [self redraw];
+    [self refreshOverlayGuideImage];
 }
 
 - (void)setRightCropMargin:(NSInteger)newValue {
     if (newValue < 0) return;
     if (newValue + self.leftCropMargin > self.originalSize.width) return;
     _rightCropMargin = newValue;
-    [self redraw];
+    [self refreshOverlayGuideImage];
 }
 
 - (void)setTopCropMargin:(NSInteger)newValue {
     if (newValue < 0) return;
     if (newValue + self.bottomCropMargin > self.originalSize.height) return;
     _topCropMargin = newValue;
-    [self redraw];
+    [self refreshOverlayGuideImage];
 }
 
 - (void)setBottomCropMargin:(NSInteger)newValue {
     if (newValue < 0) return;
     if (newValue + self.topCropMargin > self.originalSize.height) return;
     _bottomCropMargin = newValue;
-    [self redraw];
+    [self refreshOverlayGuideImage];
 }
 
 - (CGSize)size {
@@ -409,7 +456,7 @@
     size.width = floor(size.width / self.blockSize);
     size.height = floor(size.height / self.blockSize);
     
-    if (margin) {
+    if (self.isOutlineEnabled) {
         size.width += 2;
         size.height += 2;
     }
@@ -453,11 +500,11 @@
         _blockSize = size;
     }
     self.sampleSize = self.sampleSize;
-
+    
     int length = self.size.width * self.size.height * sizeof(UInt32);
     [workBuffer setLength:length];
     
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)setSampleSize:(NSUInteger)newValue {
@@ -467,22 +514,22 @@
         _sampleSize = 1;
     }
     
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)setPosterizeLevels:(NSUInteger)newValue {
     _posterizeLevels = newValue >= 2 && newValue < 256 ? newValue : 256;
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)setIsTransparencyEnabled:(BOOL)newValue {
     _isTransparencyEnabled = newValue;
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)setOutlineEnabled:(BOOL)state {
     _isOutlineEnabled = state;
-    changes = YES;
+    _hasChanged = YES;
 }
 
 
@@ -497,7 +544,7 @@
 - (void)setThreshold:(NSUInteger)newValue {
     if (newValue > 256) return;
     _threshold = newValue;
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)setAutoBlockSizeAdjustEnabled:(BOOL)newValue {
@@ -506,7 +553,7 @@
 
 - (void)setIsPaletteEnabled:(BOOL)newValue {
     _isPaletteEnabled = newValue;
-    changes = YES;
+    _hasChanged = YES;
 }
 
 - (void)setIsAutoZoomEnabled:(BOOL)state {
