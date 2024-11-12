@@ -88,7 +88,7 @@
     _leftCropMargin = 76;
     _rightCropMargin = 72;
     _topCropMargin = 64;
-    _bottomCropMargin = 58;
+    _bottomCropMargin = 60;
     
     _isAutoZoomEnabled = YES;
     self.autoBlockSizeAdjustEnabled = YES;

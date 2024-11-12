@@ -170,9 +170,9 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Edit" id="Vfj-a6-NIe">
+                            <menuItem title="Edit" id="GK7-Zx-d6g">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Edit" id="DeO-Z5-dwl">
+                                <menu key="submenu" title="Edit" autoenablesItems="NO" id="NPG-sG-VwY">
                                     <items>
                                         <menuItem title="Palette" tag="1" id="Rc9-XH-enS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -901,28 +901,28 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="l5B-nX-sQe"/>
                             </imageView>
-                            <colorWell fixedFrame="YES" wellStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="Zg4-CG-pk3">
-                                <rect key="frame" x="234" y="59" width="44" height="28"/>
+                            <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zg4-CG-pk3" customClass="CustomColorWell" customModule="piXel" customModuleProvider="target">
+                                <rect key="frame" x="237" y="60" width="45" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="color" red="0.0" green="0.40000000000000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="colorWell:" target="n9N-1x-gqX" id="mjL-u9-9hj"/>
                                 </connections>
                             </colorWell>
-                            <colorWell fixedFrame="YES" wellStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="f2y-5x-O7h">
-                                <rect key="frame" x="292" y="59" width="44" height="28"/>
+                            <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2y-5x-O7h" customClass="CustomColorWell" customModule="piXel" customModuleProvider="target">
+                                <rect key="frame" x="288" y="60" width="45" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="color" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="colorWell:" target="n9N-1x-gqX" id="NMl-U4-4fk"/>
                                 </connections>
                             </colorWell>
-                            <button tag="1" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sKg-2O-JhP">
-                                <rect key="frame" x="237" y="12" width="96" height="19"/>
+                            <button tag="1" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sKg-2O-JhP" customClass="CustomButton" customModule="piXel" customModuleProvider="target">
+                                <rect key="frame" x="237" y="12" width="96" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="roundRect" title="Apply" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hn7-Nz-r6G">
+                                <buttonCell key="cell" type="square" title="Apply" bezelStyle="shadowlessSquare" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hn7-Nz-r6G">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="cellTitle"/>
+                                    <font key="font" metaFont="system"/>
                                     <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
@@ -1099,7 +1099,7 @@ DQ
                 </viewController>
                 <customObject id="Y0e-2P-Fep" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-986" y="206"/>
+            <point key="canvasLocation" x="-986.5" y="205.5"/>
         </scene>
     </scenes>
     <resources>
@@ -1115,8 +1115,8 @@ DQ
         <image name="doc.fill" catalog="system" width="14" height="16"/>
         <image name="externaldrive.fill" catalog="system" width="18" height="13"/>
         <image name="gearshape.fill" catalog="system" width="16" height="16"/>
-        <image name="minus.magnifyingglass" catalog="system" width="16" height="15"/>
-        <image name="paintpalette.fill" catalog="system" width="18" height="15"/>
+        <image name="minus.magnifyingglass" catalog="system" width="20" height="20"/>
+        <image name="paintpalette.fill" catalog="system" width="15" height="13"/>
         <image name="photo" catalog="system" width="18" height="14"/>
         <image name="plus.magnifyingglass" catalog="system" width="16" height="15"/>
         <image name="square" catalog="system" width="15" height="14"/>

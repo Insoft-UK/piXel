@@ -28,6 +28,8 @@
 		13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */ = {isa = PBXBuildFile; fileRef = 13DE88F82CC83D4400F0BEDA /* piXel.png */; };
 		13E2AF8B2CE14898006698E7 /* SKGridNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF8A2CE14898006698E7 /* SKGridNode.swift */; };
 		13E2AF8F2CE3850C006698E7 /* SmallWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */; };
+		13E2AF922CE3CE6A006698E7 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF912CE3CE6A006698E7 /* CustomButton.swift */; };
+		13E2AF942CE3DB6B006698E7 /* CustomColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		13DE88F82CC83D4400F0BEDA /* piXel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = piXel.png; sourceTree = "<group>"; };
 		13E2AF8A2CE14898006698E7 /* SKGridNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKGridNode.swift; sourceTree = "<group>"; };
 		13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWindowController.swift; sourceTree = "<group>"; };
+		13E2AF912CE3CE6A006698E7 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorWell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,7 @@
 		1365C7A426057FCE00B23CC3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				13E2AF902CE3CE2F006698E7 /* Custom Objects */,
 				13E2AF892CE14878006698E7 /* Nodes */,
 				1365C9B2261A31FD00B23CC3 /* Extensions */,
 				1365C7AA2605805100B23CC3 /* Storyboards */,
@@ -224,6 +229,15 @@
 			name = Nodes;
 			sourceTree = "<group>";
 		};
+		13E2AF902CE3CE2F006698E7 /* Custom Objects */ = {
+			isa = PBXGroup;
+			children = (
+				13E2AF912CE3CE6A006698E7 /* CustomButton.swift */,
+				13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */,
+			);
+			name = "Custom Objects";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -324,6 +338,7 @@
 				136449C02CD562370046BDC4 /* Colors.swift in Sources */,
 				138B91642CCE01E500A0D3AE /* CLUT.m in Sources */,
 				138B91552CCABF8A00A0D3AE /* Adjustments.cpp in Sources */,
+				13E2AF942CE3DB6B006698E7 /* CustomColorWell.swift in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
 				1365C870260A875700B23CC3 /* Image.mm in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
@@ -333,6 +348,7 @@
 				13E2AF8B2CE14898006698E7 /* SKGridNode.swift in Sources */,
 				13E2AF8F2CE3850C006698E7 /* SmallWindowController.swift in Sources */,
 				1300CD1F2CD935C7002A42F1 /* Filter.cpp in Sources */,
+				13E2AF922CE3CE6A006698E7 /* CustomButton.swift in Sources */,
 				1365C7CD260584AB00B23CC3 /* MainScene.m in Sources */,
 				1300CD222CDA79C7002A42F1 /* CroppingViewController.swift in Sources */,
 				1365C7B72605818800B23CC3 /* Singleton.m in Sources */,

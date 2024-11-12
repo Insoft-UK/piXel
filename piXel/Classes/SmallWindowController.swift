@@ -33,5 +33,6 @@ class SmallWindowController: NSWindowController {
         window?.level = .floating // Keeps the window above other windows if needed
         window?.isOpaque = true
         window?.hasShadow = true
+        window?.backgroundColor = NSColor(white: 0.125, alpha: 1.0)
     }
 }

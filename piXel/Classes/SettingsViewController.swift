@@ -187,7 +187,7 @@ class SettingsViewController: NSViewController {
             }
         }
         
-        gridView.frame.origin.y = 128
+        gridView.frame.origin.y = 143
     }
     
     

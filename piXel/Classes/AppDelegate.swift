@@ -27,8 +27,8 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-
+    
+    
     
     @IBOutlet weak var mainMenu: NSMenu!
     
@@ -40,16 +40,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         updateAllMenus()
-
+        
         
         if let window = NSApplication.shared.windows.first {
-             self.window = window
-             
-             if let rootViewController = window.contentViewController as? ViewController {
-                 self.scene = rootViewController.skView.scene as? MainScene
-                 self.image = scene?.image
-             }
-         }
+            self.window = window
+            
+            if let rootViewController = window.contentViewController as? ViewController {
+                self.scene = rootViewController.skView.scene as? MainScene
+                self.image = scene?.image
+            }
+        }
+        
+        if let editMenu = NSApp.mainMenu?.item(withTitle: "Edit")?.submenu {
+            // Find and remove the "AutoFill" menu item if it exists
+            if let autoFillMenuItem = editMenu.item(withTitle: "AutoFill") {
+                editMenu.removeItem(autoFillMenuItem)
+            }
+            // Find and remove the "Start Dictation…" menu item if it exists
+            if let autoFillMenuItem = editMenu.item(withTitle: "Start Dictation…") {
+                editMenu.removeItem(autoFillMenuItem)
+            }
+            // Find and remove the "Emoji & Symbols" menu item if it exists
+            if let autoFillMenuItem = editMenu.item(withTitle: "Emoji & Symbols") {
+                editMenu.removeItem(autoFillMenuItem)
+            }
+        }
+        
+        if let editMenu = NSApp.mainMenu?.item(withTitle: "View")?.submenu {
+            // Find and remove the "Enter Full Screen" menu item if it exists
+            if let autoFillMenuItem = editMenu.item(withTitle: "Enter Full Screen") {
+                editMenu.removeItem(autoFillMenuItem)
+            }
+        }
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -113,7 +135,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if modalresponse == .OK {
             if let url = openPanel.url {
                 image.clut.loadAdobeColorTable(url.path)
-               NSColorPanel.shared.color = image.clut.transparencyColor
+                NSColorPanel.shared.color = image.clut.transparencyColor
             }
         }
     }
@@ -166,11 +188,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     @IBAction private func normalize(_ sender: NSMenuItem) {
-       
-            image.threshold = image.isNormalizeEnabled ? 0 : 10
-            if image.isNormalizeEnabled {
-                image.isPaletteEnabled = false
-            }
+        
+        image.threshold = image.isNormalizeEnabled ? 0 : 10
+        if image.isNormalizeEnabled {
+            image.isPaletteEnabled = false
+        }
         
         updateAllMenus()
     }
@@ -237,7 +259,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 else {
                     item.state = .off
                 }
-//                item.isEnabled = item.tag > Int(image.blockSize) ? true : false;
+                //                item.isEnabled = item.tag > Int(image.blockSize) ? true : false;
             }
         }
         
