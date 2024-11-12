@@ -25,17 +25,20 @@
 import Cocoa
 
 @IBDesignable
-open class CustomColorWell: NSColorWell {
-    @IBInspectable public var fillColor: NSColor = .systemBlue {
+open class CustomTextField: NSTextField {
+//    @IBInspectable public var padding: NSEdgeInsets = NSEdgeInsets(top: 0, left: 5, bottom: 0, right: 5) {
+//        didSet { needsDisplay = true }
+//    }
+    @IBInspectable public var fillColor: NSColor = .black {
         didSet { needsDisplay = true }
     }
-    @IBInspectable public var cornerRadius: CGFloat = 0.0 {
+    @IBInspectable public var cornerRadius: CGFloat = 8.0 {
         didSet { needsDisplay = true }
     }
-    @IBInspectable public var borderColor: NSColor = .clear {
+    @IBInspectable public var borderColor: NSColor = .black {
         didSet { needsDisplay = true }
     }
-    @IBInspectable public var borderWidth: CGFloat = 3.0 {
+    @IBInspectable public var borderWidth: CGFloat = 2.0 {
         didSet { needsDisplay = true }
     }
     
@@ -43,38 +46,55 @@ open class CustomColorWell: NSColorWell {
         super.init(coder: coder)
         setup()
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-
+    
     private func setup() {
+        // Set up the custom padded cell
+//        if let cell = self.cell as? NSTextFieldCell {
+//            let paddedCell = PaddedTextFieldCell(textCell: self.stringValue)
+//            paddedCell.textPadding = NSEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+//            self.cell = paddedCell
+//        }
+        
         wantsLayer = true
         layer?.masksToBounds = false
         layer?.cornerRadius = cornerRadius
         layer?.borderWidth = borderWidth
-        layer?.borderColor = .init(gray: 0.0, alpha: 0.0)
+        layer?.borderColor = .init(gray: 0.25, alpha: 1.0)
         layer?.backgroundColor = .init(gray: 0, alpha: 0)
         needsDisplay = true
     }
     
-        override open func draw(_ dirtyRect: CGRect) {
-            NSColor.clear.setFill()
-            dirtyRect.fill()
-            let path = NSBezierPath(roundedRect: bounds, xRadius: cornerRadius, yRadius: cornerRadius)
-            fillColor = self.color
-            fillColor.setFill()
-            path.fill()
-            if (borderWidth > 0) {
-                borderColor.setStroke()
-                path.lineWidth = borderWidth
-                path.stroke()
-            }
+
+    
+    override open func draw(_ dirtyRect: CGRect) {
+        super.draw(dirtyRect)
+        
+        
+//        let paddedRect = dirtyRect.insetBy(dx: padding.left + padding.right,dy: padding.top + padding.bottom)
+//        super.draw(paddedRect)
+        
+        let path = NSBezierPath(roundedRect: bounds, xRadius: cornerRadius, yRadius: cornerRadius)
+        
+        
+        if (borderWidth > 0) {
+            borderColor.setStroke()
+            path.lineWidth = borderWidth
+            path.stroke()
         }
-        override open func drawFocusRingMask() {}
+        
+        
+    }
+    override open func drawFocusRingMask() {
+    }
+    
 }
 
-extension CustomColorWell: NSViewLayerContentScaleDelegate {
+extension CustomTextField: NSViewLayerContentScaleDelegate {
     public func layer(_ layer: CALayer, shouldInheritContentsScale newScale: CGFloat, from window: NSWindow) -> Bool { true }
 }
+

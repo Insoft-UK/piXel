@@ -30,6 +30,8 @@
 		13E2AF8F2CE3850C006698E7 /* SmallWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */; };
 		13E2AF922CE3CE6A006698E7 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF912CE3CE6A006698E7 /* CustomButton.swift */; };
 		13E2AF942CE3DB6B006698E7 /* CustomColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */; };
+		13E2AF962CE3F936006698E7 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF952CE3F936006698E7 /* CustomTextField.swift */; };
+		13E2AF982CE408C9006698E7 /* CustomStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF972CE408C9006698E7 /* CustomStepper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,8 @@
 		13E2AF8E2CE3850C006698E7 /* SmallWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWindowController.swift; sourceTree = "<group>"; };
 		13E2AF912CE3CE6A006698E7 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorWell.swift; sourceTree = "<group>"; };
+		13E2AF952CE3F936006698E7 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		13E2AF972CE408C9006698E7 /* CustomStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStepper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +238,8 @@
 			children = (
 				13E2AF912CE3CE6A006698E7 /* CustomButton.swift */,
 				13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */,
+				13E2AF952CE3F936006698E7 /* CustomTextField.swift */,
+				13E2AF972CE408C9006698E7 /* CustomStepper.swift */,
 			);
 			name = "Custom Objects";
 			sourceTree = "<group>";
@@ -334,11 +340,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13E2AF982CE408C9006698E7 /* CustomStepper.swift in Sources */,
 				13DB09232842F88C00FDF931 /* WindowController.swift in Sources */,
 				136449C02CD562370046BDC4 /* Colors.swift in Sources */,
 				138B91642CCE01E500A0D3AE /* CLUT.m in Sources */,
 				138B91552CCABF8A00A0D3AE /* Adjustments.cpp in Sources */,
 				13E2AF942CE3DB6B006698E7 /* CustomColorWell.swift in Sources */,
+				13E2AF962CE3F936006698E7 /* CustomTextField.swift in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
 				1365C870260A875700B23CC3 /* Image.mm in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
