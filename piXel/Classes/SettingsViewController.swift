@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-import Foundation
+import Cocoa
 
 class SettingsViewController: NSViewController {
     @IBOutlet weak var slider: NSSlider!
@@ -71,19 +71,23 @@ class SettingsViewController: NSViewController {
     }
     
     
-//    @IBAction func closeWindow(_ sender: NSButton) {
-//        self.view.window?.close()
-//    }
-    
-    @IBAction func apply(_ sender: NSButton) {
-        scene?.grid.size = slider.integerValue
-        scene?.grid.colorIndex = gridColorIndex
-        scene?.grid.lightColor =  lightColor.color
-        scene?.grid.darkColor =  darkColor.color
-        scene?.grid.update()
+    @IBAction func closeWindow(_ sender: NSButton) {
+        if sender.tag == 1 {
+            applySettings()
+        }
+        self.view.window?.close()
     }
     
-    
+    func applySettings() {
+        if let scene = scene {
+            scene.grid.size = slider.integerValue
+            scene.grid.colorIndex = gridColorIndex
+            scene.grid.lightColor =  lightColor.color
+            scene.grid.darkColor =  darkColor.color
+            scene.grid.update()
+        }
+    }
+
     
     @IBAction private func colorWell(_ sender: NSColorWell) {
         gridColorIndex = 0

@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-import Foundation
+import Cocoa
 
 @objc class CroppingViewController: NSViewController {
     @IBOutlet weak var leftCropMargin: NSTextField!
@@ -50,9 +50,9 @@ import Foundation
         image.hideGuide()
     }
     
-//    @IBAction func closeWindow(_ sender: NSButton) {
-//        self.view.window?.close()
-//    }
+    @IBAction func closeWindow(_ sender: NSButton) {
+        self.view.window?.close()
+    }
     
 
     @IBAction private func updateLeftCropMargin(to sender: NSTextField) {

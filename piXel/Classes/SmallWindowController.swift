@@ -29,7 +29,7 @@ class SmallWindowController: NSWindowController {
         super.windowDidLoad()
 
         window?.styleMask = .borderless
-        window?.styleMask.insert([.closable, .titled])
+        window?.styleMask.insert([.titled])
         window?.level = .floating // Keeps the window above other windows if needed
         window?.isOpaque = true
         window?.hasShadow = true

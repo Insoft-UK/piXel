@@ -89,9 +89,22 @@
     _rightCropMargin = 72;
     _topCropMargin = 64;
     _bottomCropMargin = 60;
+    _isTransparencyEnabled = YES;
+    _isPaletteEnabled = YES;
     
     _isAutoZoomEnabled = YES;
     self.autoBlockSizeAdjustEnabled = YES;
+}
+
+- (void)resetSettings {
+    self.posterizeLevels = 255;
+    self.threshold = 0;
+    _blockSize = 1;
+    _leftCropMargin = 0;
+    _rightCropMargin = 0;
+    _topCropMargin = 0;
+    _bottomCropMargin = 0;
+    [self automaticallyAdjustZoom];
 }
 
 // MARK: - Public Instance Methods
@@ -130,11 +143,7 @@
         if (cgImage) CGImageRelease(cgImage);
     }
     
-    self.blockSize = 1.0;
-    
-    if (self.isAutoZoomEnabled) {
-        [self automaticallyAdjustZoom];
-    }
+    [self resetSettings];
     
     
     _hasChanged = YES;
@@ -392,15 +401,7 @@
    
     
     if (self.isPaletteEnabled) {
-        [self.clut mapColorsToColorTable:workBuffer.bytes lengthInBytes:width * height];
-        if (self.isTransparencyEnabled) {
-            UInt32 transparencyColor = [Colors RgbaFromColor:self.clut.transparencyColor];
-            UInt32 *pixels = (UInt32 *)workBuffer.bytes;
-            for (int i = 0; i < (int)self.size.width * (int)self.size.height; ++i) {
-                if (pixels[i] != transparencyColor) continue;
-                pixels[i] = 0;
-            }
-        }
+        [self.clut mapColorsToColorTable:workBuffer.bytes lengthInBytes:width * height ignoreTransparency:!self.isTransparencyEnabled];
     } else {
         if (self.isNormalizeEnabled) {
             Adjustments::normalizeColors(workBuffer.bytes, width * height, (unsigned int)self.threshold);

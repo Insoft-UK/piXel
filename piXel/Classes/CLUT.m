@@ -44,7 +44,6 @@ typedef struct __attribute__((__packed__)) {
 @implementation CLUT
 
 UInt32 * _Nonnull colorLUT;
-NSMutableData *closestLUT;
 
 // MARK: - Init
 
@@ -53,9 +52,6 @@ NSMutableData *closestLUT;
         self.mutableData = [NSMutableData dataWithCapacity:1024];
         [self.mutableData setLength:1024];
         colorLUT = (UInt32 *)self.mutableData.mutableBytes;
-        
-        closestLUT = [NSMutableData dataWithLength:(1 << 24) * sizeof(UInt16)];
-        
         
         [self loadAdobeColorTable:[NSBundle.mainBundle pathForResource:@"Default" ofType:@"act"]];
     }
@@ -73,7 +69,7 @@ NSMutableData *closestLUT;
         return;
     }
     
-    memset(closestLUT.mutableBytes, 0xFF, closestLUT.length);
+    
     AdobeColorTable *adobeColorTable = (AdobeColorTable *)data.bytes;
     
     if (data.length == 772) {
@@ -86,16 +82,14 @@ NSMutableData *closestLUT;
     }
     
     UInt32 color;
-    for (int n = 0; n < self.defined; n++) {
-        color = (UInt32)adobeColorTable->colors[n].r << 24 | (UInt32)adobeColorTable->colors[n].g << 16 | (UInt32)adobeColorTable->colors[n].b << 8 | 255;
+    for (int n = 0; n < 256; n++) {
+        if (n >= self.defined) {
+            colorLUT[n] = 0;
+            continue;
+        }
+        color = (UInt32)adobeColorTable->colors[n].r << 24 | (UInt32)adobeColorTable->colors[n].g << 16 | (UInt32)adobeColorTable->colors[n].b << 8;
+        if (self.transparency != n) color |= 255;
         colorLUT[n] = CFSwapInt32BigToHost(color);
-    }
-    
-    if (self.transparency == -1) {
-        _transparencyColor = [NSColor clearColor];
-        return;
-    } else {
-        _transparencyColor = [Colors colorFromRgba:colorLUT[self.transparency]];
     }
 }
 
@@ -125,7 +119,7 @@ NSMutableData *closestLUT;
     adobeColorTable->defined = CFSwapInt16HostToBig(self.defined);
     adobeColorTable->transparency = CFSwapInt16HostToBig(self.transparency);
     
-    for (int n = 0; n < self.defined; n++) {
+    for (int n = 0; n <= self.defined; n++) {
         UInt32 color = CFSwapInt32HostToBig(colorLUT[n]);
         adobeColorTable->colors[n].r = color >> 24;
         adobeColorTable->colors[n].g = color >> 16;
@@ -137,48 +131,28 @@ NSMutableData *closestLUT;
     [fileHandler closeFile];
 }
 
-- (void)mapColorsToColorTable:(const void *)pixelData lengthInBytes:(size_t)length {
+- (void)mapColorsToColorTable:(const void *)pixelData lengthInBytes:(size_t)length ignoreTransparency:(BOOL)ignore {
     UInt8 r, g, b;
     UInt32 *pixels = (UInt32 *)pixelData;
-    SInt16 *closestTable = (SInt16 *)closestLUT.mutableBytes;
     
     while (length--) {
-        UInt32 pixel = pixels[length];
+        UInt32 pixel = CFSwapInt32HostToBig(pixels[length]);
         
-#ifdef __LITTLE_ENDIAN__
-        UInt32 key = pixel & 0xFFFFFF;
-#else
-        UInt32 key = pixel >> 8;
-#endif
-        
-        if (closestTable[key] >= 0) {
-            pixels[length] = colorLUT[closestTable[key]];
-            continue;
-        }
-        
-#ifdef __LITTLE_ENDIAN__
-        r = pixel;
-        g = pixel >> 8;
-        b = pixel >> 16;
-#else
         r = pixel >> 24;
         g = pixel >> 16;
         b = pixel >> 8;
-#endif
+
+        
         UInt8 closestIndex = 0;
         int closestDistance = INT_MAX;
         
-        for (int index = 0; index < self.defined; index++) {
-            UInt32 lutColor = colorLUT[index];
-#ifdef __LITTLE_ENDIAN__
-            UInt8 lutR = lutColor;
-            UInt8 lutG = lutColor >> 8;
-            UInt8 lutB = lutColor >> 16;
-#else
+        for (int index = 0; index <= self.defined; index++) {
+            UInt32 lutColor = CFSwapInt32HostToBig(colorLUT[index]);
+
             UInt8 lutR = lutColor >> 24;
             UInt8 lutG = lutColor >> 16;
             UInt8 lutB = lutColor >> 8;
-#endif
+
             int distance = (r - lutR) * (r - lutR) +
                            (g - lutG) * (g - lutG) +
                            (b - lutB) * (b - lutB);
@@ -188,34 +162,57 @@ NSMutableData *closestLUT;
             }
         }
         
-        closestTable[key] = closestIndex;
-        
         pixels[length] = colorLUT[closestIndex];
+        if (ignore) {
+            if (closestIndex == self.transparency) pixels[length] = 0;
+        }
     }
+}
+
+- (NSColor *)colorAtIndex:(NSInteger)index {
+    NSColor *nsColor;
+    UInt32 lutColor = CFSwapInt32HostToBig(colorLUT[index]);
+    
+    UInt8 lutR = lutColor >> 24;
+    UInt8 lutG = lutColor >> 16;
+    UInt8 lutB = lutColor >> 8;
+    
+    CGFloat r = (CGFloat)lutR / 255.0;
+    CGFloat g = (CGFloat)lutG / 255.0;
+    CGFloat b = (CGFloat)lutB / 255.0;
+    
+    nsColor = [NSColor colorWithRed:r green:g blue:b alpha:1.0];
+    
+    return nsColor;
 }
 
 // MARK: - Public Getter & Setters
 
-- (void)setDefinedColors:(NSUInteger)value {
-    _defined = value < 1 ? 256 : value;
-}
-
-- (void)setTransparencyColor:(NSColor *)color {
-    if (self.transparency == -1) return;
-    
-    UInt32 RGBA = (UInt32)(color.redComponent * 255) << 24 |
-                  (UInt32)(color.greenComponent * 255) << 16 |
-                  (UInt32)(color.blueComponent * 255) << 8 |
-                  (UInt32)(color.alphaComponent * 255);
-    
-    colorLUT[self.transparency] = CFSwapInt32BigToHost(RGBA);
-    _transparencyColor = color;
-    
-    memset(closestLUT.mutableBytes, 0xFF, closestLUT.length);
+- (void)setDefined:(UInt16)defined {
+    _defined = MIN(MAX(defined, 2), 256);
+    if (self.transparency > self.defined - 1) {
+        self.transparency = -1;
+    }
+    for (int i = 0; i < self.defined; i++) {
+        colorLUT[i] |= CFSwapInt32BigToHost(255);
+    }
+    for (int i = self.defined; i < 256; i++) {
+        colorLUT[i] = 0;
+    }
 }
 
 - (UInt32 *)colors {
     return colorLUT;
+}
+
+- (void)setTransparency:(SInt16)transparency {
+    if (self.transparency != -1) {
+        colorLUT[self.transparency] |= CFSwapInt32BigToHost(255);
+    }
+    _transparency = MIN(MAX(transparency, -1), 255);
+    if (self.transparency != -1) {
+        colorLUT[self.transparency] &= CFSwapInt32BigToHost(0xFFFFFF);
+    }
 }
 
 @end

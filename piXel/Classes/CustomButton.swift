@@ -37,9 +37,7 @@ open class CustomButton: NSButton {
 	}
 
 	private func setup() {
-//		let isOn = state == .on
-
-		wantsLayer = true
+        wantsLayer = true
 		layer?.masksToBounds = false
 		layer?.cornerRadius = 15
 		layer?.borderWidth = 2
@@ -47,26 +45,4 @@ open class CustomButton: NSButton {
         layer?.backgroundColor = .init(gray: 0, alpha: 0)
 		needsDisplay = true
 	}
-
-
-
-	override open func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
-	}
-
-	override open func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
-	}
-
-	override open func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-	}
-
-	override open func mouseUp(with event: NSEvent) {
-        super.mouseUp(with: event)
-	}
-}
-
-extension CustomButton: NSViewLayerContentScaleDelegate {
-	public func layer(_ layer: CALayer, shouldInheritContentsScale newScale: CGFloat, from window: NSWindow) -> Bool { true }
 }

@@ -32,19 +32,19 @@
 @property (nonatomic, readonly) UInt16 defined;
 @property (nonatomic, readonly) SInt16 transparency;
 @property (nonatomic, readonly) UInt32 * _Nonnull colors;
-@property (nonatomic, readonly) NSColor * _Nonnull transparencyColor;
 
 // MARK: - Class Instance Methods
 
 - (void)loadAdobeColorTable:(NSString * _Nonnull )file;
 - (void)saveAsAdobeColorTableAtPath:(NSString * _Nonnull )path;
 
-- (void)mapColorsToColorTable:(const void *_Nonnull)pixelData lengthInBytes:(size_t)length;
+- (void)mapColorsToColorTable:(const void *_Nonnull)pixelData lengthInBytes:(size_t)length ignoreTransparency:(BOOL)ignore;
+- (NSColor *_Nonnull)colorAtIndex:(NSInteger)index;
 
+// MARK: - Class Setters
 
-// MARK: - Class Getter & Setters
-
-- (void)setTransparencyColor:(NSColor *_Nonnull)color;
+- (void)setDefined:(UInt16)defined;
+- (void)setTransparency:(SInt16)transparency;
 
 @end
 

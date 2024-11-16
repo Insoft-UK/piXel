@@ -32,6 +32,21 @@
 		13E2AF942CE3DB6B006698E7 /* CustomColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */; };
 		13E2AF962CE3F936006698E7 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF952CE3F936006698E7 /* CustomTextField.swift */; };
 		13E2AF982CE408C9006698E7 /* CustomStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF972CE408C9006698E7 /* CustomStepper.swift */; };
+		13E2AF9A2CE4F786006698E7 /* ColorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AF992CE4F786006698E7 /* ColorTableViewController.swift */; };
+		13E2AFA82CE674E0006698E7 /* Commodore 64.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA12CE674E0006698E7 /* Commodore 64.act */; };
+		13E2AFA92CE674E0006698E7 /* Atari 128 (NTSC).act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AF9B2CE674E0006698E7 /* Atari 128 (NTSC).act */; };
+		13E2AFAA2CE674E0006698E7 /* ZX Spectrum.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA52CE674E0006698E7 /* ZX Spectrum.act */; };
+		13E2AFAB2CE674E0006698E7 /* Atari 128 (PAL).act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AF9C2CE674E0006698E7 /* Atari 128 (PAL).act */; };
+		13E2AFAC2CE674E0006698E7 /* ZX Spectrum NEXT.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA62CE674E0006698E7 /* ZX Spectrum NEXT.act */; };
+		13E2AFAD2CE674E0006698E7 /* Atari STE Grayscale.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AF9E2CE674E0006698E7 /* Atari STE Grayscale.act */; };
+		13E2AFAE2CE674E0006698E7 /* Game Boy.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA22CE674E0006698E7 /* Game Boy.act */; };
+		13E2AFAF2CE674E0006698E7 /* Black Body.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AF9F2CE674E0006698E7 /* Black Body.act */; };
+		13E2AFB02CE674E0006698E7 /* Spectrum.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA42CE674E0006698E7 /* Spectrum.act */; };
+		13E2AFB12CE674E0006698E7 /* Commander X16.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA02CE674E0006698E7 /* Commander X16.act */; };
+		13E2AFB22CE674E0006698E7 /* Atari STE GEM Desktop.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AF9D2CE674E0006698E7 /* Atari STE GEM Desktop.act */; };
+		13E2AFB32CE674E0006698E7 /* Grayscale.act in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFA32CE674E0006698E7 /* Grayscale.act */; };
+		13E2AFB62CE685FB006698E7 /* HexColorFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E2AFB52CE685FB006698E7 /* HexColorFormatter.swift */; };
+		13E2AFBA2CE7AAC1006698E7 /* transparency.png in Resources */ = {isa = PBXBuildFile; fileRef = 13E2AFB92CE7AAC1006698E7 /* transparency.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +89,21 @@
 		13E2AF932CE3DB6B006698E7 /* CustomColorWell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorWell.swift; sourceTree = "<group>"; };
 		13E2AF952CE3F936006698E7 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		13E2AF972CE408C9006698E7 /* CustomStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStepper.swift; sourceTree = "<group>"; };
+		13E2AF992CE4F786006698E7 /* ColorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTableViewController.swift; sourceTree = "<group>"; };
+		13E2AF9B2CE674E0006698E7 /* Atari 128 (NTSC).act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atari 128 (NTSC).act"; sourceTree = "<group>"; };
+		13E2AF9C2CE674E0006698E7 /* Atari 128 (PAL).act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atari 128 (PAL).act"; sourceTree = "<group>"; };
+		13E2AF9D2CE674E0006698E7 /* Atari STE GEM Desktop.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atari STE GEM Desktop.act"; sourceTree = "<group>"; };
+		13E2AF9E2CE674E0006698E7 /* Atari STE Grayscale.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atari STE Grayscale.act"; sourceTree = "<group>"; };
+		13E2AF9F2CE674E0006698E7 /* Black Body.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Black Body.act"; sourceTree = "<group>"; };
+		13E2AFA02CE674E0006698E7 /* Commander X16.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Commander X16.act"; sourceTree = "<group>"; };
+		13E2AFA12CE674E0006698E7 /* Commodore 64.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Commodore 64.act"; sourceTree = "<group>"; };
+		13E2AFA22CE674E0006698E7 /* Game Boy.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Game Boy.act"; sourceTree = "<group>"; };
+		13E2AFA32CE674E0006698E7 /* Grayscale.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = Grayscale.act; sourceTree = "<group>"; };
+		13E2AFA42CE674E0006698E7 /* Spectrum.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = Spectrum.act; sourceTree = "<group>"; };
+		13E2AFA52CE674E0006698E7 /* ZX Spectrum.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ZX Spectrum.act"; sourceTree = "<group>"; };
+		13E2AFA62CE674E0006698E7 /* ZX Spectrum NEXT.act */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ZX Spectrum NEXT.act"; sourceTree = "<group>"; };
+		13E2AFB52CE685FB006698E7 /* HexColorFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColorFormatter.swift; sourceTree = "<group>"; };
+		13E2AFB92CE7AAC1006698E7 /* transparency.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transparency.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +150,7 @@
 		1365C7A426057FCE00B23CC3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				13E2AFB42CE685D6006698E7 /* Formatters */,
 				13E2AF902CE3CE2F006698E7 /* Custom Objects */,
 				13E2AF892CE14878006698E7 /* Nodes */,
 				1365C9B2261A31FD00B23CC3 /* Extensions */,
@@ -186,6 +217,7 @@
 				1365C79526057FA700B23CC3 /* ViewController.swift */,
 				1300CD212CDA79C7002A42F1 /* CroppingViewController.swift */,
 				13001B9B2CDB6AAF0033F1DA /* SettingsViewController.swift */,
+				13E2AF992CE4F786006698E7 /* ColorTableViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -201,8 +233,10 @@
 		1365C7AB260580A400B23CC3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				13E2AFA72CE674E0006698E7 /* Predefined Color Tabls */,
 				138B91672CCE87BA00A0D3AE /* Default.act */,
 				13DE88F82CC83D4400F0BEDA /* piXel.png */,
+				13E2AFB92CE7AAC1006698E7 /* transparency.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -242,6 +276,33 @@
 				13E2AF972CE408C9006698E7 /* CustomStepper.swift */,
 			);
 			name = "Custom Objects";
+			sourceTree = "<group>";
+		};
+		13E2AFA72CE674E0006698E7 /* Predefined Color Tabls */ = {
+			isa = PBXGroup;
+			children = (
+				13E2AF9B2CE674E0006698E7 /* Atari 128 (NTSC).act */,
+				13E2AF9C2CE674E0006698E7 /* Atari 128 (PAL).act */,
+				13E2AF9D2CE674E0006698E7 /* Atari STE GEM Desktop.act */,
+				13E2AF9E2CE674E0006698E7 /* Atari STE Grayscale.act */,
+				13E2AF9F2CE674E0006698E7 /* Black Body.act */,
+				13E2AFA02CE674E0006698E7 /* Commander X16.act */,
+				13E2AFA12CE674E0006698E7 /* Commodore 64.act */,
+				13E2AFA22CE674E0006698E7 /* Game Boy.act */,
+				13E2AFA32CE674E0006698E7 /* Grayscale.act */,
+				13E2AFA42CE674E0006698E7 /* Spectrum.act */,
+				13E2AFA52CE674E0006698E7 /* ZX Spectrum.act */,
+				13E2AFA62CE674E0006698E7 /* ZX Spectrum NEXT.act */,
+			);
+			path = "Predefined Color Tabls";
+			sourceTree = "<group>";
+		};
+		13E2AFB42CE685D6006698E7 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				13E2AFB52CE685FB006698E7 /* HexColorFormatter.swift */,
+			);
+			name = Formatters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,7 +365,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13E2AFBA2CE7AAC1006698E7 /* transparency.png in Resources */,
 				1365C79826057FAC00B23CC3 /* Assets.xcassets in Resources */,
+				13E2AFA82CE674E0006698E7 /* Commodore 64.act in Resources */,
+				13E2AFA92CE674E0006698E7 /* Atari 128 (NTSC).act in Resources */,
+				13E2AFAA2CE674E0006698E7 /* ZX Spectrum.act in Resources */,
+				13E2AFAB2CE674E0006698E7 /* Atari 128 (PAL).act in Resources */,
+				13E2AFAC2CE674E0006698E7 /* ZX Spectrum NEXT.act in Resources */,
+				13E2AFAD2CE674E0006698E7 /* Atari STE Grayscale.act in Resources */,
+				13E2AFAE2CE674E0006698E7 /* Game Boy.act in Resources */,
+				13E2AFAF2CE674E0006698E7 /* Black Body.act in Resources */,
+				13E2AFB02CE674E0006698E7 /* Spectrum.act in Resources */,
+				13E2AFB12CE674E0006698E7 /* Commander X16.act in Resources */,
+				13E2AFB22CE674E0006698E7 /* Atari STE GEM Desktop.act in Resources */,
+				13E2AFB32CE674E0006698E7 /* Grayscale.act in Resources */,
 				1365C8BC260FF62400B23CC3 /* Credits.rtf in Resources */,
 				13DE88F92CC83D4400F0BEDA /* piXel.png in Resources */,
 				1365C79B26057FAC00B23CC3 /* Main.storyboard in Resources */,
@@ -341,12 +415,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				13E2AF982CE408C9006698E7 /* CustomStepper.swift in Sources */,
+				13E2AF9A2CE4F786006698E7 /* ColorTableViewController.swift in Sources */,
 				13DB09232842F88C00FDF931 /* WindowController.swift in Sources */,
 				136449C02CD562370046BDC4 /* Colors.swift in Sources */,
 				138B91642CCE01E500A0D3AE /* CLUT.m in Sources */,
 				138B91552CCABF8A00A0D3AE /* Adjustments.cpp in Sources */,
 				13E2AF942CE3DB6B006698E7 /* CustomColorWell.swift in Sources */,
 				13E2AF962CE3F936006698E7 /* CustomTextField.swift in Sources */,
+				13E2AFB62CE685FB006698E7 /* HexColorFormatter.swift in Sources */,
 				13592D4D2CC713CE0052D0E9 /* Extensions.swift in Sources */,
 				1365C870260A875700B23CC3 /* Image.mm in Sources */,
 				13592D4E2CC713EE0052D0E9 /* CGImage.swift in Sources */,
@@ -521,7 +597,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -556,7 +632,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

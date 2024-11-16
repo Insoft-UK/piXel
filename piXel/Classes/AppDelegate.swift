@@ -135,7 +135,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if modalresponse == .OK {
             if let url = openPanel.url {
                 image.clut.loadAdobeColorTable(url.path)
-                NSColorPanel.shared.color = image.clut.transparencyColor
             }
         }
     }
@@ -155,6 +154,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    @IBAction private func loadAdobeColorTable(_ sender: NSMenuItem) {
+        if let filePath = Bundle.main.path(forResource: sender.title, ofType: "act") {
+            image.clut.loadAdobeColorTable(filePath)
+            return
+        }
+    }
     
     
     @IBAction private func sampleSize(_ sender: NSMenuItem) {
