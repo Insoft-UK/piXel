@@ -1,3 +1,5 @@
+<img src="../../../Insoft-UK/blob/main/assets/logo.svg" width="80" height="80" />
+
 # piXel
 
 **macOS Utility based on the rePiX Command Line Tool**
