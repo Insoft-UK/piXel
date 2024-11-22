@@ -264,7 +264,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 else {
                     item.state = .off
                 }
-                //                item.isEnabled = item.tag > Int(image.blockSize) ? true : false;
+                item.isEnabled = item.tag <= Int(image.blockSize) ? true : false;
             }
         }
         
