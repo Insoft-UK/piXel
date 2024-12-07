@@ -251,7 +251,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func updateAllMenus() {
+    @objc func updateAllMenus() {
         guard let image = Singleton.sharedInstance()?.mainScene.image else {
             return
         }

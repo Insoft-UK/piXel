@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -319,7 +320,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="bevel" title="Custom" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="wnb-x8-OVe" id="FpZ-5p-PMG" userLabel="Palettes">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
+                                    <font key="font" metaFont="message"/>
                                     <menu key="menu" title="Color Table Menu" id="G8J-Tg-Mvh">
                                         <items>
                                             <menuItem title="Custom" state="on" id="wnb-x8-OVe"/>
@@ -945,7 +946,7 @@
                         <outlet property="posterize" destination="Tet-4n-HNq" id="Ywd-4f-Fum"/>
                     </connections>
                 </customObject>
-                <toolbar implicitIdentifier="09D11707-F4A3-4FD5-970E-AC5832E91C2B" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="XmR-JU-ePu">
+                <toolbar implicitIdentifier="09D11707-F4A3-4FD5-970E-AC5832E91C2B" autosavesConfiguration="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="XmR-JU-ePu">
                     <allowedToolbarItems>
                         <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="bEb-mU-A6G"/>
                         <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="fh7-Iy-uXu"/>
@@ -973,7 +974,7 @@
                         <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
                         <rect key="contentRect" x="196" y="240" width="1024" height="768"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
-                        <toolbar key="toolbar" implicitIdentifier="44A6F771-7586-4CFC-ABC5-C97C93B533DC" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="b8Z-oV-d39">
+                        <toolbar key="toolbar" implicitIdentifier="44A6F771-7586-4CFC-ABC5-C97C93B533DC" autosavesConfiguration="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="b8Z-oV-d39">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="bdy-M1-2f5"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="MOs-Ca-nNB"/>
@@ -1575,7 +1576,7 @@ DQ
         <image name="minus.magnifyingglass" catalog="system" width="20" height="20"/>
         <image name="paintpalette.fill" catalog="system" width="18" height="15"/>
         <image name="photo" catalog="system" width="18" height="14"/>
-        <image name="plus.magnifyingglass" catalog="system" width="20" height="20"/>
+        <image name="plus.magnifyingglass" catalog="system" width="16" height="15"/>
         <image name="square" catalog="system" width="15" height="14"/>
         <image name="square.and.arrow.down.fill" catalog="system" width="15" height="16"/>
         <image name="square.and.arrow.up.fill" catalog="system" width="15" height="17"/>

@@ -153,6 +153,7 @@ const AppDelegate* appDelegate;
 #endif
             break;
     }
+    [appDelegate updateAllMenus];
 }
 
 
