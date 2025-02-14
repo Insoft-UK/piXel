@@ -405,7 +405,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nsource ${PROJECT_DIR}/${PROJECT}/build.sh\nexport BUILD_NUMBER=( $(cat ${PROJECT_DIR}/${PROJECT}/build.txt) )\nBUILD_NUMBER=$(($BUILD_NUMBER+1))\necho $BUILD_NUMBER > ${PROJECT_DIR}/${PROJECT}/build.txt\n\nBUILD_CODE=$(build_code \"$BUILD_NUMBER\")\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_CODE\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n./version_code\nexport BUILD_NUMBER=( $(cat ${PROJECT_DIR}/version.txt) )\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $build_code\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -597,7 +597,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -632,7 +632,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.insoft.piXel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
