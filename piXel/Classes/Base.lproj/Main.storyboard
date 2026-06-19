@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24765"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -964,7 +964,7 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-819" y="-428"/>
+            <point key="canvasLocation" x="-883" y="-428"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -978,7 +978,7 @@
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="bdy-M1-2f5"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="MOs-Ca-nNB"/>
-                                <toolbarItem implicitItemIdentifier="D731321E-D2F8-496E-A8A3-E5C28ADFE116" label="Zoom Out" paletteLabel="Zoom Out" tag="-1" bordered="YES" id="gIB-wm-llm">
+                                <toolbarItem implicitItemIdentifier="D731321E-D2F8-496E-A8A3-E5C28ADFE116" label="Zoom Out" paletteLabel="Zoom Out" tag="-1" id="gIB-wm-llm">
                                     <imageReference key="image" image="minus.magnifyingglass" catalog="system" symbolScale="large"/>
                                     <size key="minSize" width="32" height="25"/>
                                     <size key="maxSize" width="32" height="25"/>
@@ -986,7 +986,7 @@
                                         <action selector="zoomOut:" target="B8D-0N-5wS" id="Xo6-33-wEZ"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="F77046C9-13CA-48A6-920E-2EC2795BF342" label="Zoom In" paletteLabel="Zoom In" tag="-1" bordered="YES" id="HKI-AT-gwy">
+                                <toolbarItem implicitItemIdentifier="F77046C9-13CA-48A6-920E-2EC2795BF342" label="Zoom In" paletteLabel="Zoom In" tag="-1" id="HKI-AT-gwy">
                                     <imageReference key="image" image="plus.magnifyingglass" catalog="system" symbolScale="large"/>
                                     <size key="minSize" width="32" height="25"/>
                                     <size key="maxSize" width="32" height="25"/>
@@ -994,28 +994,28 @@
                                         <action selector="zoomIn:" target="B8D-0N-5wS" id="kzp-Hc-0pz"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="7DEE85E0-AB86-49AB-A703-280448DB0F3B" label="Coarse Increase" paletteLabel="Coarse Increase" tag="1" image="NSTouchBarGoUpTemplate" bordered="YES" id="cjw-pe-wlD">
+                                <toolbarItem implicitItemIdentifier="7DEE85E0-AB86-49AB-A703-280448DB0F3B" label="Coarse Increase" paletteLabel="Coarse Increase" tag="1" image="NSTouchBarGoUpTemplate" id="cjw-pe-wlD">
                                     <size key="minSize" width="27" height="25"/>
                                     <size key="maxSize" width="27" height="25"/>
                                     <connections>
                                         <action selector="coarse:" target="B8D-0N-5wS" id="RXe-Pw-wmk"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="7D19A0D4-E71B-4754-B32D-0D16C82C05EF" label="Coarse Decrease" paletteLabel="Coarse Decrease" tag="-1" image="NSTouchBarGoDownTemplate" bordered="YES" id="9tD-Jg-ZYd">
+                                <toolbarItem implicitItemIdentifier="7D19A0D4-E71B-4754-B32D-0D16C82C05EF" label="Coarse Decrease" paletteLabel="Coarse Decrease" tag="-1" image="NSTouchBarGoDownTemplate" id="9tD-Jg-ZYd">
                                     <size key="minSize" width="27" height="25"/>
                                     <size key="maxSize" width="27" height="25"/>
                                     <connections>
                                         <action selector="coarse:" target="B8D-0N-5wS" id="3bs-9O-dkd"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="EC7FC5A3-A93A-495D-BED4-35098218596F" label="Fine Decrease" paletteLabel="Fine Decrease" tag="-1" image="NSTouchBarGoBackTemplate" bordered="YES" id="DDr-9o-4Yk">
+                                <toolbarItem implicitItemIdentifier="EC7FC5A3-A93A-495D-BED4-35098218596F" label="Fine Decrease" paletteLabel="Fine Decrease" tag="-1" image="NSTouchBarGoBackTemplate" id="DDr-9o-4Yk">
                                     <size key="minSize" width="24" height="25"/>
                                     <size key="maxSize" width="24" height="25"/>
                                     <connections>
                                         <action selector="fine:" target="B8D-0N-5wS" id="xmw-Nf-hvd"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="C5BFC30C-7522-489B-AEB6-B238394F79BF" label="Fine Increase" paletteLabel="Fine Increase" tag="1" image="NSTouchBarGoForwardTemplate" bordered="YES" id="pSf-ME-51Q">
+                                <toolbarItem implicitItemIdentifier="C5BFC30C-7522-489B-AEB6-B238394F79BF" label="Fine Increase" paletteLabel="Fine Increase" tag="1" image="NSTouchBarGoForwardTemplate" id="pSf-ME-51Q">
                                     <size key="minSize" width="24" height="25"/>
                                     <size key="maxSize" width="24" height="25"/>
                                     <connections>

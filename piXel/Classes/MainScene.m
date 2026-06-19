@@ -168,10 +168,7 @@ const AppDelegate* appDelegate;
 // MARK: - Update
 
 -(void)update:(CFTimeInterval)currentTime {
-//    NSTimeInterval delta = currentTime - lastUpdateTime;
-//    lastUpdateTime = currentTime;
-    
-    
+
     if (self.image.hasChanged) {
         [self.image update];
         
